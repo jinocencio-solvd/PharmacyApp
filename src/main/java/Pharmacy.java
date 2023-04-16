@@ -5,7 +5,6 @@ public class Pharmacy {
   private String name;
   private String phoneNumber;
   private String emailAddress;
-  private String[] specialties;
 
   /**
    * Default constructor with no arguments
@@ -14,7 +13,6 @@ public class Pharmacy {
     this.name = "defaultPharmacyName";
     this.phoneNumber = "123-456-7890";
     this.emailAddress = "defaultEmailAddress@email.com";
-    this.specialties = new String[]{};
   }
 
   /**
@@ -29,7 +27,6 @@ public class Pharmacy {
     this.name = name;
     this.phoneNumber = phoneNumber;
     this.emailAddress = emailAddress;
-    this.specialties = specialties;
   }
 
   /**
@@ -43,7 +40,6 @@ public class Pharmacy {
     this.name = name;
     this.phoneNumber = phoneNumber;
     this.emailAddress = emailAddress;
-    this.specialties = new String[]{};
   }
 
   /**
@@ -99,25 +95,4 @@ public class Pharmacy {
   public void setEmailAddress(String emailAddress) {
     this.emailAddress = emailAddress;
   }
-
-  /**
-   * Returns the specialties offered by the pharmacy.
-   *
-   * @return the specialties offered by the pharmacy
-   */
-  public String[] getSpecialties() {
-    return specialties;
-  }
-
-  /**
-   * Sets the specialties offered by the pharmacy.
-   *
-   * @param specialties the new specialties offered by the pharmacy
-   */
-  public void setSpecialties(String[] specialties) {
-    // TODO: Refactor to use addSpecialty and removeSpecialty methods instead
-    // Simple set method
-    this.specialties = specialties;
-  }
-
 }

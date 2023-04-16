@@ -3,7 +3,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 /**
+ * TODO: Implement Specialty class
  * String[] specialties = new String[]{
  * "ambulatory care pharmacy",
  * "cardiology pharmacy",
@@ -31,7 +33,7 @@ class PharmacyTest {
   void setUp() {
     defaultPharmacy = new Pharmacy();
     noSpecialties = new Pharmacy("noSpecialties", "000-000-0000", "noSpecialties@email.com");
-    pharmacy1 = new Pharmacy("pharmacy1", "111-111-1111", "pharmacy1@email.com", new String[]{"ambulatory care pharmacy"});
+    pharmacy1 = new Pharmacy("pharmacy1", "111-111-1111", "pharmacy1@email.com");
   }
 
   @Test
@@ -91,28 +93,6 @@ class PharmacyTest {
     assertEquals("pharmacy1@email.com", pharmacy1.getEmailAddress());
     pharmacy1.setEmailAddress("pharmacy1@changedEmail.com");
     assertEquals("pharmacy1@changedEmail.com", pharmacy1.getEmailAddress());
-  }
-
-  @Test
-  void getSpecialties() {
-    assertArrayEquals(new String[]{}, defaultPharmacy.getSpecialties());
-    assertArrayEquals(new String[]{}, noSpecialties.getSpecialties());
-    assertArrayEquals(new String[]{"ambulatory care pharmacy"}, pharmacy1.getSpecialties());
-  }
-
-  @Test
-  void setSpecialties() {
-    assertArrayEquals(new String[]{}, defaultPharmacy.getSpecialties());
-    defaultPharmacy.setSpecialties(new String[]{"ambulatory care pharmacy", "cardiology pharmacy"});
-    assertArrayEquals(new String[]{"ambulatory care pharmacy", "cardiology pharmacy"}, defaultPharmacy.getSpecialties());
-
-    assertArrayEquals(new String[]{}, noSpecialties.getSpecialties());
-    noSpecialties.setSpecialties(new String[]{"critical care pharmacy"});
-    assertArrayEquals(new String[]{"critical care pharmacy"}, noSpecialties.getSpecialties());
-
-    assertArrayEquals(new String[]{"ambulatory care pharmacy"}, pharmacy1.getSpecialties());
-    pharmacy1.setSpecialties(new String[]{});
-    assertArrayEquals(new String[]{}, pharmacy1.getSpecialties());
   }
 
 
