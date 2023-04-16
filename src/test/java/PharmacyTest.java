@@ -25,17 +25,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PharmacyTest {
     Pharmacy defaultPharmacy;
-    Pharmacy noSpecialties;
     Pharmacy pharmacy1;
-
 
     @BeforeEach
     void setUp() {
         defaultPharmacy = new Pharmacy();
-        noSpecialties = new Pharmacy("noSpecialties", "000-000-0000",
-                "noSpecialties@email.com");
         pharmacy1 = new Pharmacy("pharmacy1", "111-111-1111", "pharmacy1" +
-                "@email.com");
+                "@email.com", null);
     }
 
     @Test
@@ -55,7 +51,6 @@ class PharmacyTest {
     @Test
     void getPhoneNumber() {
         assertEquals("123-456-7890", defaultPharmacy.getPhoneNumber());
-        assertEquals("000-000-0000", noSpecialties.getPhoneNumber());
         assertEquals("111-111-1111", pharmacy1.getPhoneNumber());
     }
 
@@ -64,10 +59,6 @@ class PharmacyTest {
         assertEquals("123-456-7890", defaultPharmacy.getPhoneNumber());
         defaultPharmacy.setPhoneNumber("999-456-7890");
         assertEquals("999-456-7890", defaultPharmacy.getPhoneNumber());
-
-        assertEquals("000-000-0000", noSpecialties.getPhoneNumber());
-        noSpecialties.setPhoneNumber("999-000-0000");
-        assertEquals("999-000-0000", noSpecialties.getPhoneNumber());
 
         assertEquals("111-111-1111", pharmacy1.getPhoneNumber());
         pharmacy1.setPhoneNumber("999-111-1111");
@@ -79,8 +70,6 @@ class PharmacyTest {
     void getEmailAddress() {
         assertEquals("defaultEmailAddress@email.com",
                 defaultPharmacy.getEmailAddress());
-        assertEquals("noSpecialties@email.com",
-                noSpecialties.getEmailAddress());
         assertEquals("pharmacy1@email.com", pharmacy1.getEmailAddress());
     }
 
@@ -91,12 +80,6 @@ class PharmacyTest {
         defaultPharmacy.setEmailAddress("defaultEmailAddress@changedEmail.com");
         assertEquals("defaultEmailAddress@changedEmail.com",
                 defaultPharmacy.getEmailAddress());
-
-        assertEquals("noSpecialties@email.com",
-                noSpecialties.getEmailAddress());
-        noSpecialties.setEmailAddress("noSpecialties@changedEmail.com");
-        assertEquals("noSpecialties@changedEmail.com",
-                noSpecialties.getEmailAddress());
 
         assertEquals("pharmacy1@email.com", pharmacy1.getEmailAddress());
         pharmacy1.setEmailAddress("pharmacy1@changedEmail.com");

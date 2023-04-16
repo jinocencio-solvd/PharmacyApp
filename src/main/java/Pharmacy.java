@@ -6,6 +6,7 @@ public class Pharmacy {
     private String name;
     private String phoneNumber;
     private String emailAddress;
+    private Inventory inventory;
 
     /**
      * Default constructor with no arguments
@@ -14,6 +15,7 @@ public class Pharmacy {
         this.name = "defaultPharmacyName";
         this.phoneNumber = "123-456-7890";
         this.emailAddress = "defaultEmailAddress@email.com";
+        this.inventory = null;
     }
 
     /**
@@ -24,10 +26,12 @@ public class Pharmacy {
      * @param phoneNumber  the phone number of the pharmacy
      * @param emailAddress the email address of the pharmacy
      */
-    public Pharmacy(String name, String phoneNumber, String emailAddress) {
+    public Pharmacy(String name, String phoneNumber, String emailAddress,
+                    Inventory inventory) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
+        this.inventory = inventory;
     }
 
     /**
@@ -82,5 +86,13 @@ public class Pharmacy {
      */
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 }
