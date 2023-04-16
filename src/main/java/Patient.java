@@ -34,4 +34,12 @@ public class Patient extends Person {
                 ", insuranceName=" + insuranceName +
                 '}';
     }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "patientID=" + patientID +
+                ", insuranceName='" + insuranceName + '\'' +
+                '}';
+    }
 }

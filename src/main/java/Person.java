@@ -36,9 +36,10 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Name: " + name + ", Phone number: " + phoneNumber + ", " +
-                "Address: " + address.toString();
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", address=" + address +
+                '}';
     }
-
-
 }
