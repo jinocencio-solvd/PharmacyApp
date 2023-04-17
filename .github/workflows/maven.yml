@@ -10,9 +10,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "iter1-hierarchies", "jinocencio-solvd-patch-1" ]
+    branches: [ "*" ]
   pull_request:
-    branches: [ "main", "iter1-hierarchies" ]
+    branches: [ "main" ]
 
 jobs:
   build:
