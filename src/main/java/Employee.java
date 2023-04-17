@@ -1,4 +1,10 @@
-public class Employee extends Person{
+import java.util.Objects;
+
+/**
+ * Represents an employee that extends the Person class.
+ * Contains an employee ID field in addition to the Person class fields.
+ */
+public class Employee extends Person {
     private String employeeId;
 
     public Employee(String name, String phoneNumber, Address address,
@@ -19,6 +25,19 @@ public class Employee extends Person{
     public String toString() {
         return "Employee{" +
                 "employeeId='" + employeeId + '\'' +
-                '}';
+                "} " + super.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee)) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(employeeId, employee.employeeId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(employeeId);
     }
 }

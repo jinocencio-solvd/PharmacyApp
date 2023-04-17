@@ -1,89 +1,53 @@
-/**
- * The Pharmacy class represents a pharmacy that has a name, phone number,
- * email address, and an array of specialties.
- */
+import java.util.ArrayList;
+
 public class Pharmacy {
     private String name;
+    private Address address;
     private String phoneNumber;
     private String emailAddress;
     private Inventory inventory;
+    private ArrayList<Employee> employees;
 
-    /**
-     * Default constructor with no arguments
-     */
-    public Pharmacy() {
-        this.name = "defaultPharmacyName";
-        this.phoneNumber = "123-456-7890";
-        this.emailAddress = "defaultEmailAddress@email.com";
-        this.inventory = null;
-    }
 
-    /**
-     * Constructs a new Pharmacy object with the specified name, phone
-     * number, email address, and specialties.
-     *
-     * @param name         the name of the pharmacy
-     * @param phoneNumber  the phone number of the pharmacy
-     * @param emailAddress the email address of the pharmacy
-     */
-    public Pharmacy(String name, String phoneNumber, String emailAddress,
-                    Inventory inventory) {
+    public Pharmacy(String name, Address address, String phoneNumber,
+                    String emailAddress, Inventory inventory,
+                    ArrayList<Employee> employees) {
         this.name = name;
+        this.address = address;
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
         this.inventory = inventory;
+        this.employees = employees;
     }
 
-    /**
-     * Returns the name of the pharmacy.
-     *
-     * @return the name of the pharmacy
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Sets the name of the pharmacy
-     *
-     * @param name the new name of the pharmacy
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Returns the phone number of the pharmacy.
-     *
-     * @return the phone number of the pharmacy
-     */
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    /**
-     * Sets the phone number of the pharmacy.
-     *
-     * @param phoneNumber the new phone number of the pharmacy
-     */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    /**
-     * Returns the email address of the pharmacy.
-     *
-     * @return the email address of the pharmacy
-     */
     public String getEmailAddress() {
         return emailAddress;
     }
 
-    /**
-     * Sets the email address of the pharmacy.
-     *
-     * @param emailAddress the new email address of the pharmacy
-     */
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
@@ -94,5 +58,25 @@ public class Pharmacy {
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+    }
+
+    public ArrayList<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(ArrayList<Employee> employees) {
+        this.employees = employees;
+    }
+
+    @Override
+    public String toString() {
+        return "Pharmacy{" +
+                "name='" + name + '\'' +
+                ", address=" + address +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", inventory=" + inventory +
+                ", employees=" + employees +
+                '}';
     }
 }

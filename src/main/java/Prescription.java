@@ -1,3 +1,7 @@
+/**
+ * The Prescription class represents a prescription with a prescription ID,
+ * number of refills, filled status, medication, and patient.
+ */
 public class Prescription {
     private String prescriptionId;
     private int numRefills;

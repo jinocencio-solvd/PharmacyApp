@@ -1,6 +1,8 @@
-
+/**
+ * The Medication class represents a medication with a name, dosage, price,
+ * and quantity.
+ */
 public class Medication {
-
     private String name;
     private String dosage;
     private double price;
@@ -43,5 +45,15 @@ public class Medication {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Medication{" +
+                "name='" + name + '\'' +
+                ", dosage='" + dosage + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                '}';
     }
 }

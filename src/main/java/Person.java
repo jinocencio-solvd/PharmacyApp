@@ -1,3 +1,6 @@
+/**
+ * The Person class represents a person with a name, phone number, and address.
+ */
 public class Person {
     private String name;
     private String phoneNumber;

@@ -1,3 +1,9 @@
+import java.util.Objects;
+
+/**
+ * The Patient class represents a person who is a patient, with a patient ID
+ * and insurance information.
+ */
 public class Patient extends Person {
     private int patientID;
     private String insuranceName;
@@ -25,21 +31,26 @@ public class Patient extends Person {
         this.insuranceName = insuranceName;
     }
 
-    public String getPatientInfo() {
-        return "Patient{" +
-                "name=" + getName() +
-                ", phoneNumber=" + getPhoneNumber() +
-                ", address=" + getAddress() +
-                ", patientID=" + patientID +
-                ", insuranceName=" + insuranceName +
-                '}';
-    }
-
     @Override
     public String toString() {
         return "Patient{" +
                 "patientID=" + patientID +
                 ", insuranceName='" + insuranceName + '\'' +
-                '}';
+                "} " + super.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Patient)) return false;
+        Patient patient = (Patient) o;
+        return getPatientID() == patient.getPatientID() &&
+                Objects.equals(getInsuranceName(),
+                        patient.getInsuranceName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPatientID(), getInsuranceName());
     }
 }

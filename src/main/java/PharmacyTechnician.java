@@ -1,3 +1,9 @@
+import java.util.Objects;
+
+/**
+ * The PharmacyTechnician class represents an employee who is a pharmacy
+ * technician, with a state license ID and cashier training.
+ */
 public class PharmacyTechnician extends Employee {
     private String stateLicenseId;
     private boolean isCashierTrained;
@@ -31,6 +37,22 @@ public class PharmacyTechnician extends Employee {
         return "PharmacyTechnician{" +
                 "stateLicenseId='" + stateLicenseId + '\'' +
                 ", isCashierTrained=" + isCashierTrained +
-                '}';
+                "} " + super.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PharmacyTechnician)) return false;
+        if (!super.equals(o)) return false;
+        PharmacyTechnician that = (PharmacyTechnician) o;
+        return isCashierTrained() == that.isCashierTrained() &&
+                Objects.equals(getStateLicenseId(), that.getStateLicenseId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getStateLicenseId(),
+                isCashierTrained());
     }
 }
