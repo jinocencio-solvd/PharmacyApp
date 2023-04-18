@@ -59,8 +59,6 @@ public class Main {
                 "-321-4567"
                 , "pharmEmail@email.com", inventory, employees);
 
-        System.out.println(pharmacy);
-
         Patient patient1 = new Patient("Tom Davis", "555-7890", address5,
                 1005, "Humana");
         Patient patient2 = new Patient("Sara Johnson", "555-2345", address6,
@@ -72,8 +70,6 @@ public class Main {
         Prescription prescription2 = new Prescription("RX456", 1, true,
                 medication2, patient2);
 
-        System.out.println(prescription1);
-        System.out.println(prescription2);
     }
 
 

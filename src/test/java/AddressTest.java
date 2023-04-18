@@ -42,4 +42,10 @@ class AddressTest {
         assertEquals(address6.hashCode(), address6Copy.hashCode());
         assertNotEquals(address6.hashCode(), address1.hashCode());
     }
+
+    @Test
+    void getAddress() {
+        String expected = "Address: \n\t123 Main St\n\tAnytown\n\tCA, 12345";
+        assertEquals(expected, address1.getAddress());
+    }
 }

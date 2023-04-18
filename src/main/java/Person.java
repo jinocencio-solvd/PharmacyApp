@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 /**
  * The Person class represents a person with a name, phone number, and address.
  */
@@ -37,6 +39,17 @@ public class Person {
         this.address = address;
     }
 
+    /**
+     * Returns a string containing the person's name, phone number, and address.
+     *
+     * @return a string containing the person's contact information
+     */
+    public String getContactInfo() {
+        return name + "'s " + "Contact Information:" + "\n" +
+                "phone#: " + phoneNumber + "\n" +
+                address.getAddress() + "\n";
+    }
+
     @Override
     public String toString() {
         return "Person{" +
@@ -44,5 +57,20 @@ public class Person {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address=" + address +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Person)) return false;
+        Person person = (Person) o;
+        return getName().equals(person.getName())
+                && getPhoneNumber().equals(person.getPhoneNumber())
+                && getAddress().equals(person.getAddress());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getPhoneNumber(), getAddress());
     }
 }
