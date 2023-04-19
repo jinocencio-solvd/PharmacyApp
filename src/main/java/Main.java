@@ -68,7 +68,7 @@ public class Main {
     Prescription prescription2 = new Prescription("RX456", 1, true,
         medication2, patient2);
 
+    pharmacist1.printEmployeeDetails();
+    tech1.printEmployeeDetails();
   }
-
-
 }

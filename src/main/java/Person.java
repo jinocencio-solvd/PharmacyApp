@@ -4,14 +4,19 @@ import java.util.Objects;
  * The Person class represents a person with a name, phone number, and address.
  */
 public class Person {
-    private String name;
-    private String phoneNumber;
-    private Address address;
+    protected String name;
+    protected String phoneNumber;
+    protected Address address;
 
     public Person(String name, String phoneNumber, Address address) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.address = address;
+    }
+
+    protected void printDetails(){
+        System.out.println("Name: " + name);
+        System.out.println("phone #: " + phoneNumber);
     }
 
     // Getters and setters for name, phoneNumber and address

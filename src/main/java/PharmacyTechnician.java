@@ -34,6 +34,19 @@ public class PharmacyTechnician extends Employee {
     isCashierTrained = cashierTrained;
   }
 
+  /**
+   * method to print out employee details
+   */
+  @Override
+  public void printEmployeeDetails() {
+    super.printDetails();
+    System.out.println("Position: Pharmacy Technician");
+    System.out.println("EmployeeId: " + super.employeeId);
+    System.out.println("LicenseId: " + this.stateLicenseId);
+    System.out.println("Cashier Trained: " + this.isCashierTrained);
+
+  }
+
   @Override
   public void dispenseMedication() {
 //        TODO: a pharm tech would Assist pharmacist with filling prescription

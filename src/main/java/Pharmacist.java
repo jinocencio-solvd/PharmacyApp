@@ -22,6 +22,17 @@ public class Pharmacist extends Employee {
   }
 
   /**
+   *  method to print out employee details
+   */
+  @Override
+  public void printEmployeeDetails() {
+    super.printDetails();
+    System.out.println("Position Title: Pharmacist");
+    System.out.println("EmployeeId: " + super.employeeId);
+    System.out.println("LicenseId: " + this.stateLicenseId);
+  }
+
+  /**
    * Basic functions involved in dispensing medication
    */
   @Override
