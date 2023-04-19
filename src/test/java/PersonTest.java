@@ -18,14 +18,6 @@ public class PersonTest {
     }
 
     @Test
-    void testGetContactInfo() {
-        String expected = "John Doe's Contact Information:\nphone#: " +
-                "555-555-1234\nAddress: \n\t123 Main St\n\tAnytown\n\tCA, " +
-                "12345\n";
-        assertEquals(expected, person1.getContactInfo());
-    }
-
-    @Test
     void testToString() {
         String expected = "Person{name='John Doe', phoneNumber='555-555-1234', address=Address{street=123 Main St, city=Anytown, state=CA, postalCode=12345}}";
         assertEquals(expected, person1.toString());

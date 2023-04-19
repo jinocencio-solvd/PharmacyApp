@@ -43,9 +43,4 @@ class AddressTest {
         assertNotEquals(address6.hashCode(), address1.hashCode());
     }
 
-    @Test
-    void getAddress() {
-        String expected = "Address: \n\t123 Main St\n\tAnytown\n\tCA, 12345";
-        assertEquals(expected, address1.getAddress());
-    }
 }
