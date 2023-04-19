@@ -4,7 +4,7 @@ import java.util.Objects;
  * Represents an employee that extends the Person class.
  * Contains an employee ID field in addition to the Person class fields.
  */
-public class Employee extends Person {
+public abstract class Employee extends Person {
     private String employeeId;
 
     public Employee(String name, String phoneNumber, Address address,
@@ -12,6 +12,11 @@ public class Employee extends Person {
         super(name, phoneNumber, address);
         this.employeeId = employeeID;
     }
+
+    /**
+     * Abstract method to define the basic functions involved in dispensing medication
+     */
+    public abstract void dispenseMedication();
 
     public String getEmployeeID() {
         return employeeId;
