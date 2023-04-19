@@ -1,11 +1,12 @@
 /**
- * The Product class represents a product with a name, price, and quantity.
+ * The Product class represents an abstract product with a name, price, and
+ * quantity.
  */
-public class Product {
+public abstract class Product {
 
-    private String name;
-    private double price;
-    private int quantity;
+    protected String name;
+    protected double price;
+    protected int quantity;
 
     public Product(String name, double price, int quantity) {
         this.name = name;

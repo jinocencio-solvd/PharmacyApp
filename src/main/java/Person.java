@@ -39,17 +39,6 @@ public class Person {
         this.address = address;
     }
 
-    /**
-     * Returns a string containing the person's name, phone number, and address.
-     *
-     * @return a string containing the person's contact information
-     */
-    public String getContactInfo() {
-        return name + "'s " + "Contact Information:" + "\n" +
-                "phone#: " + phoneNumber + "\n" +
-                address.getAddress() + "\n";
-    }
-
     @Override
     public String toString() {
         return "Person{" +

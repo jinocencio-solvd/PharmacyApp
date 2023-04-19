@@ -2,17 +2,12 @@
  * The Medication class represents a medication with a name, dosage, price,
  * and quantity.
  */
-public class Medication {
-    private String name;
+public class Medication extends Product {
     private String dosage;
-    private double price;
-    private int quantity;
 
     public Medication(String name, String dosage, double price, int quantity) {
-        this.name = name;
+        super(name, price, quantity);
         this.dosage = dosage;
-        this.price = price;
-        this.quantity = quantity;
     }
 
     public String getName() {

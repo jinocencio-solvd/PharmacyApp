@@ -49,19 +49,6 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    /**
-     * Returns a formatted address string with street, city, state, and
-     * postal code.
-     *
-     * @return the formatted address string
-     */
-    public String getAddress() {
-        return "Address: " + "\n" +
-                "\t" + street + "\n" +
-                "\t" + city + "\n" +
-                "\t" + state + ", " + postalCode;
-    }
-
     @Override
     public String toString() {
         return "Address{" +
@@ -71,7 +58,6 @@ public class Address {
                 ", postalCode=" + postalCode +
                 '}';
     }
-
 
     @Override
     public boolean equals(Object o) {

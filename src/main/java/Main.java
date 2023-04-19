@@ -43,10 +43,10 @@ public class Main {
         medications.add(medication3);
         medications.add(medication4);
 
-        Product product1 = new Product("Band-Aids", 2.99, 50);
-        Product product2 = new Product("Hydrogen Peroxide", 1.99, 25);
-        Product product3 = new Product("Antacid Tablets", 4.99, 30);
-        Product product4 = new Product("Cough Drops", 3.49, 40);
+        Item product1 = new Item("Band-Aids", 2.99, 50);
+        Item product2 = new Item("Hydrogen Peroxide", 1.99, 25);
+        Item product3 = new Item("Antacid Tablets", 4.99, 30);
+        Item product4 = new Item("Cough Drops", 3.49, 40);
         ArrayList<Product> products = new ArrayList<>();
         products.add(product1);
         products.add(product2);
