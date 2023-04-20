@@ -8,12 +8,21 @@ public class Patient extends Person {
 
   private int patientID;
   private String insuranceName;
+  private double percentInsuranceCovered;
+
+  public Patient(String name, String phoneNumber, Address address, int patientID) {
+    super(name, phoneNumber, address);
+    this.patientID = patientID;
+    this.insuranceName = null;
+    this.percentInsuranceCovered = 0;
+  }
 
   public Patient(String name, String phoneNumber, Address address, int patientID,
-      String insuranceName) {
+      String insuranceName, double percentInsuranceCovered) {
     super(name, phoneNumber, address);
     this.patientID = patientID;
     this.insuranceName = insuranceName;
+    this.percentInsuranceCovered = percentInsuranceCovered;
   }
 
   public int getPatientID() {
@@ -32,11 +41,20 @@ public class Patient extends Person {
     this.insuranceName = insuranceName;
   }
 
+  public double getPercentInsuranceCovered() {
+    return percentInsuranceCovered;
+  }
+
+  public void setPercentInsuranceCovered(double percentInsuranceCovered) {
+    this.percentInsuranceCovered = percentInsuranceCovered;
+  }
+
   @Override
   public String toString() {
     return "Patient{" +
         "patientID=" + patientID +
         ", insuranceName='" + insuranceName + '\'' +
+        ", percentInsuranceCovered=" + percentInsuranceCovered +
         "} " + super.toString();
   }
 

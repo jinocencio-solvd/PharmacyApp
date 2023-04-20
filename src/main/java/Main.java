@@ -54,8 +54,8 @@ public class Main {
     Pharmacy pharmacy = new Pharmacy("Joffrey's Pharmacy", address0, "123" + "-321-4567",
         "pharmEmail@email.com", inventory, employees);
 
-    Patient patient1 = new Patient("Tom Davis", "555-7890", address5, 1005, "Humana");
-    Patient patient2 = new Patient("Sara Johnson", "555-2345", address6, 1006, "Anthem");
+    Patient patient1 = new Patient("Tom Davis", "555-7890", address5, 1005, "Humana", 0.4);
+    Patient patient2 = new Patient("Sara Johnson", "555-2345", address6, 1006, "Anthem", 0.2);
 
     Prescription prescription1 = new Prescription("RX123", 2, false, medication1, patient1);
 
