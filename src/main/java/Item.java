@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 /**
  * The Product class represents a product with a name, price, and quantity.
  */
@@ -31,5 +33,25 @@ public class Item extends Product {
         ", price=" + price +
         ", quantity=" + quantity +
         "} " + super.toString();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Item)) {
+      return false;
+    }
+    if (!super.equals(o)) {
+      return false;
+    }
+    Item item = (Item) o;
+    return getSkuId().equals(item.getSkuId());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), getSkuId());
   }
 }

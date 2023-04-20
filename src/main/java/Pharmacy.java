@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Pharmacy {
 
@@ -79,5 +80,28 @@ public class Pharmacy {
         ", inventory=" + inventory +
         ", employees=" + employees +
         '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Pharmacy)) {
+      return false;
+    }
+    Pharmacy pharmacy = (Pharmacy) o;
+    return Objects.equals(getName(), pharmacy.getName()) && Objects.equals(
+        getAddress(), pharmacy.getAddress()) && Objects.equals(getPhoneNumber(),
+        pharmacy.getPhoneNumber()) && Objects.equals(getEmailAddress(),
+        pharmacy.getEmailAddress()) && Objects.equals(getInventory(),
+        pharmacy.getInventory()) && Objects.equals(getEmployees(), pharmacy.getEmployees());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getName(), getAddress(), getPhoneNumber(), getEmailAddress(),
+        getInventory(),
+        getEmployees());
   }
 }

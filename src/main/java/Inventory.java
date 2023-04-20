@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * The Inventory class represents the inventory of a pharmacy, which consists of products.
@@ -80,5 +81,22 @@ public class Inventory {
   @Override
   public String toString() {
     return "Inventory{" + "products=" + products + '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Inventory)) {
+      return false;
+    }
+    Inventory inventory = (Inventory) o;
+    return Objects.equals(getProducts(), inventory.getProducts());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getProducts());
   }
 }

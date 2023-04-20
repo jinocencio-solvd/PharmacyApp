@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 /**
  * The Product class represents an abstract product with a name, price, and quantity.
  */
@@ -44,5 +46,23 @@ public abstract class Product {
         ", price=" + price +
         ", quantity=" + quantity +
         '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Product)) {
+      return false;
+    }
+    Product product = (Product) o;
+    return Double.compare(product.getPrice(), getPrice()) == 0
+        && getQuantity() == product.getQuantity() && getName().equals(product.getName());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getName(), getPrice(), getQuantity());
   }
 }

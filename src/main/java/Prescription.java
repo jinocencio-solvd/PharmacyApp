@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 /**
  * The Prescription class represents a prescription with a prescription ID, number of refills,
  * filled status, medication, and patient.
@@ -68,5 +70,25 @@ public class Prescription {
         ", medication=" + medication +
         ", patient=" + patient +
         '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Prescription)) {
+      return false;
+    }
+    Prescription that = (Prescription) o;
+    return getNumRefills() == that.getNumRefills() && isFilled() == that.isFilled()
+        && getPrescriptionId().equals(that.getPrescriptionId()) && getMedication().equals(
+        that.getMedication()) && getPatient().equals(that.getPatient());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getPrescriptionId(), getNumRefills(), isFilled(), getMedication(),
+        getPatient());
   }
 }
