@@ -18,11 +18,11 @@ public class Main {
     Pharmacist pharmacist2 = new Pharmacist("Jane Smith", "555-5678",
         address2, "E002", "NY-67890");
 
-    PharmacyTechnician tech1 = new PharmacyTechnician("John Tech", "555" +
-        "-1234", address3, "EMP-001", "CA123456");
+    PharmacyTechnician tech1 = new PharmacyTechnician("John Tech", "555-1234", address3, "EMP-001",
+        "CA123456");
     tech1.setCashierTrained(true);
-    PharmacyTechnician tech2 = new PharmacyTechnician("Jane Tech", "555" +
-        "-5678", address4, "EMP-002", "CA654321");
+    PharmacyTechnician tech2 = new PharmacyTechnician("Jane Tech", "555-5678", address4, "EMP-002",
+        "CA654321");
 
     ArrayList<Employee> employees = new ArrayList<>();
     employees.add(pharmacist1);
@@ -36,10 +36,8 @@ public class Main {
     Item product3 = new Item("Antacid Tablets", 4.99, 30);
     Item product4 = new Item("Cough Drops", 3.49, 40);
     Medication medication1 = new Medication("Aspirin", "500 mg", 0.10, 100);
-    Medication medication2 = new Medication("Ibuprofen", "200 mg", 0.08,
-        50);
-    Medication medication3 = new Medication("Acetaminophen", "325 mg",
-        0.05, 200);
+    Medication medication2 = new Medication("Ibuprofen", "200 mg", 0.08, 50);
+    Medication medication3 = new Medication("Acetaminophen", "325 mg", 0.05, 200);
     Medication medication4 = new Medication("Naproxen", "220 mg", 0.12, 75);
 
     // Add to inventory
@@ -53,22 +51,17 @@ public class Main {
     inventory.addProductToInventory(medication3);
     inventory.addProductToInventory(medication4);
 
-    Pharmacy pharmacy = new Pharmacy("Joffrey's Pharmacy", address0, "123" +
-        "-321-4567"
-        , "pharmEmail@email.com", inventory, employees);
+    Pharmacy pharmacy = new Pharmacy("Joffrey's Pharmacy", address0, "123" + "-321-4567",
+        "pharmEmail@email.com", inventory, employees);
 
-    Patient patient1 = new Patient("Tom Davis", "555-7890", address5,
-        1005, "Humana");
-    Patient patient2 = new Patient("Sara Johnson", "555-2345", address6,
-        1006, "Anthem");
+    Patient patient1 = new Patient("Tom Davis", "555-7890", address5, 1005, "Humana");
+    Patient patient2 = new Patient("Sara Johnson", "555-2345", address6, 1006, "Anthem");
 
-    Prescription prescription1 = new Prescription("RX123", 2, false,
-        medication1, patient1);
+    Prescription prescription1 = new Prescription("RX123", 2, false, medication1, patient1);
 
-    Prescription prescription2 = new Prescription("RX456", 1, true,
-        medication2, patient2);
+    Prescription prescription2 = new Prescription("RX456", 1, true, medication2, patient2);
 
-    pharmacist1.printEmployeeDetails();
-    tech1.printEmployeeDetails();
+//    pharmacist1.printEmployeeDetails();
+//    tech1.printEmployeeDetails();
   }
 }

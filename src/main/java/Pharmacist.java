@@ -7,8 +7,8 @@ public class Pharmacist extends Employee {
 
   private String stateLicenseId;
 
-  public Pharmacist(String name, String phoneNumber, Address address,
-      String employeeID, String stateLicenseId) {
+  public Pharmacist(String name, String phoneNumber, Address address, String employeeID,
+      String stateLicenseId) {
     super(name, phoneNumber, address, employeeID);
     this.stateLicenseId = stateLicenseId;
   }
@@ -22,7 +22,7 @@ public class Pharmacist extends Employee {
   }
 
   /**
-   *  method to print out employee details
+   * method to print out employee details
    */
   @Override
   public void printEmployeeDetails() {

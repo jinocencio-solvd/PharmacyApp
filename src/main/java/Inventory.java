@@ -10,9 +10,11 @@ public class Inventory {
   public Inventory(ArrayList<Product> products) {
     this.products = products;
   }
+
   public Inventory() {
     this.products = new ArrayList<Product>();
   }
+
   /**
    * Adds a new Product to the products inventory.
    *

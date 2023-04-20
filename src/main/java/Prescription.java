@@ -1,72 +1,72 @@
 /**
- * The Prescription class represents a prescription with a prescription ID,
- * number of refills, filled status, medication, and patient.
+ * The Prescription class represents a prescription with a prescription ID, number of refills,
+ * filled status, medication, and patient.
  */
 public class Prescription {
-    private String prescriptionId;
-    private int numRefills;
-    private boolean isFilled;
-    Medication medication;
-    Patient patient;
 
-    public Prescription(String prescriptionId, int numRefills,
-                        boolean isFilled, Medication medication,
-                        Patient patient) {
-        this.prescriptionId = prescriptionId;
-        this.numRefills = numRefills;
-        this.isFilled = isFilled;
-        this.medication = medication;
-        this.patient = patient;
-    }
+  private String prescriptionId;
+  private int numRefills;
+  private boolean isFilled;
+  Medication medication;
+  Patient patient;
 
-    public String getPrescriptionId() {
-        return prescriptionId;
-    }
+  public Prescription(String prescriptionId, int numRefills, boolean isFilled,
+      Medication medication, Patient patient) {
+    this.prescriptionId = prescriptionId;
+    this.numRefills = numRefills;
+    this.isFilled = isFilled;
+    this.medication = medication;
+    this.patient = patient;
+  }
 
-    public void setPrescriptionId(String prescriptionId) {
-        this.prescriptionId = prescriptionId;
-    }
+  public String getPrescriptionId() {
+    return prescriptionId;
+  }
 
-    public int getNumRefills() {
-        return numRefills;
-    }
+  public void setPrescriptionId(String prescriptionId) {
+    this.prescriptionId = prescriptionId;
+  }
 
-    public void setNumRefills(int numRefills) {
-        this.numRefills = numRefills;
-    }
+  public int getNumRefills() {
+    return numRefills;
+  }
 
-    public boolean isFilled() {
-        return isFilled;
-    }
+  public void setNumRefills(int numRefills) {
+    this.numRefills = numRefills;
+  }
 
-    public void setFilled(boolean filled) {
-        isFilled = filled;
-    }
+  public boolean isFilled() {
+    return isFilled;
+  }
 
-    public Medication getMedication() {
-        return medication;
-    }
+  public void setFilled(boolean filled) {
+    isFilled = filled;
+  }
 
-    public void setMedication(Medication medication) {
-        this.medication = medication;
-    }
+  public Medication getMedication() {
+    return medication;
+  }
 
-    public Patient getPatient() {
-        return patient;
-    }
+  public void setMedication(Medication medication) {
+    this.medication = medication;
+  }
 
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
+  public Patient getPatient() {
+    return patient;
+  }
 
-    @Override
-    public String toString() {
-        return "Prescription{" +
-                "prescriptionId='" + prescriptionId + '\'' +
-                ", numRefills=" + numRefills +
-                ", isFilled=" + isFilled +
-                ", medication=" + medication +
-                ", patient=" + patient +
-                '}';
-    }
+  public void setPatient(Patient patient) {
+    this.patient = patient;
+  }
+
+  @Override
+  public String toString() {
+    return "Prescription{" +
+        "prescriptionId='" + prescriptionId + '\'' +
+        ", numRefills=" + numRefills +
+        ", isFilled=" + isFilled +
+        ", medication=" + medication +
+        ", patient=" + patient +
+        '}';
+  }
 }

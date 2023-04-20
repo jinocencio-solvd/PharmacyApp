@@ -8,8 +8,7 @@ public abstract class Employee extends Person {
 
   protected String employeeId;
 
-  public Employee(String name, String phoneNumber, Address address,
-      String employeeID) {
+  public Employee(String name, String phoneNumber, Address address, String employeeID) {
     super(name, phoneNumber, address);
     this.employeeId = employeeID;
   }

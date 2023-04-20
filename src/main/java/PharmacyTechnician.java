@@ -9,8 +9,7 @@ public class PharmacyTechnician extends Employee {
   private String stateLicenseId;
   private boolean isCashierTrained;
 
-  public PharmacyTechnician(String name, String phoneNumber,
-      Address address, String employeeID,
+  public PharmacyTechnician(String name, String phoneNumber, Address address, String employeeID,
       String stateLicenseId) {
     super(name, phoneNumber, address, employeeID);
     this.stateLicenseId = stateLicenseId;

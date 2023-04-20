@@ -2,32 +2,34 @@
  * The Product class represents a product with a name, price, and quantity.
  */
 public class Item extends Product {
-    private String skuId;
 
-    public Item(String name, double price, int quantity, String skuId) {
-        super(name, price, quantity);
-        this.skuId = skuId;
-    }
-    public Item(String name, double price, int quantity) {
-        super(name, price, quantity);
-        this.skuId = "0000-0000000-0";
-    }
+  private String skuId;
 
-    public String getSkuId() {
-        return skuId;
-    }
+  public Item(String name, double price, int quantity, String skuId) {
+    super(name, price, quantity);
+    this.skuId = skuId;
+  }
 
-    public void setSkuId(String skuId) {
-        this.skuId = skuId;
-    }
+  public Item(String name, double price, int quantity) {
+    super(name, price, quantity);
+    this.skuId = "0000-0000000-0";
+  }
 
-    @Override
-    public String toString() {
-        return "Item{" +
-                "skuId='" + skuId + '\'' +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                "} " + super.toString();
-    }
+  public String getSkuId() {
+    return skuId;
+  }
+
+  public void setSkuId(String skuId) {
+    this.skuId = skuId;
+  }
+
+  @Override
+  public String toString() {
+    return "Item{" +
+        "skuId='" + skuId + '\'' +
+        ", name='" + name + '\'' +
+        ", price=" + price +
+        ", quantity=" + quantity +
+        "} " + super.toString();
+  }
 }
