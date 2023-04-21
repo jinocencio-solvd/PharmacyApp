@@ -29,6 +29,29 @@ public abstract class Product {
     this.price = price;
   }
 
+  @Override
+  public String toString() {
+    return "Product{" +
+        "name='" + name + '\'' +
+        ", price=" + price +
+        '}';
+  }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Product)) {
+      return false;
+    }
+    Product product = (Product) o;
+    return Double.compare(product.getPrice(), getPrice()) == 0 && Objects.equals(
+        getName(), product.getName());
+  }
 
+  @Override
+  public int hashCode() {
+    return Objects.hash(getName(), getPrice());
+  }
 }
