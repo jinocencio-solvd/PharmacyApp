@@ -1,86 +1,60 @@
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
- * The Inventory class represents the inventory of a pharmacy, which consists of products.
+ * Represents an inventory of products with their quantities.
  */
 public class Inventory {
 
-  private ArrayList<Product> products;
-
-  public Inventory(ArrayList<Product> products) {
-    this.products = products;
-  }
+  private final Map<Product, Integer> products;
 
   public Inventory() {
-    this.products = new ArrayList<Product>();
+    products = new HashMap<>();
   }
 
   /**
-   * Adds a new Product to the products inventory.
+   * Adds a product to the inventory with the specified quantity.
    *
-   * @param newProduct the Product to add
+   * @param product  the product to be added to the inventory
+   * @param quantity the quantity of the product to be added
    */
-  public void addProductToInventory(Product newProduct) {
-    products.add(newProduct);
+  public void addProduct(Product product, int quantity) {
+    int currentQuantity = products.getOrDefault(product, 0);
+    products.put(product, currentQuantity + quantity);
   }
 
   /**
-   * Removes a Product from the products inventory.
+   * Removes a product from the inventory with the specified quantity.
    *
-   * @param productToRemove the Product to remove
+   * @param product  the product to be removed from the inventory
+   * @param quantity the quantity of the product to be removed
    */
-  public void removeProductFromInventory(Product productToRemove) {
-    products.remove(productToRemove);
+  public void removeProduct(Product product, int quantity) {
+    // TODO: Make method more robust in handling cases
+    // 1. requested quantity is less than current quantity
+    // 2. Product does not exist in inventory
+    int currentQuantity = products.get(product);
+    products.put(product, currentQuantity - quantity);
+
   }
 
   /**
-   * Increases the quantity of the specified Product by the given amount.
+   * Returns the quantity of a product in the inventory.
    *
-   * @param productName   the name of the Product to increase the quantity of
-   * @param quantityToAdd the amount to increase the quantity by
-   * @throws IllegalArgumentException if the specified Product is not found
+   * @param product the product to get the quantity for
+   * @return the quantity of the product in the inventory, or 0 if the product is not in the
+   * inventory
    */
-  public void increaseProductQuantity(String productName, int quantityToAdd) {
-    for (Product product : products) {
-      if (product.getName().equals(productName)) {
-        int currentQuantity = product.getQuantity();
-        product.setQuantity(currentQuantity + quantityToAdd);
-        return;
-      }
-    }
-    throw new IllegalArgumentException("Product not found: " + productName);
-  }
-
-  /**
-   * Decreases the quantity of the specified Product by the given amount.
-   *
-   * @param productName        the name of the Product to decrease the quantity of
-   * @param quantityToSubtract the amount to decrease the quantity by
-   * @throws IllegalArgumentException if the specified Product is not found
-   */
-  public void decreaseProductQuantity(String productName, int quantityToSubtract) {
-    for (Product product : products) {
-      if (product.getName().equals(productName)) {
-        int currentQuantity = product.getQuantity();
-        product.setQuantity(currentQuantity - quantityToSubtract);
-        return;
-      }
-    }
-    throw new IllegalArgumentException("Product not found: " + productName);
-  }
-
-  public ArrayList<Product> getProducts() {
-    return products;
-  }
-
-  public void setProducts(ArrayList<Product> products) {
-    this.products = products;
+  public int getQuantity(Product product) {
+    return products.getOrDefault(product, 0);
   }
 
   @Override
   public String toString() {
-    return "Inventory{" + "products=" + products + '}';
+    return "Inventory{" +
+        "products=" + products +
+        '}';
   }
 
   @Override
@@ -92,11 +66,11 @@ public class Inventory {
       return false;
     }
     Inventory inventory = (Inventory) o;
-    return Objects.equals(getProducts(), inventory.getProducts());
+    return Objects.equals(products, inventory.products);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getProducts());
+    return Objects.hash(products);
   }
 }

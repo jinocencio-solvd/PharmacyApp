@@ -7,8 +7,8 @@ public class Medication extends Product {
 
   private String dosage;
 
-  public Medication(String name, String dosage, double price, int quantity) {
-    super(name, price, quantity);
+  public Medication(String name, String dosage, double price) {
+    super(name, price);
     this.dosage = dosage;
   }
 

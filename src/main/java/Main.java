@@ -31,25 +31,25 @@ public class Main {
     employees.add(tech2);
 
     // Create products
-    Item product1 = new Item("Band-Aids", 2.99, 50);
-    Item product2 = new Item("Hydrogen Peroxide", 1.99, 25);
-    Item product3 = new Item("Antacid Tablets", 4.99, 30);
-    Item product4 = new Item("Cough Drops", 3.49, 40);
-    Medication medication1 = new Medication("Aspirin", "500 mg", 0.10, 100);
-    Medication medication2 = new Medication("Ibuprofen", "200 mg", 0.08, 50);
-    Medication medication3 = new Medication("Acetaminophen", "325 mg", 0.05, 200);
-    Medication medication4 = new Medication("Naproxen", "220 mg", 0.12, 75);
+    Item product1 = new Item("Band-Aids", 2.99);
+    Item product2 = new Item("Hydrogen Peroxide", 1.99);
+    Item product3 = new Item("Antacid Tablets", 4.99);
+    Item product4 = new Item("Cough Drops", 3.49);
+    Medication medication1 = new Medication("Aspirin", "500 mg", 0.10);
+    Medication medication2 = new Medication("Ibuprofen", "200 mg", 0.08);
+    Medication medication3 = new Medication("Acetaminophen", "325 mg", 0.05);
+    Medication medication4 = new Medication("Naproxen", "220 mg", 0.12);
 
     // Add to inventory
     Inventory inventory = new Inventory();
-    inventory.addProductToInventory(product1);
-    inventory.addProductToInventory(product2);
-    inventory.addProductToInventory(product3);
-    inventory.addProductToInventory(product4);
-    inventory.addProductToInventory(medication1);
-    inventory.addProductToInventory(medication2);
-    inventory.addProductToInventory(medication3);
-    inventory.addProductToInventory(medication4);
+    inventory.addProduct(product1,50);
+    inventory.addProduct(product2,25);
+    inventory.addProduct(product3,30);
+    inventory.addProduct(product4,40);
+    inventory.addProduct(medication1,100);
+    inventory.addProduct(medication2,50);
+    inventory.addProduct(medication3,200);
+    inventory.addProduct(medication4,75);
 
     Pharmacy pharmacy = new Pharmacy("Joffrey's Pharmacy", address0, "123" + "-321-4567",
         "pharmEmail@email.com", inventory, employees);

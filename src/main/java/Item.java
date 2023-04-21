@@ -7,13 +7,13 @@ public class Item extends Product {
 
   private String skuId;
 
-  public Item(String name, double price, int quantity, String skuId) {
-    super(name, price, quantity);
+  public Item(String name, double price, String skuId) {
+    super(name, price);
     this.skuId = skuId;
   }
 
-  public Item(String name, double price, int quantity) {
-    super(name, price, quantity);
+  public Item(String name, double price) {
+    super(name, price);
     this.skuId = "0000-0000000-0";
   }
 
@@ -25,15 +25,6 @@ public class Item extends Product {
     this.skuId = skuId;
   }
 
-  @Override
-  public String toString() {
-    return "Item{" +
-        "skuId='" + skuId + '\'' +
-        ", name='" + name + '\'' +
-        ", price=" + price +
-        ", quantity=" + quantity +
-        "} " + super.toString();
-  }
 
   @Override
   public boolean equals(Object o) {
