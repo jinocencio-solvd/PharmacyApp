@@ -18,10 +18,6 @@ public abstract class Employee extends Person {
    */
   public abstract void printEmployeeDetails();
 
-  /**
-   * Abstract method to define the basic functions involved in dispensing medication
-   */
-  public abstract void dispenseMedication();
 
   public String getEmployeeID() {
     return employeeId;

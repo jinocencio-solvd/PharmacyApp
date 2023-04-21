@@ -32,16 +32,6 @@ public class Pharmacist extends Employee {
     System.out.println("LicenseId: " + this.stateLicenseId);
   }
 
-  /**
-   * Basic functions involved in dispensing medication
-   */
-  @Override
-  public void dispenseMedication() {
-    // TODO: Implement method
-    // such as checking the accuracy of the prescription and counseling the patient
-    // on proper use and possible side effects of the medication
-  }
-
   @Override
   public String toString() {
     return "Pharmacist{" +

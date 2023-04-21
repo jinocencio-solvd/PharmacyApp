@@ -46,12 +46,6 @@ public class PharmacyTechnician extends Employee {
 
   }
 
-  @Override
-  public void dispenseMedication() {
-//        TODO: a pharm tech would Assist pharmacist with filling prescription
-//    i.e. retrieving meds from inventory, labeling the medication, and preparing it for dispensing,
-//    as well as processing insurance claims and maintaining inventory records.
-  }
 
   @Override
   public String toString() {
