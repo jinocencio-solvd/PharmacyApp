@@ -1,15 +1,23 @@
+import java.util.Objects;
+
 /**
  * The Person class represents a person with a name, phone number, and address.
  */
 public class Person {
-    private String name;
-    private String phoneNumber;
-    private Address address;
+
+    protected String name;
+    protected String phoneNumber;
+    protected Address address;
 
     public Person(String name, String phoneNumber, Address address) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.address = address;
+    }
+
+    protected void printDetails() {
+        System.out.println("Name: " + name);
+        System.out.println("phone #: " + phoneNumber);
     }
 
     // Getters and setters for name, phoneNumber and address
@@ -40,9 +48,28 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-                "name='" + name + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", address=" + address +
-                '}';
+            "name='" + name + '\'' +
+            ", phoneNumber='" + phoneNumber + '\'' +
+            ", address=" + address +
+            '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Person)) {
+            return false;
+        }
+        Person person = (Person) o;
+        return getName().equals(person.getName())
+            && getPhoneNumber().equals(person.getPhoneNumber())
+            && getAddress().equals(person.getAddress());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getPhoneNumber(), getAddress());
     }
 }

@@ -1,26 +1,15 @@
+import java.util.Objects;
+
 /**
- * The Medication class represents a medication with a name, dosage, price,
- * and quantity.
+ * The Medication class represents a medication with a name, dosage, price, and quantity.
  */
-public class Medication {
-    private String name;
+public class Medication extends Product {
+
     private String dosage;
-    private double price;
-    private int quantity;
 
-    public Medication(String name, String dosage, double price, int quantity) {
-        this.name = name;
+    public Medication(String name, String dosage, double price) {
+        super(name, price);
         this.dosage = dosage;
-        this.price = price;
-        this.quantity = quantity;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDosage() {
@@ -31,29 +20,32 @@ public class Medication {
         this.dosage = dosage;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     @Override
     public String toString() {
         return "Medication{" +
-                "name='" + name + '\'' +
-                ", dosage='" + dosage + '\'' +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                '}';
+            "dosage='" + dosage + '\'' +
+            ", name='" + name + '\'' +
+            ", price=" + price +
+            "} ";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Medication)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        Medication that = (Medication) o;
+        return Objects.equals(getDosage(), that.getDosage());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getDosage());
     }
 }

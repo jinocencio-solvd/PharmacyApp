@@ -42,4 +42,5 @@ class AddressTest {
         assertEquals(address6.hashCode(), address6Copy.hashCode());
         assertNotEquals(address6.hashCode(), address1.hashCode());
     }
+
 }

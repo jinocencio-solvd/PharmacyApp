@@ -1,10 +1,10 @@
 import java.util.Objects;
 
 /**
- * This class represents an Address object which contains the street, city,
- * state, and postal code.
+ * This class represents an Address object which contains the street, city, state, and postal code.
  */
 public class Address {
+
     private String street;
     private String city;
     private String state;
@@ -52,27 +52,31 @@ public class Address {
     @Override
     public String toString() {
         return "Address{" +
-                "street=" + street +
-                ", city=" + city +
-                ", state=" + state +
-                ", postalCode=" + postalCode +
-                '}';
+            "street=" + street +
+            ", city=" + city +
+            ", state=" + state +
+            ", postalCode=" + postalCode +
+            '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Address)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Address)) {
+            return false;
+        }
         Address address = (Address) o;
         return getPostalCode() == address.getPostalCode()
-                && Objects.equals(getStreet(), address.getStreet())
-                && Objects.equals(getCity(), address.getCity())
-                && Objects.equals(getState(), address.getState());
+            && Objects.equals(getStreet(), address.getStreet())
+            && Objects.equals(getCity(), address.getCity())
+            && Objects.equals(getState(), address.getState());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getStreet(), getCity(), getState(),
-                getPostalCode());
+            getPostalCode());
     }
 }
