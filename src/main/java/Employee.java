@@ -6,48 +6,48 @@ import java.util.Objects;
  */
 public abstract class Employee extends Person {
 
-  protected String employeeId;
+    protected String employeeId;
 
-  public Employee(String name, String phoneNumber, Address address, String employeeID) {
-    super(name, phoneNumber, address);
-    this.employeeId = employeeID;
-  }
-
-  /**
-   * Abstract method to print out employee details
-   */
-  public abstract void printEmployeeDetails();
-
-
-  public String getEmployeeID() {
-    return employeeId;
-  }
-
-  public void setEmployeeID(String employeeID) {
-    this.employeeId = employeeID;
-  }
-
-  @Override
-  public String toString() {
-    return "Employee{" +
-        "employeeId='" + employeeId + '\'' +
-        "} " + super.toString();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
+    public Employee(String name, String phoneNumber, Address address, String employeeID) {
+        super(name, phoneNumber, address);
+        this.employeeId = employeeID;
     }
-    if (!(o instanceof Employee)) {
-      return false;
-    }
-    Employee employee = (Employee) o;
-    return Objects.equals(employeeId, employee.employeeId);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(employeeId);
-  }
+    /**
+     * Abstract method to print out employee details
+     */
+    public abstract void printEmployeeDetails();
+
+
+    public String getEmployeeID() {
+        return employeeId;
+    }
+
+    public void setEmployeeID(String employeeID) {
+        this.employeeId = employeeID;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+            "employeeId='" + employeeId + '\'' +
+            "} " + super.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Employee)) {
+            return false;
+        }
+        Employee employee = (Employee) o;
+        return Objects.equals(employeeId, employee.employeeId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(employeeId);
+    }
 }
