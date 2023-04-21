@@ -21,6 +21,15 @@ public class Medication extends Product {
   }
 
   @Override
+  public String toString() {
+    return "Medication{" +
+        "dosage='" + dosage + '\'' +
+        ", name='" + name + '\'' +
+        ", price=" + price +
+        "} ";
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;

@@ -42,14 +42,14 @@ public class Main {
 
     // Add to inventory
     Inventory inventory = new Inventory();
-    inventory.addProduct(product1,50);
-    inventory.addProduct(product2,25);
-    inventory.addProduct(product3,30);
-    inventory.addProduct(product4,40);
-    inventory.addProduct(medication1,100);
-    inventory.addProduct(medication2,50);
-    inventory.addProduct(medication3,200);
-    inventory.addProduct(medication4,75);
+    inventory.addProduct(product1, 50);
+    inventory.addProduct(product2, 25);
+    inventory.addProduct(product3, 30);
+    inventory.addProduct(product4, 40);
+    inventory.addProduct(medication1, 100);
+    inventory.addProduct(medication2, 50);
+    inventory.addProduct(medication3, 200);
+    inventory.addProduct(medication4, 75);
 
     Pharmacy pharmacy = new Pharmacy("Joffrey's Pharmacy", address0, "123" + "-321-4567",
         "pharmEmail@email.com", inventory, employees);
@@ -57,11 +57,22 @@ public class Main {
     Patient patient1 = new Patient("Tom Davis", "555-7890", address5, 1005, "Humana", 0.4);
     Patient patient2 = new Patient("Sara Johnson", "555-2345", address6, 1006, "Anthem", 0.2);
 
-    Prescription prescription1 = new Prescription("RX123", 2, false, medication1, patient1);
+    Prescription prescription1 = new Prescription("RX123", 2, false, medication1, patient1,35);
 
     Prescription prescription2 = new Prescription("RX456", 1, true, medication2, patient2);
 
-//    pharmacist1.printEmployeeDetails();
+    pharmacist1.printEmployeeDetails();
+    System.out.println(prescription1);
+    System.out.println("quantity of " + medication1.getName() + " in inventory prior to filling prescription: "
+        + inventory.getQuantity(medication1));
+
+    pharmacist1.fillPrescription(inventory, prescription1);
+
+    System.out.println("quantity of " + medication1.getName() + " in inventory after filling prescription: "
+        + inventory.getQuantity(medication1));
+
+
 //    tech1.printEmployeeDetails();
+
   }
 }
