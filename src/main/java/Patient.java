@@ -9,20 +9,19 @@ public class Patient extends Person {
     private int patientID;
     private String insuranceName;
     private double percentInsuranceCovered;
+    private Insurance insurance;
+
+    public Patient(String name, String phoneNumber, Address address, int patientID,
+        Insurance insurance) {
+        super(name, phoneNumber, address);
+        this.patientID = patientID;
+        this.insurance = insurance;
+    }
 
     public Patient(String name, String phoneNumber, Address address, int patientID) {
         super(name, phoneNumber, address);
         this.patientID = patientID;
         this.insuranceName = null;
-        this.percentInsuranceCovered = 0;
-    }
-
-    public Patient(String name, String phoneNumber, Address address, int patientID,
-        String insuranceName, double percentInsuranceCovered) {
-        super(name, phoneNumber, address);
-        this.patientID = patientID;
-        this.insuranceName = insuranceName;
-        this.percentInsuranceCovered = percentInsuranceCovered;
     }
 
     public int getPatientID() {
@@ -47,6 +46,14 @@ public class Patient extends Person {
 
     public void setPercentInsuranceCovered(double percentInsuranceCovered) {
         this.percentInsuranceCovered = percentInsuranceCovered;
+    }
+
+    public Insurance getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(Insurance insurance) {
+        this.insurance = insurance;
     }
 
     @Override
