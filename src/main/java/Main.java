@@ -56,6 +56,11 @@ public class Main {
         Pharmacy pharmacy = new Pharmacy("Joffrey's Pharmacy", address0, "123" + "-321-4567",
             "pharmEmail@email.com", inventory, employees);
 
+        Pharmacy pharmacyCopy = new Pharmacy("Joffrey's Pharmacy", address0, "123" + "-321-4567",
+            "pharmEmail@email.com");
+        pharmacyCopy.hireEmployee(pharmacist1);
+        pharmacyCopy.hireEmployee(pharmacist2);
+        pharmacyCopy.printPharmacyInformation();
         Insurance insurance1 = new Insurance("MediCare", "123456", 80.0);
         Insurance insurance2 = new Insurance("Blue Cross", "123456", 70.0);
 
@@ -65,18 +70,5 @@ public class Main {
         Prescription prescription1 = new Prescription("RX123", 2, false, medication1, patient1, 35);
 
         Prescription prescription2 = new Prescription("RX456", 1, true, medication2, patient2);
-
-        pharmacist1.printEmployeeDetails();
-        System.out.println(prescription1);
-        System.out.println(
-            "quantity of " + medication1.getName() + " in inventory prior to filling prescription: "
-                + inventory.getQuantity(medication1));
-
-        pharmacist1.fillPrescription(inventory, prescription1);
-
-        System.out.println(
-            "quantity of " + medication1.getName() + " in inventory after filling prescription: "
-                + inventory.getQuantity(medication1));
-//    tech1.printEmployeeDetails();
     }
 }
