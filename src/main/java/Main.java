@@ -43,7 +43,7 @@ public class Main {
         Medication medication4 = new Medication("Naproxen", "220 mg", 0.12);
 
         // Add to inventory
-        Inventory inventory = new Inventory();
+        ProductInventory inventory = new ProductInventory();
         inventory.addProduct(product1, 50);
         inventory.addProduct(product2, 25);
         inventory.addProduct(product3, 30);
