@@ -1,7 +1,23 @@
 public abstract class Customer extends Person implements ICustomer {
 
+    private double creditBalance;
+
     public Customer(String name, String phoneNumber, Address address) {
         super(name, phoneNumber, address);
+        this.creditBalance = 0;
+    }
+
+    public Customer(String name, String phoneNumber, Address address, double creditBalance) {
+        super(name, phoneNumber, address);
+        this.creditBalance = creditBalance;
+    }
+
+    public double getCreditBalance() {
+        return creditBalance;
+    }
+
+    public void setCreditBalance(double creditBalance) {
+        this.creditBalance = creditBalance;
     }
 
     /**
@@ -13,7 +29,7 @@ public abstract class Customer extends Person implements ICustomer {
      */
     @Override
     public void addToCart(Cart cart, Product product, int quantity) {
-        cart.addProduct(product,quantity);
+        cart.addProduct(product, quantity);
     }
 
     /**
@@ -25,6 +41,6 @@ public abstract class Customer extends Person implements ICustomer {
      */
     @Override
     public void removeFromCart(Cart cart, Product product, int quantity) {
-        cart.removeProduct(product,quantity);
+        cart.removeProduct(product, quantity);
     }
 }
