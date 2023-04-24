@@ -4,7 +4,7 @@ import java.util.Objects;
  * The Patient class represents a person who is a patient, with a patient ID and insurance
  * information.
  */
-public class Patient extends Person {
+public class Patient extends Customer {
 
     private int patientID;
     private String insuranceName;
@@ -82,5 +82,17 @@ public class Patient extends Person {
     @Override
     public int hashCode() {
         return Objects.hash(getPatientID(), getInsuranceName());
+    }
+
+    /**
+     * Provides a prescription for the given prescription, which can be used to purchase
+     * medication.
+     *
+     * @param pharmacy     the pharmacy to provide the prescription to
+     * @param prescription the prescription to provide
+     */
+    @Override
+    public void providePrescription(Pharmacy pharmacy, Prescription prescription) {
+        pharmacy.getPrescriptionRegistry().addPrescription(this, prescription);
     }
 }

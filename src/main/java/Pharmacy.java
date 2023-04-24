@@ -9,6 +9,7 @@ public class Pharmacy implements IPharmacy {
     private String emailAddress;
     private Inventory inventory;
     private ArrayList<Employee> employees;
+    private PrescriptionRegistry prescriptionRegistry;
 
 
     public Pharmacy(String name, Address address, String phoneNumber, String emailAddress,
@@ -19,6 +20,14 @@ public class Pharmacy implements IPharmacy {
         this.emailAddress = emailAddress;
         this.inventory = inventory;
         this.employees = employees;
+    }
+
+    public PrescriptionRegistry getPrescriptionRegistry() {
+        return prescriptionRegistry;
+    }
+
+    public void setPrescriptionRegistry(PrescriptionRegistry prescriptionRegistry) {
+        this.prescriptionRegistry = prescriptionRegistry;
     }
 
     public Pharmacy(String name, Address address, String phoneNumber, String emailAddress) {
