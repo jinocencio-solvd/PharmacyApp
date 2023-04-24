@@ -6,29 +6,34 @@ import java.util.Objects;
  */
 public class Patient extends Customer {
 
-    private int patientID;
+    private static int count = 0;
+
+    private String patientID;
     private String insuranceName;
     private double percentInsuranceCovered;
     private Insurance insurance;
 
-    public Patient(String name, String phoneNumber, Address address, int patientID,
-        Insurance insurance) {
+    // Represents a patient with insurance
+    public Patient(String name, String phoneNumber, Address address, Insurance insurance) {
         super(name, phoneNumber, address);
-        this.patientID = patientID;
+        count++;
+        this.patientID = "patientId-" + count;
         this.insurance = insurance;
     }
 
-    public Patient(String name, String phoneNumber, Address address, int patientID) {
+    // Represents a patient without insurance
+    public Patient(String name, String phoneNumber, Address address) {
         super(name, phoneNumber, address);
-        this.patientID = patientID;
+        count++;
+        this.patientID = "patientId-" + count;
         this.insuranceName = null;
     }
 
-    public int getPatientID() {
+    public String getPatientID() {
         return patientID;
     }
 
-    public void setPatientID(int patientID) {
+    public void setPatientID(String patientID) {
         this.patientID = patientID;
     }
 
@@ -56,12 +61,22 @@ public class Patient extends Customer {
         this.insurance = insurance;
     }
 
+    public static int getNumberOfPatients() {
+        return count;
+    }
+
+    @Override
+    public void providePrescription(Pharmacy pharmacy, Prescription prescription) {
+        pharmacy.getPrescriptionRegistry().addPrescription(this, prescription);
+    }
+
     @Override
     public String toString() {
         return "Patient{" +
-            "patientID=" + patientID +
+            "patientID='" + patientID + '\'' +
             ", insuranceName='" + insuranceName + '\'' +
             ", percentInsuranceCovered=" + percentInsuranceCovered +
+            ", insurance=" + insurance +
             "} " + super.toString();
     }
 
@@ -73,26 +88,20 @@ public class Patient extends Customer {
         if (!(o instanceof Patient)) {
             return false;
         }
+        if (!super.equals(o)) {
+            return false;
+        }
         Patient patient = (Patient) o;
-        return getPatientID() == patient.getPatientID() &&
-            Objects.equals(getInsuranceName(),
-                patient.getInsuranceName());
+        return
+            Double.compare(patient.getPercentInsuranceCovered(), getPercentInsuranceCovered())
+                == 0 && Objects.equals(getPatientID(), patient.getPatientID())
+                && Objects.equals(getInsuranceName(), patient.getInsuranceName())
+                && Objects.equals(getInsurance(), patient.getInsurance());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPatientID(), getInsuranceName());
-    }
-
-    /**
-     * Provides a prescription for the given prescription, which can be used to purchase
-     * medication.
-     *
-     * @param pharmacy     the pharmacy to provide the prescription to
-     * @param prescription the prescription to provide
-     */
-    @Override
-    public void providePrescription(Pharmacy pharmacy, Prescription prescription) {
-        pharmacy.getPrescriptionRegistry().addPrescription(this, prescription);
+        return Objects.hash(super.hashCode(), getPatientID(), getInsuranceName(),
+            getPercentInsuranceCovered(), getInsurance());
     }
 }

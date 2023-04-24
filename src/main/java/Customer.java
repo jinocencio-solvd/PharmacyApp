@@ -28,7 +28,7 @@ public abstract class Customer extends Person implements ICustomer {
      * @param quantity the quantity of the product to add
      */
     @Override
-    public void addToCart(Cart cart, Product product, int quantity) {
+    public final void addToCart(Cart cart, Product product, int quantity) {
         cart.addProduct(product, quantity);
     }
 
@@ -40,7 +40,7 @@ public abstract class Customer extends Person implements ICustomer {
      * @param quantity the quantity of the product to remove
      */
     @Override
-    public void removeFromCart(Cart cart, Product product, int quantity) {
+    public final void removeFromCart(Cart cart, Product product, int quantity) {
         cart.removeProduct(product, quantity);
     }
 }

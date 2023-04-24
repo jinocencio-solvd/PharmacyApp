@@ -64,11 +64,22 @@ public class Main {
         Insurance insurance1 = new Insurance("MediCare", "123456", 80.0);
         Insurance insurance2 = new Insurance("Blue Cross", "123456", 70.0);
 
-        Patient patient1 = new Patient("Tom Davis", "555-7890", address5, 1005, insurance1);
-        Patient patient2 = new Patient("Sara Johnson", "555-2345", address6, 1006, insurance2);
-
+        Patient patient1 = new Patient("Tom Davis", "555-7890", address5,  insurance1);
+        Patient patient2 = new Patient("Sara Johnson", "555-2345", address6, insurance2);
+        Patient patient3 = new Patient("Sara Johnson", "555-2345", address6);
+        System.out.println(patient3);
         Prescription prescription1 = new Prescription("RX123", 2, false, medication1, patient1, 35);
 
         Prescription prescription2 = new Prescription("RX456", 1, true, medication2, patient2);
+        Customer customerToPatient = new Consumer("customer", "123456789", address0);
+
+        pharmacy.setPrescriptionRegistry(new PrescriptionRegistry());
+        // patient 4
+        customerToPatient.providePrescription(pharmacy,prescription1);
+        // patient 5
+        Patient patient5 = new Patient("patient5", "555-2345", address6);
+        System.out.println(patient5.getPatientID()); // patientId-5
+        System.out.println(patient5); // patientId-5
+        System.out.println(Patient.getNumberOfPatients());// patientId-5
     }
 }

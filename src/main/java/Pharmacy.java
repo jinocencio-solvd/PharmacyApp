@@ -22,20 +22,20 @@ public class Pharmacy implements IPharmacy {
         this.employees = employees;
     }
 
-    public PrescriptionRegistry getPrescriptionRegistry() {
-        return prescriptionRegistry;
-    }
-
-    public void setPrescriptionRegistry(PrescriptionRegistry prescriptionRegistry) {
-        this.prescriptionRegistry = prescriptionRegistry;
-    }
-
     public Pharmacy(String name, Address address, String phoneNumber, String emailAddress) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
         this.employees = new ArrayList<Employee>();
+    }
+
+    public PrescriptionRegistry getPrescriptionRegistry() {
+        return prescriptionRegistry;
+    }
+
+    public void setPrescriptionRegistry(PrescriptionRegistry prescriptionRegistry) {
+        this.prescriptionRegistry = prescriptionRegistry;
     }
 
     public String getName() {
