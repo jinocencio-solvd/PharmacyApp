@@ -103,7 +103,7 @@ public class Pharmacy implements IPharmacy {
             this.employees.add(newEmployee);
             return;
         }
-        //TODO: Replace with error handling
+        //TODO: Replace with error handling --> DuplicatePersonException
         System.out.println("The employee is already hired in the employee system.");
     }
 
@@ -120,7 +120,7 @@ public class Pharmacy implements IPharmacy {
                 return;
             }
         }
-        //TODO: Replace with error handling
+        //TODO: Replace with error handling --> PersonDoesNotExistException
         System.out.println("The employee is does not exist in employee system.");
     }
 

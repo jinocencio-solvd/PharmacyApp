@@ -2,21 +2,28 @@ import Misc.Address;
 import Person.Pharmacist;
 import Person.PharmacyTechnician;
 import Pharmacy.Pharmacy;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public class Main {
+    private static final Logger LOG = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
         Address[] addresses = Address.predefinedAddresses();
         Pharmacist[] pharmacists = Pharmacist.predefinedPharmacist();
         PharmacyTechnician[] technicians = PharmacyTechnician.predefinedPharmacyTechnicians();
-        Pharmacy pharmacy = new Pharmacy("Joffrey's Pharmacy.Pharmacy", addresses[0], "123-321-4567",
+        Pharmacy pharmacy = new Pharmacy("Joffrey's Pharmacy.Pharmacy", addresses[0],
+            "123-321-4567",
             "pharmEmail@email.com");
         pharmacy.hireEmployee(pharmacists[0]);
         pharmacy.hireEmployee(pharmacists[1]);
         pharmacy.hireEmployee((technicians[0]));
         pharmacy.hireEmployee((technicians[1]));
-        pharmacy.printPharmacyInformation();
-//
+//        pharmacy.printPharmacyInformation();
+        LOG.debug("Debug Message Logged !!!");
+        LOG.info("Info Message Logged !!!");
+        LOG.error("Error Message Logged !!!", new NullPointerException("NullError"));
+
 //        // Create products
 //        Product.Item product1 = new Product.Item("Band-Aids", 2.99);
 //        Product.Item product2 = new Product.Item("Hydrogen Peroxide", 1.99);
