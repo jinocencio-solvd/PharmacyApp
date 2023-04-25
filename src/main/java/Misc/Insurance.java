@@ -3,14 +3,25 @@ package Misc;
 import java.util.Objects;
 
 public class Insurance {
+
+    private static int count = 0;
+
     private String insuranceName;
     private String insuranceId;
     private double percentInsuranceCovered;
 
-    public Insurance(String insuranceName, String insuranceId, double percentInsuranceCovered) {
+    public Insurance(String insuranceName, double percentInsuranceCovered) {
+        count++;
         this.insuranceName = insuranceName;
-        this.insuranceId = insuranceId;
+        this.insuranceId = "InsuranceID-" + count;
         this.percentInsuranceCovered = percentInsuranceCovered;
+    }
+
+    public static Insurance[] predefinedInsurance() {
+        return new Insurance[]{
+            new Insurance("MediCare", 80.0),
+            new Insurance("Blue Cross", 70.0)
+        };
     }
 
     public String getInsuranceName() {

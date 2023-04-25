@@ -2,8 +2,10 @@ import Misc.Address;
 import Person.Pharmacist;
 import Person.PharmacyTechnician;
 import Pharmacy.Pharmacy;
-import org.apache.logging.log4j.Logger;
+import Product.Prescription;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 public class Main {
     private static final Logger LOG = LogManager.getLogger(Main.class);
@@ -19,10 +21,8 @@ public class Main {
         pharmacy.hireEmployee(pharmacists[1]);
         pharmacy.hireEmployee((technicians[0]));
         pharmacy.hireEmployee((technicians[1]));
-//        pharmacy.printPharmacyInformation();
-        LOG.debug("Debug Message Logged !!!");
-        LOG.info("Info Message Logged !!!");
-        LOG.error("Error Message Logged !!!", new NullPointerException("NullError"));
+        Prescription.predefinedPrescriptions();
+
 
 //        // Create products
 //        Product.Item product1 = new Product.Item("Band-Aids", 2.99);
@@ -54,7 +54,6 @@ public class Main {
 //        System.out.println(patient3);
 //        Product.Prescription prescription1 = new Product.Prescription("RX123", 2, false, medication1, patient1, 35);
 //
-//        Product.Prescription prescription2 = new Product.Prescription("RX456", 1, true, medication2, patient2);
 //        Person.Customer customerToPatient = new Person.Consumer("customer", "123456789", addresses[0]);
 //
 //        pharmacy.setPrescriptionRegistry(new PrescriptionRegistry.PrescriptionRegistry());

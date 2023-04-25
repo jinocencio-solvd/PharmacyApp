@@ -4,11 +4,14 @@ import Misc.Address;
 import Product.*;
 import Inventory.Inventory;
 import java.util.Objects;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The Person.Pharmacist class represents an employee who is a pharmacist, with a state license ID.
  */
 public class Pharmacist extends Employee {
+    private static final Logger LOG = LogManager.getLogger(Pharmacist.class);
 
     private String stateLicenseId;
 
@@ -16,6 +19,7 @@ public class Pharmacist extends Employee {
     public Pharmacist(String name, String phoneNumber, Address address, String stateLicenseId) {
         super(name, phoneNumber, address);
         this.stateLicenseId = stateLicenseId;
+        LOG.trace("Pharmacist created with eID: " + super.employeeId);
     }
 
     public static Pharmacist[] predefinedPharmacist() {

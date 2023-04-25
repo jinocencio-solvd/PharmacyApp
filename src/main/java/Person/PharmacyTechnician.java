@@ -2,12 +2,15 @@ package Person;
 
 import Misc.Address;
 import java.util.Objects;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The Person.PharmacyTechnician class represents an employee who is a pharmacy technician, with a state
  * license ID and cashier training.
  */
 public class PharmacyTechnician extends Employee {
+    private static final Logger LOG = LogManager.getLogger(PharmacyTechnician.class);
 
     private String stateLicenseId;
     private boolean isCashierTrained;
@@ -17,6 +20,8 @@ public class PharmacyTechnician extends Employee {
         super(name, phoneNumber, address);
         this.stateLicenseId = stateLicenseId;
         this.isCashierTrained = false;
+
+        LOG.trace("Pharmacist created with eID: " + super.employeeId);
     }
 
     public static PharmacyTechnician[] predefinedPharmacyTechnicians() {

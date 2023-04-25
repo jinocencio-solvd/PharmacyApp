@@ -2,12 +2,17 @@ package Product;
 
 import Person.Patient;
 import java.util.Objects;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /**
- * The Product.Prescription class represents a prescription with a prescription ID, number of refills,
- * filled status, medication, and patient.
+ * The Product.Prescription class represents a prescription with a prescription ID, number of
+ * refills, filled status, medication, and patient.
  */
 public class Prescription {
+
+    private static final Logger LOG = LogManager.getLogger(Prescription.class);
 
     private String prescriptionId;
     private int numRefills;
@@ -15,25 +20,40 @@ public class Prescription {
     private Medication medication;
     private Patient patient;
     private int prescribedQuantity;
+    private static int countId = 0;
 
-    public Prescription(String prescriptionId, int numRefills, boolean isFilled,
-        Medication medication, Patient patient) {
-        this.prescriptionId = prescriptionId;
-        this.numRefills = numRefills;
-        this.isFilled = isFilled;
-        this.medication = medication;
-        this.patient = patient;
-        this.prescribedQuantity = 1;
-    }
-
-    public Prescription(String prescriptionId, int numRefills, boolean isFilled,
+    /**
+     * Constructs a new Prescription object with the given prescription ID, number of refills,
+     * filled status, medication, patient, and prescribed quantity.
+     *
+     * @param numRefills         the number of refills allowed for the prescription
+     * @param isFilled           the filled status of the prescription (true if filled, false
+     *                           otherwise)
+     * @param medication         the medication associated with the prescription
+     * @param patient            the patient for whom the prescription was written
+     * @param prescribedQuantity the quantity of medication prescribed
+     */
+    public Prescription(int numRefills, boolean isFilled,
         Medication medication, Patient patient, int prescribedQuantity) {
-        this.prescriptionId = prescriptionId;
+        countId++;
+        this.prescriptionId = "rxID-" + countId;
         this.numRefills = numRefills;
         this.isFilled = isFilled;
         this.medication = medication;
         this.patient = patient;
         this.prescribedQuantity = prescribedQuantity;
+
+        LOG.trace("Prescription created with Id: " + this.prescriptionId);
+    }
+
+    public static Prescription[] predefinedPrescriptions() {
+        Patient[] patients = Patient.predefinedPatients();
+        Medication[] medications = Medication.predefinedMedications();
+        return new Prescription[]{
+            new Prescription(2, false, medications[0], patients[0], 35),
+            new Prescription(2, false, medications[1], patients[0], 50),
+            new Prescription(2, false, medications[2], patients[1], 35)
+        };
     }
 
     public String getPrescriptionId() {
