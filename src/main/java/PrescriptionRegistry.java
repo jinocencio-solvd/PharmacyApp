@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public final class PrescriptionRegistry {
+public final class PrescriptionRegistry implements IPrescriptionRegistry{
 
     private final HashMap<Patient, ArrayList<Prescription>> prescriptionRegistry;
 
