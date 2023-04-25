@@ -1,9 +1,9 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+package Misc;
+
 import java.util.Objects;
 
 /**
- * This class represents an Address object which contains the street, city, state, and postal code.
+ * This class represents an Misc.Address object which contains the street, city, state, and postal code.
  */
 public class Address {
 
@@ -65,7 +65,7 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address{" +
+        return "Misc.Address{" +
             "street=" + street +
             ", city=" + city +
             ", state=" + state +

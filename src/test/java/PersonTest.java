@@ -1,3 +1,5 @@
+import Misc.Address;
+import Person.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +21,7 @@ public class PersonTest {
 
     @Test
     void testToString() {
-        String expected = "Person{name='John Doe', phoneNumber='555-555-1234', address=Address{street=123 Main St, city=Anytown, state=CA, postalCode=12345}}";
+        String expected = "Person.Person{name='John Doe', phoneNumber='555-555-1234', address=Misc.Address{street=123 Main St, city=Anytown, state=CA, postalCode=12345}}";
         assertEquals(expected, person1.toString());
     }
 

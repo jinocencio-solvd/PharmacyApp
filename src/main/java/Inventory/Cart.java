@@ -1,6 +1,9 @@
+package Inventory;
+
+import Person.Customer;
 import java.util.Objects;
 
-public class Cart extends Inventory{
+public class Cart extends Inventory {
     private Customer customer;
 
     public Cart(Customer customer) {
@@ -17,7 +20,7 @@ public class Cart extends Inventory{
 
     @Override
     public String toString() {
-        return "Cart{" +
+        return "Inventory.Cart{" +
             "customer=" + customer +
             "} " + super.toString();
     }

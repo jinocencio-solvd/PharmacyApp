@@ -1,3 +1,7 @@
+package Inventory;
+
+import Product.Product;
+
 public interface IInventory{
     /**
      * Adds a product to the inventory with the specified quantity.

@@ -1,3 +1,5 @@
+package Misc;
+
 import java.util.Objects;
 
 public class Insurance {
@@ -37,7 +39,7 @@ public class Insurance {
 
     @Override
     public String toString() {
-        return "Insurance{" +
+        return "Misc.Insurance{" +
             "insuranceName='" + insuranceName + '\'' +
             ", insuranceId='" + insuranceId + '\'' +
             ", percentInsuranceCovered=" + percentInsuranceCovered +

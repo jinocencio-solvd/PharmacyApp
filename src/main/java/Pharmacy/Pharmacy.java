@@ -1,3 +1,9 @@
+package Pharmacy;
+
+import Inventory.Inventory;
+import Misc.Address;
+import Person.Employee;
+import PrescriptionRegistry.PrescriptionRegistry;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -129,7 +135,7 @@ public class Pharmacy implements IPharmacy {
 
     @Override
     public String toString() {
-        return "Pharmacy{" +
+        return "Pharmacy.Pharmacy{" +
             "name='" + name + '\'' +
             ", address=" + address +
             ", phoneNumber='" + phoneNumber + '\'' +

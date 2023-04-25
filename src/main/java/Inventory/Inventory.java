@@ -1,4 +1,7 @@
+package Inventory;
+
 import java.util.HashMap;
+import Product.*;
 import java.util.Map;
 import java.util.Objects;
 
@@ -37,7 +40,7 @@ public class Inventory implements IInventory {
     public void removeProduct(Product product, int quantity) {
         // TODO: Make method more robust in handling cases
         // 1. requested quantity is less than current quantity
-        // 2. Product does not exist in inventory
+        // 2. Product.Product does not exist in inventory
         int currentQuantity = products.get(product);
         products.put(product, currentQuantity - quantity);
     }
@@ -55,7 +58,7 @@ public class Inventory implements IInventory {
 
     @Override
     public String toString() {
-        return "Inventory{" +
+        return "Inventory.Inventory{" +
             "products=" + products +
             '}';
     }

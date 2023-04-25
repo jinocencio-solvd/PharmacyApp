@@ -1,7 +1,9 @@
+package Product;
+
 import java.util.Objects;
 
 /**
- * The Product class represents a product with a name, price, and quantity.
+ * The Product.Product class represents a product with a name, price, and quantity.
  */
 public class Item extends Product {
 

@@ -1,7 +1,10 @@
+package Product;
+
+import Person.Patient;
 import java.util.Objects;
 
 /**
- * The Prescription class represents a prescription with a prescription ID, number of refills,
+ * The Product.Prescription class represents a prescription with a prescription ID, number of refills,
  * filled status, medication, and patient.
  */
 public class Prescription {
@@ -83,7 +86,7 @@ public class Prescription {
 
     @Override
     public String toString() {
-        return "Prescription{" +
+        return "Product.Prescription{" +
             "prescriptionId='" + prescriptionId + '\'' +
             ", numRefills=" + numRefills +
             ", isFilled=" + isFilled +

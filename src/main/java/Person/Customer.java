@@ -1,3 +1,9 @@
+package Person;
+
+import Inventory.Cart;
+import Misc.Address;
+import Product.Product;
+
 public abstract class Customer extends Person implements ICustomer {
 
     private double creditBalance;

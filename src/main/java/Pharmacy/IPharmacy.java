@@ -1,5 +1,9 @@
+package Pharmacy;
+
+import Person.Employee;
+
 /**
- * The IPharmacy interface defines methods for hiring and releasing employees and printing
+ * The Pharmacy.IPharmacy interface defines methods for hiring and releasing employees and printing
  * information about the pharmacy.
  */
 public interface IPharmacy {

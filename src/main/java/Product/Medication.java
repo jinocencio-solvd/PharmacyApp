@@ -1,7 +1,9 @@
+package Product;
+
 import java.util.Objects;
 
 /**
- * The Medication class represents a medication with a name, dosage, price, and quantity.
+ * The Product.Medication class represents a medication with a name, dosage, price, and quantity.
  */
 public class Medication extends Product {
 
@@ -22,7 +24,7 @@ public class Medication extends Product {
 
     @Override
     public String toString() {
-        return "Medication{" +
+        return "Product.Medication{" +
             "dosage='" + dosage + '\'' +
             ", name='" + name + '\'' +
             ", price=" + price +

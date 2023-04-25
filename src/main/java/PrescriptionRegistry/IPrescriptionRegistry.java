@@ -1,3 +1,7 @@
+package PrescriptionRegistry;
+
+import Person.Patient;
+import Product.Prescription;
 import java.util.ArrayList;
 
 public interface IPrescriptionRegistry {

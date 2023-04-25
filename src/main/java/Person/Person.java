@@ -1,7 +1,10 @@
+package Person;
+
+import Misc.Address;
 import java.util.Objects;
 
 /**
- * The Person class represents a person with a name, phone number, and address.
+ * The Person.Person class represents a person with a name, phone number, and address.
  */
 public class Person {
 
@@ -47,7 +50,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "Person.Person{" +
             "name='" + name + '\'' +
             ", phoneNumber='" + phoneNumber + '\'' +
             ", address=" + address +

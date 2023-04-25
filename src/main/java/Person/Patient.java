@@ -1,7 +1,14 @@
+package Person;
+
+import Misc.Address;
+import Misc.Insurance;
+
+import Pharmacy.Pharmacy;
+import Product.Prescription;
 import java.util.Objects;
 
 /**
- * The Patient class represents a person who is a patient, with a patient ID and insurance
+ * The Person.Patient class represents a person who is a patient, with a patient ID and insurance
  * information.
  */
 public class Patient extends Customer {
@@ -72,7 +79,7 @@ public class Patient extends Customer {
 
     @Override
     public String toString() {
-        return "Patient{" +
+        return "Person.Patient{" +
             "patientID='" + patientID + '\'' +
             ", insuranceName='" + insuranceName + '\'' +
             ", percentInsuranceCovered=" + percentInsuranceCovered +

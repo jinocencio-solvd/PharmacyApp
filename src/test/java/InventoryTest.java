@@ -1,5 +1,9 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import Inventory.Inventory;
+import Product.Item;
+import Product.Medication;
+import Product.Product;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;

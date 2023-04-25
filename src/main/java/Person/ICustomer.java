@@ -1,3 +1,9 @@
+package Person;
+import Inventory.Cart;
+import Pharmacy.Pharmacy;
+import Product.Prescription;
+import Product.Product;
+
 /**
  * Interface for representing a customer who can provide a prescription and interact with a shopping
  * cart.

@@ -1,3 +1,11 @@
+import Inventory.Inventory;
+import Misc.Address;
+import Person.Employee;
+import Person.Pharmacist;
+import Person.PharmacyTechnician;
+import Pharmacy.Pharmacy;
+import Product.Item;
+import Product.Medication;
 import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,11 +61,11 @@ class PharmacyTest {
         inventory.addProduct(medication3, 200);
         inventory.addProduct(medication4, 75);
 
-        pharmacy = new Pharmacy("Joffrey's Pharmacy", address0, "123" + "-321-4567",
+        pharmacy = new Pharmacy("Joffrey's Pharmacy.Pharmacy", address0, "123" + "-321-4567",
             "pharmEmail@email.com", inventory, employees);
 
         // Copy created using overloaded constructor
-        pharmacyCopy = new Pharmacy("Joffrey's Pharmacy", address0, "123" + "-321-4567",
+        pharmacyCopy = new Pharmacy("Joffrey's Pharmacy.Pharmacy", address0, "123" + "-321-4567",
             "pharmEmail@email.com");
         pharmacyCopy.hireEmployee(pharmacist1);
         pharmacyCopy.hireEmployee(pharmacist2);

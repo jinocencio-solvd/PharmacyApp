@@ -1,3 +1,9 @@
+package Person;
+
+import Misc.Address;
+import Pharmacy.Pharmacy;
+import Product.Prescription;
+
 public class Consumer extends Customer {
 
     public Consumer(String name, String phoneNumber, Address address) {
@@ -13,7 +19,7 @@ public class Consumer extends Customer {
      */
     @Override
     public void providePrescription(Pharmacy pharmacy, Prescription prescription) {
-        // create a new Patient object and copy over the relevant information
+        // create a new Person.Patient object and copy over the relevant information
         //TODO: generate patientID via static class counter
         Patient newPatient = new Patient(super.name, super.phoneNumber, super.address);
         if (newPatient.getInsurance() != null) {

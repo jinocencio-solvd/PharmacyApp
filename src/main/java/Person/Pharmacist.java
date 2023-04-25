@@ -1,7 +1,12 @@
+package Person;
+
+import Misc.Address;
+import Product.*;
+import Inventory.Inventory;
 import java.util.Objects;
 
 /**
- * The Pharmacist class represents an employee who is a pharmacist, with a state license ID.
+ * The Person.Pharmacist class represents an employee who is a pharmacist, with a state license ID.
  */
 public class Pharmacist extends Employee {
 
@@ -69,14 +74,14 @@ public class Pharmacist extends Employee {
     @Override
     public void printEmployeeDetails() {
         super.printDetails();
-        System.out.println("Position Title: Pharmacist");
+        System.out.println("Position Title: Person.Pharmacist");
         System.out.println("EmployeeId: " + super.employeeId);
         System.out.println("LicenseId: " + this.stateLicenseId);
     }
 
     @Override
     public String toString() {
-        return "Pharmacist{" +
+        return "Person.Pharmacist{" +
             "stateLicenseId='" + stateLicenseId + '\'' +
             "} " + super.toString();
     }
