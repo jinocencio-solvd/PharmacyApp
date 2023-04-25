@@ -7,10 +7,17 @@ public class Pharmacist extends Employee {
 
     private String stateLicenseId;
 
-    public Pharmacist(String name, String phoneNumber, Address address, String employeeID,
-        String stateLicenseId) {
-        super(name, phoneNumber, address, employeeID);
+
+    public Pharmacist(String name, String phoneNumber, Address address, String stateLicenseId) {
+        super(name, phoneNumber, address);
         this.stateLicenseId = stateLicenseId;
+    }
+
+    public static Pharmacist[] predefinedPharmacist() {
+        Address[] addresses = Address.predefinedAddresses();
+        return new Pharmacist[]{
+            new Pharmacist("John Doe", "555-1234", addresses[1], "CA-12345"),
+            new Pharmacist("Jane Smith", "555-5678", addresses[2], "NY-67890")};
     }
 
     public String getStateLicenseId() {

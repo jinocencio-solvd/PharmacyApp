@@ -32,15 +32,11 @@ class PharmacyTest {
 
     @BeforeEach
     void setUp() {
-        pharmacist1 = new Pharmacist("John Doe", "555-1234", address1, "E001",
-            "CA-12345");
-        pharmacist2 = new Pharmacist("Jane Smith", "555-5678", address2, "E002",
-            "NY-67890");
-        tech1 = new PharmacyTechnician("John Tech", "555-1234", address3,
-            "EMP-001", "CA123456");
+        pharmacist1 = new Pharmacist("John Doe", "555-1234", address1, "CA-12345");
+        pharmacist2 = new Pharmacist("Jane Smith", "555-5678", address2, "NY-67890");
+        tech1 = new PharmacyTechnician("John Tech", "555-1234", address3, "CA123456");
         tech1.setCashierTrained(true);
-        tech2 = new PharmacyTechnician("Jane Tech", "555-5678", address4,
-            "EMP-002", "CA654321");
+        tech2 = new PharmacyTechnician("Jane Tech", "555-5678", address4, "CA654321");
 
         employees.add(pharmacist1);
         employees.add(pharmacist2);

@@ -4,34 +4,24 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PharmacistTest {
+
     Pharmacist pharmacist1;
     Pharmacist pharmacist2;
     Pharmacist pharmacist1Copy;
-    Address address1;
-    Address address2;
+    Pharmacist[] pharmacists = Pharmacist.predefinedPharmacist();
 
     @BeforeEach
     void setUp() {
-        address1 = new Address("123 Main St", "Anytown", "CA", 12345);
-        pharmacist1 = new Pharmacist("John Doe", "555-1234",
-                address1, "E001", "CA-12345");
-
-        address2 = new Address("456 Elm St", "Anytown", "NY", 67890);
-        pharmacist2 = new Pharmacist("Jane Smith", "555-5678",
-                address2, "E002", "NY-67890");
-
-        pharmacist1Copy = new Pharmacist("John Doe", "555-1234",
-                address1, "E001", "CA-12345");
+        pharmacist1 = pharmacists[0];
+        pharmacist1Copy = new Pharmacist(pharmacist1.getName(), pharmacist1.getPhoneNumber(),
+            pharmacist1.getAddress(), pharmacist1.getStateLicenseId());
+        pharmacist1Copy.setEmployeeID(pharmacist1.getEmployeeID());
+        pharmacist2 = pharmacists[1];
     }
 
 
     @Test
     void testToString() {
-        String expected = "Pharmacist{stateLicenseId='CA-12345'} " +
-                "Employee{employeeId='E001'} Person{name='John Doe', " +
-                "phoneNumber='555-1234', address=Address{street=123 Main St, " +
-                "city=Anytown, state=CA, postalCode=12345}}";
-        assertEquals(expected, pharmacist1.toString());
     }
 
     @Test

@@ -4,20 +4,20 @@ import java.util.Objects;
  * Represents an employee that extends the Person class. Contains an employee ID field in addition
  * to the Person class fields.
  */
-public abstract class Employee extends Person {
+public abstract class Employee extends Person implements IEmployee {
 
+    private static int count;
     protected String employeeId;
 
-    public Employee(String name, String phoneNumber, Address address, String employeeID) {
-        super(name, phoneNumber, address);
-        this.employeeId = employeeID;
+    static {
+        count = 0;
     }
 
-    /**
-     * Abstract method to print out employee details
-     */
-    public abstract void printEmployeeDetails();
-
+    public Employee(String name, String phoneNumber, Address address) {
+        super(name, phoneNumber, address);
+        count++;
+        this.employeeId = "EID-" + count;
+    }
 
     public String getEmployeeID() {
         return employeeId;
