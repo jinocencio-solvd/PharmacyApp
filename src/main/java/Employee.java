@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -25,6 +27,22 @@ public abstract class Employee extends Person implements IEmployee {
 
     public void setEmployeeID(String employeeID) {
         this.employeeId = employeeID;
+    }
+
+    private static String getCurrentDateTime() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return currentDateTime.format(formatter);
+    }
+
+    @Override
+    public void clockIn() {
+        System.out.println("Clocking in at " + getCurrentDateTime());
+    }
+
+    @Override
+    public void clockOut() {
+        System.out.println("Clocking out at " + getCurrentDateTime());
     }
 
     @Override
