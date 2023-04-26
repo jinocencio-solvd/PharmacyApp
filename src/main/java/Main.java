@@ -28,27 +28,23 @@ public class Main {
     private static final Medication[] MEDICATIONS = Medication.predefinedMedications();
     private static final Patient[] PATIENTS = Patient.predefinedPatients();
     private static final Insurance[] INSURANCES = Insurance.predefinedInsurance();
-    private static final ProductInventory PRODUCT_INVENTORY  = new ProductInventory();
+    private static final ProductInventory PRODUCT_INVENTORY = new ProductInventory();
 
     //TODO: implement predefined items
     private static final Item[] items = null;
 
 
-    public static void hirePharmacyEmployees() {
-        try {
-            LOG.info("Start hiring employees");
-            PHARMACY.hireEmployee(PHARMACISTS[0]);
-            PHARMACY.hireEmployee(PHARMACISTS[1]);
-            PHARMACY.hireEmployee((TECHNICIANS[0]));
-            PHARMACY.hireEmployee((TECHNICIANS[1]));
-            PHARMACY.hireEmployee((TECHNICIANS[1]));
-            LOG.info("Completed hiring employees");
-        } catch (DuplicatePersonException e) {
-            LOG.warn("One of the employees is already in system");
-        }
+    public static void hirePharmacyEmployees() throws DuplicatePersonException {
+        LOG.info("Start hiring employees");
+        PHARMACY.hireEmployee(PHARMACISTS[0]);
+        PHARMACY.hireEmployee(PHARMACISTS[1]);
+        PHARMACY.hireEmployee((TECHNICIANS[0]));
+        PHARMACY.hireEmployee((TECHNICIANS[0]));
+        PHARMACY.hireEmployee((TECHNICIANS[1]));
+        LOG.info("Completed hiring employees");
     }
 
-    public static ProductInventory populateInventory(){
+    public static ProductInventory populateInventory() {
         LOG.info("Start populating product inventory");
         // Create products
         Item product1 = new Item("Band-Aids", 2.99);
@@ -68,9 +64,15 @@ public class Main {
         return PRODUCT_INVENTORY;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DuplicatePersonException {
+        // Pharmacy Operations
         hirePharmacyEmployees();
-        ProductInventory productInventory =  populateInventory();
+        ProductInventory productInventory = populateInventory();
         PHARMACY.setInventory(productInventory);
+        PHARMACY.releaseEmployee(TECHNICIANS[1]);
+        PHARMACY.releaseEmployee(TECHNICIANS[1]);
+
+        //Consumer operations
+
     }
 }

@@ -1,5 +1,6 @@
 package PrescriptionRegistry;
 
+import Exceptions.PersonDoesNotExistException;
 import Person.Patient;
 import Product.Prescription;
 import java.util.ArrayList;
@@ -10,5 +11,6 @@ public interface IPrescriptionRegistry {
 
     void addPatientToRegistry(Patient patient);
 
-    void addPrescription(Patient patient, Prescription prescription);
+    void addPrescription(Patient patient, Prescription prescription)
+        throws PersonDoesNotExistException;
 }

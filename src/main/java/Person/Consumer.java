@@ -1,10 +1,15 @@
 package Person;
 
+import Exceptions.PersonDoesNotExistException;
 import Misc.Address;
 import Pharmacy.Pharmacy;
 import Product.Prescription;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Consumer extends Customer {
+
+    private static final Logger LOG = LogManager.getLogger(Consumer.class);
 
     public Consumer(String name, String phoneNumber, Address address) {
         super(name, phoneNumber, address);
@@ -24,6 +29,10 @@ public class Consumer extends Customer {
             newPatient.setInsurance(newPatient.getInsurance());
         }
         pharmacy.getPrescriptionRegistry().addPatientToRegistry(newPatient);
-        pharmacy.getPrescriptionRegistry().addPrescription(newPatient, prescription);
+        try {
+            pharmacy.getPrescriptionRegistry().addPrescription(newPatient, prescription);
+        } catch (PersonDoesNotExistException e) {
+            LOG.error("An error occurred. Consumer may already be a patient.");
+        }
     }
 }

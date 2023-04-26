@@ -1,6 +1,7 @@
 package Pharmacy;
 
 import Exceptions.DuplicatePersonException;
+import Exceptions.PersonDoesNotExistException;
 import Inventory.Inventory;
 import Misc.Address;
 import Person.Employee;
@@ -107,7 +108,7 @@ public class Pharmacy implements IPharmacy {
     @Override
     public void hireEmployee(Employee newEmployee) throws DuplicatePersonException {
         //TODO: Perhaps this would make more sense if hireEmployee took a "Person" as a parameter
-        // and then create an "Employee". Logic flow would have to have a completely change.
+        // and then create an "Employee". Logic flow would have to completely change.
         try {
             if (this.employees.contains(newEmployee)) {
                 throw new DuplicatePersonException(
@@ -128,14 +129,17 @@ public class Pharmacy implements IPharmacy {
      */
     @Override
     public void releaseEmployee(Employee employee) {
-        for (Employee e : this.employees) {
-            if (e.equals(employee)) {
-                this.employees.remove(e);
+        LOG.trace("In releaseEmployee for " + employee.getEmployeeID());
+        try {
+            if (this.employees.contains((employee))) {
+                this.employees.remove(employee);
+                LOG.info("Employee " + employee.getEmployeeID() + " was released");
                 return;
             }
+            throw new PersonDoesNotExistException("Employee not found in employee database");
+        } catch (PersonDoesNotExistException e) {
+            LOG.error("Error occurred. Employee not found in employee database.");
         }
-        //TODO: Replace with error handling --> PersonDoesNotExistException
-        System.out.println("The employee is does not exist in employee system.");
     }
 
     /**

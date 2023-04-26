@@ -1,5 +1,6 @@
 package Person;
 
+import Exceptions.PersonDoesNotExistException;
 import Misc.Address;
 import Misc.Insurance;
 
@@ -14,6 +15,7 @@ import org.apache.logging.log4j.Logger;
  * information.
  */
 public class Patient extends Customer {
+
     private static final Logger LOG = LogManager.getLogger(Patient.class);
     private static int count = 0;
 
@@ -88,7 +90,13 @@ public class Patient extends Customer {
 
     @Override
     public void providePrescription(Pharmacy pharmacy, Prescription prescription) {
-        pharmacy.getPrescriptionRegistry().addPrescription(this, prescription);
+        try {
+            pharmacy.getPrescriptionRegistry().addPrescription(this, prescription);
+        } catch (PersonDoesNotExistException e) {
+            LOG.info("New Patient added into registry");
+            pharmacy.getPrescriptionRegistry().addPatientToRegistry(this);
+
+        }
     }
 
     @Override

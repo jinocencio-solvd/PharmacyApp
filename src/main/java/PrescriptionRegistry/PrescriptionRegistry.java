@@ -1,12 +1,19 @@
 package PrescriptionRegistry;
 
+import Exceptions.DuplicatePersonException;
+import Exceptions.PersonDoesNotExistException;
 import Person.Patient;
+import Pharmacy.Pharmacy;
 import Product.Prescription;
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
-public final class PrescriptionRegistry implements IPrescriptionRegistry{
+public final class PrescriptionRegistry implements IPrescriptionRegistry {
+
+    private static final Logger LOG = LogManager.getLogger(PrescriptionRegistry.class);
 
     private final HashMap<Patient, ArrayList<Prescription>> prescriptionRegistry;
 
@@ -19,15 +26,28 @@ public final class PrescriptionRegistry implements IPrescriptionRegistry{
     }
 
     public void addPatientToRegistry(Patient patient) {
-        // check if the patient exists in the registry
-        if (!prescriptionRegistry.containsKey(patient)) {
-            // if not, add patient to registry with empty list of prescriptions
-            prescriptionRegistry.put(patient, new ArrayList<Prescription>());
+        try {
+            if (prescriptionRegistry.containsKey(patient)) {
+                throw new DuplicatePersonException("Patient already exists in system");
+            }
+            prescriptionRegistry.put(patient, new ArrayList<>());
+            LOG.info("Added patient " + patient.getPatientID() + " to prescriptionRegistry");
+        } catch (DuplicatePersonException e) {
+            LOG.info("Patient already exists in system");
         }
     }
 
-    public void addPrescription(Patient patient, Prescription prescription) {
-        //TODO: throw error if patient does not exist in registry
+    public void addPrescription(Patient patient, Prescription prescription)
+        throws PersonDoesNotExistException {
+        LOG.trace("Adding prescription " + prescription.getPrescriptionId() + " for patient "
+            + patient.getPatientID());
+
+        if (!prescriptionRegistry.containsKey(patient)) {
+            LOG.warn("PersonDoesNotExistException was thrown");
+            throw new PersonDoesNotExistException("The person is not registered in database");
+        }
+
         prescriptionRegistry.get(patient).add(prescription);
     }
+
 }
