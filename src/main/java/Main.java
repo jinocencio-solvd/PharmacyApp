@@ -51,10 +51,10 @@ public class Main {
     public static ProductInventory populateInventory(){
         LOG.info("Start populating product inventory");
         // Create products
-        Item product1 = new Product.Item("Band-Aids", 2.99);
-        Item product2 = new Product.Item("Hydrogen Peroxide", 1.99);
-        Item product3 = new Product.Item("Antacid Tablets", 4.99);
-        Item product4 = new Product.Item("Cough Drops", 3.49);
+        Item product1 = new Item("Band-Aids", 2.99);
+        Item product2 = new Item("Hydrogen Peroxide", 1.99);
+        Item product3 = new Item("Antacid Tablets", 4.99);
+        Item product4 = new Item("Cough Drops", 3.49);
         // Add to inventory
         PRODUCT_INVENTORY.addProduct(product1, 50);
         PRODUCT_INVENTORY.addProduct(product2, 25);

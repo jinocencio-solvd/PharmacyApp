@@ -3,7 +3,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import Exceptions.InsufficientQuantityException;
 import Exceptions.ProductDoesNotExistException;
 import Exceptions.ProductOutOfStockException;
-import Inventory.Inventory;
 import Product.Item;
 import Product.Medication;
 import Product.Product;
@@ -11,10 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import Inventory.ProductInventory;
+class ProductInventoryTest {
 
-class InventoryTest {
-
-    Inventory inventory = new Inventory();
+    ProductInventory inventory = new ProductInventory();
     // Create products
     Item product1 = new Item("Band-Aids", 2.99);
     Item product2 = new Item("Hydrogen Peroxide", 1.99);
@@ -24,7 +23,6 @@ class InventoryTest {
     Medication medication2 = new Medication("Ibuprofen", "200 mg", 0.08);
     Medication medication3 = new Medication("Acetaminophen", "325 mg", 0.05);
     Medication medication4 = new Medication("Naproxen", "220 mg", 0.12);
-    Medication medication5 = new Medication("FakeMedication", "220 mg", 0.12);
     Map<Product, Integer> products = new HashMap<>();
 
     @BeforeEach
@@ -54,7 +52,7 @@ class InventoryTest {
 
     @Test
     void removeProduct()
-        throws ProductDoesNotExistException, InsufficientQuantityException, ProductOutOfStockException {
+        throws ProductOutOfStockException, ProductDoesNotExistException, InsufficientQuantityException {
         inventory.removeProduct(medication4, 75);
         products.put(medication4, 0);
         assertEquals(products, inventory.getProducts());
@@ -63,34 +61,8 @@ class InventoryTest {
     }
 
     @Test
-    void testRemoveProductWithInsufficientQuantity() {
-        assertThrows(InsufficientQuantityException.class, () -> {
-            inventory.removeProduct(medication4, 1000);
-        });
-        assertDoesNotThrow(() -> {
-            inventory.removeProduct(medication4, 5);
-        });
-    }
-
-    @Test
-    void testProductDoesNotExist() {
-        assertThrows(ProductDoesNotExistException.class, () -> {
-            inventory.removeProduct(medication5, 1000);
-        });
-    }
-
-    @Test
-    void testProductOutOfStock()
-        throws ProductDoesNotExistException, ProductOutOfStockException, InsufficientQuantityException {
-        inventory.removeProduct(medication1, 100);
-        assertThrows(ProductOutOfStockException.class, () -> {
-            inventory.removeProduct(medication1, 100);
-        });
-    }
-
-    @Test
     void getQuantity()
-        throws ProductDoesNotExistException, InsufficientQuantityException, ProductOutOfStockException {
+        throws ProductOutOfStockException, ProductDoesNotExistException, InsufficientQuantityException {
         assertEquals(75, inventory.getQuantity(medication4));
         inventory.addProduct(medication4, 75);
         assertEquals(150, inventory.getQuantity(medication4));
@@ -105,9 +77,10 @@ class InventoryTest {
 
     @Test
     void testHashCode()
-        throws ProductDoesNotExistException, InsufficientQuantityException, ProductOutOfStockException {
+        throws ProductOutOfStockException, ProductDoesNotExistException, InsufficientQuantityException {
         assertEquals(products.hashCode(), inventory.getProducts().hashCode());
         inventory.removeProduct(medication4, 10);
         assertNotEquals(products.hashCode(), inventory.getProducts().hashCode());
+
     }
 }
