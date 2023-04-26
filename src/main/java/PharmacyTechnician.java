@@ -9,13 +9,22 @@ public class PharmacyTechnician extends Employee {
     private String stateLicenseId;
     private boolean isCashierTrained;
 
-    public PharmacyTechnician(String name, String phoneNumber, Address address, String employeeID,
+    public PharmacyTechnician(String name, String phoneNumber, Address address,
         String stateLicenseId) {
-        super(name, phoneNumber, address, employeeID);
+        super(name, phoneNumber, address);
         this.stateLicenseId = stateLicenseId;
         this.isCashierTrained = false;
     }
 
+    public static PharmacyTechnician[] predefinedPharmacyTechnicians() {
+        Address[] addresses = Address.predefinedAddresses();
+        return new PharmacyTechnician[]{
+            new PharmacyTechnician("John Tech", "555-1234", addresses[3],
+                "CA123456"),
+            new PharmacyTechnician("Jane Tech", "555-5678", addresses[4],
+                "CA654321")
+        };
+    }
 
     public String getStateLicenseId() {
         return stateLicenseId;
@@ -63,17 +72,14 @@ public class PharmacyTechnician extends Employee {
         if (!(o instanceof PharmacyTechnician)) {
             return false;
         }
-        if (!super.equals(o)) {
-            return false;
-        }
         PharmacyTechnician that = (PharmacyTechnician) o;
-        return isCashierTrained() == that.isCashierTrained() &&
-            Objects.equals(getStateLicenseId(), that.getStateLicenseId());
+        return isCashierTrained == that.isCashierTrained &&
+            Objects.equals(getStateLicenseId(), that.getStateLicenseId()) &&
+            Objects.equals(getEmployeeID(), that.getEmployeeID());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getStateLicenseId(),
-            isCashierTrained());
+        return Objects.hash(super.hashCode(), getStateLicenseId(), isCashierTrained());
     }
 }

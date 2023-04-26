@@ -5,12 +5,16 @@ import java.util.Objects;
 /**
  * Represents an inventory of products with their quantities.
  */
-public class Inventory {
+public abstract class Inventory implements IInventory {
 
     private final Map<Product, Integer> products;
 
     public Inventory() {
         products = new HashMap<>();
+    }
+
+    public Map<Product, Integer> getProducts() {
+        return products;
     }
 
     /**
@@ -36,7 +40,6 @@ public class Inventory {
         // 2. Product does not exist in inventory
         int currentQuantity = products.get(product);
         products.put(product, currentQuantity - quantity);
-
     }
 
     /**

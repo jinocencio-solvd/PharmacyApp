@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Pharmacy {
+public class Pharmacy implements IPharmacy {
 
     private String name;
     private Address address;
@@ -9,6 +9,7 @@ public class Pharmacy {
     private String emailAddress;
     private Inventory inventory;
     private ArrayList<Employee> employees;
+    private PrescriptionRegistry prescriptionRegistry;
 
 
     public Pharmacy(String name, Address address, String phoneNumber, String emailAddress,
@@ -19,6 +20,22 @@ public class Pharmacy {
         this.emailAddress = emailAddress;
         this.inventory = inventory;
         this.employees = employees;
+    }
+
+    public Pharmacy(String name, Address address, String phoneNumber, String emailAddress) {
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.emailAddress = emailAddress;
+        this.employees = new ArrayList<Employee>();
+    }
+
+    public PrescriptionRegistry getPrescriptionRegistry() {
+        return prescriptionRegistry;
+    }
+
+    public void setPrescriptionRegistry(PrescriptionRegistry prescriptionRegistry) {
+        this.prescriptionRegistry = prescriptionRegistry;
     }
 
     public String getName() {
@@ -67,6 +84,47 @@ public class Pharmacy {
 
     public void setEmployees(ArrayList<Employee> employees) {
         this.employees = employees;
+    }
+
+    /**
+     * Hires a new employee and adds them to the pharmacy's list of employees.
+     *
+     * @param newEmployee the person to hire as an employee
+     */
+    @Override
+    public void hireEmployee(Employee newEmployee) {
+        if (!this.employees.contains(newEmployee)) {
+            this.employees.add(newEmployee);
+            return;
+        }
+        //TODO: Replace with error handling
+        System.out.println("The employee is already hired in the employee system.");
+    }
+
+    /**
+     * Releases an employee and removes them from the pharmacy's list of employees.
+     *
+     * @param employee the employee to release from their position
+     */
+    @Override
+    public void releaseEmployee(Employee employee) {
+        for (Employee e : this.employees) {
+            if (e.equals(employee)) {
+                this.employees.remove(e);
+                return;
+            }
+        }
+        //TODO: Replace with error handling
+        System.out.println("The employee is does not exist in employee system.");
+    }
+
+    /**
+     * Prints information about the pharmacy, including its name, address, phone number, and a list
+     * of current employees.
+     */
+    @Override
+    public void printPharmacyInformation() {
+        System.out.println(this);
     }
 
     @Override
