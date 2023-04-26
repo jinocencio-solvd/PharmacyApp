@@ -1,15 +1,19 @@
 package Inventory;
 
+import Exceptions.InsufficientQuantityException;
+import Exceptions.ProductDoesNotExistException;
 import java.util.HashMap;
 import Product.*;
 import java.util.Map;
 import java.util.Objects;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Represents an inventory of products with their quantities.
  */
 public class Inventory implements IInventory {
-
+    private static final Logger LOG = LogManager.getLogger(Inventory.class);
     private final Map<Product, Integer> products;
 
     public Inventory() {
@@ -37,11 +41,16 @@ public class Inventory implements IInventory {
      * @param product  the product to be removed from the inventory
      * @param quantity the quantity of the product to be removed
      */
-    public void removeProduct(Product product, int quantity) {
-        // TODO: Make method more robust in handling cases
-        // 1. requested quantity is less than current quantity --> InsufficientQuantity
-        // 2. Product.Product does not exist in inventory --> ProductDoesNotExist
-        int currentQuantity = products.get(product);
+    public void removeProduct(Product product, int quantity)
+        throws InsufficientQuantityException, ProductDoesNotExistException {
+
+        int currentQuantity = products.getOrDefault(product, 0);
+        if (currentQuantity == 0) {
+            throw new ProductDoesNotExistException("Product " + product + " does not exist in the inventory.");
+        }
+        if(quantity > currentQuantity) {
+            throw new InsufficientQuantityException("Cannot retrieve the requested amount of product " + product + ".");
+        }
         products.put(product, currentQuantity - quantity);
     }
 
