@@ -5,8 +5,9 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class InventoryTest {
-    Inventory inventory = new Inventory();
+class ProductInventoryTest {
+
+    ProductInventory inventory = new ProductInventory();
     // Create products
     Item product1 = new Item("Band-Aids", 2.99);
     Item product2 = new Item("Hydrogen Peroxide", 1.99);
@@ -45,8 +46,8 @@ class InventoryTest {
 
     @Test
     void removeProduct() {
-        inventory.removeProduct(medication4,75);
-        products.put(medication4,0);
+        inventory.removeProduct(medication4, 75);
+        products.put(medication4, 0);
         assertEquals(products, inventory.getProducts());
         inventory.addProduct(medication4, 75);
         assertNotEquals(products, inventory.getProducts());
@@ -57,7 +58,7 @@ class InventoryTest {
         assertEquals(75, inventory.getQuantity(medication4));
         inventory.addProduct(medication4, 75);
         assertEquals(150, inventory.getQuantity(medication4));
-        inventory.removeProduct(medication4,10);
+        inventory.removeProduct(medication4, 10);
         assertEquals(140, inventory.getQuantity(medication4));
     }
 
@@ -69,7 +70,7 @@ class InventoryTest {
     @Test
     void testHashCode() {
         assertEquals(products.hashCode(), inventory.getProducts().hashCode());
-        inventory.removeProduct(medication4,10);
+        inventory.removeProduct(medication4, 10);
         assertNotEquals(products.hashCode(), inventory.getProducts().hashCode());
 
     }

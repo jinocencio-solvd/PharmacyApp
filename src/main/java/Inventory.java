@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Represents an inventory of products with their quantities.
  */
-public class Inventory implements IInventory {
+public abstract class Inventory implements IInventory {
 
     private final Map<Product, Integer> products;
 

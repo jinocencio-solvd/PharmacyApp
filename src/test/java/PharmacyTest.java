@@ -22,7 +22,7 @@ class PharmacyTest {
     Medication medication3 = new Medication("Acetaminophen", "325 mg", 0.05);
     Medication medication4 = new Medication("Naproxen", "220 mg", 0.12);
     ArrayList<Employee> employees = new ArrayList<>();
-    Inventory inventory = new Inventory();
+    ProductInventory inventory = new ProductInventory();
     Pharmacist pharmacist1;
     Pharmacist pharmacist2;
     PharmacyTechnician tech2;
