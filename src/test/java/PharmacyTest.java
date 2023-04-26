@@ -1,3 +1,4 @@
+import Exceptions.DuplicatePersonException;
 import Inventory.Inventory;
 import Misc.Address;
 import Person.Employee;
@@ -39,7 +40,7 @@ class PharmacyTest {
     Pharmacy pharmacyCopy;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws DuplicatePersonException {
         pharmacist1 = new Pharmacist("John Doe", "555-1234", address1, "CA-12345");
         pharmacist2 = new Pharmacist("Jane Smith", "555-5678", address2, "NY-67890");
         tech1 = new PharmacyTechnician("John Tech", "555-1234", address3, "CA123456");
