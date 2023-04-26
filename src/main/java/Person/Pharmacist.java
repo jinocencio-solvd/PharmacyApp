@@ -1,6 +1,7 @@
 package Person;
 
 import Exceptions.InsufficientQuantityException;
+import Exceptions.NoMoreRefillsException;
 import Exceptions.ProductDoesNotExistException;
 import Exceptions.ProductOutOfStockException;
 import Misc.Address;
@@ -67,22 +68,22 @@ public class Pharmacist extends Employee {
      * @param prescription the prescription to be filled
      */
     public void fillPrescription(Inventory inventory, Prescription prescription) {
-        if (prescription.getNumRefills() == 0) {
-            //TODO: implement proper error handling
-            System.out.println("No more refills available");
-            return;
+        try {
+            if (prescription.getNumRefills() == 0) {
+                throw new NoMoreRefillsException("No more refills available");
+            }
+            retrieveMedicationsFromInventory(inventory, prescription);
+            prescription.setNumRefills(prescription.getNumRefills() - 1);
+            prescription.setFilled(true);
+
+            // TODO: Upon patient picking up prescription,
+            //  setFilled to false to be ready for next refill
+
+            LOG.info("Prescription: " + prescription.getPrescriptionId() + " for patient: "
+                + prescription.getPatient().getName() + " is filled.");
+        } catch (NoMoreRefillsException e) {
+            LOG.warn("Prescription is out of refills");
         }
-        retrieveMedicationsFromInventory(inventory, prescription);
-
-        // complete prescription
-        prescription.setNumRefills(prescription.getNumRefills() - 1);
-        prescription.setFilled(true);
-
-        // TODO: Upon patient picking up prescription, setFilled to false to be ready for next refill
-        // Confirmation message
-        String msg = "prescription: " + prescription.getPrescriptionId() + " for patient: "
-            + prescription.getPatient().getName() + " is filled.";
-        System.out.println(msg);
     }
 
     /**

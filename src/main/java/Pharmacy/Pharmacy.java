@@ -1,13 +1,19 @@
 package Pharmacy;
 
+import Exceptions.DuplicatePersonException;
 import Inventory.Inventory;
 import Misc.Address;
 import Person.Employee;
+import Person.Pharmacist;
 import PrescriptionRegistry.PrescriptionRegistry;
 import java.util.ArrayList;
 import java.util.Objects;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Pharmacy implements IPharmacy {
+
+    private static final Logger LOG = LogManager.getLogger(Pharmacy.class);
 
     private String name;
     private Address address;
@@ -92,19 +98,27 @@ public class Pharmacy implements IPharmacy {
         this.employees = employees;
     }
 
+
     /**
      * Hires a new employee and adds them to the pharmacy's list of employees.
      *
      * @param newEmployee the person to hire as an employee
      */
     @Override
-    public void hireEmployee(Employee newEmployee) {
-        if (!this.employees.contains(newEmployee)) {
+    public void hireEmployee(Employee newEmployee) throws DuplicatePersonException {
+        //TODO: Perhaps this would make more sense if hireEmployee took a "Person" as a parameter
+        // and then create an "Employee". Logic flow would have to have a completely change.
+        try {
+            if (this.employees.contains(newEmployee)) {
+                throw new DuplicatePersonException(
+                    "The employee is already hired in the employee system.");
+            }
             this.employees.add(newEmployee);
-            return;
+            LOG.info("Employee" + newEmployee.getEmployeeID()
+                + " was successfully registered in employee database");
+        } catch (DuplicatePersonException e) {
+            LOG.warn("Employee is already registered in employee database");
         }
-        //TODO: Replace with error handling --> DuplicatePersonException
-        System.out.println("The employee is already hired in the employee system.");
     }
 
     /**

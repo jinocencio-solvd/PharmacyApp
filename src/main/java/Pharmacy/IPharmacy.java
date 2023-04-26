@@ -1,5 +1,6 @@
 package Pharmacy;
 
+import Exceptions.DuplicatePersonException;
 import Person.Employee;
 
 /**
@@ -13,7 +14,7 @@ public interface IPharmacy {
      *
      * @param newEmployee the person to hire as an employee
      */
-    void hireEmployee(Employee newEmployee);
+    void hireEmployee(Employee newEmployee) throws DuplicatePersonException;
 
     /**
      * Releases an employee and removes them from the pharmacy's list of employees.

@@ -35,6 +35,7 @@ public class Inventory implements IInventory {
     public void addProduct(Product product, int quantity) {
         int currentQuantity = products.getOrDefault(product, 0);
         products.put(product, currentQuantity + quantity);
+        LOG.trace("Added " + product.getName() + " to inventory or cart");
     }
 
     /**
