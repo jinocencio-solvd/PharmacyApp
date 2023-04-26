@@ -2,6 +2,7 @@ package Person;
 
 import Exceptions.InsufficientQuantityException;
 import Exceptions.ProductDoesNotExistException;
+import Exceptions.ProductOutOfStockException;
 import Misc.Address;
 import Product.*;
 import Inventory.Inventory;
@@ -40,8 +41,7 @@ public class Pharmacist extends Employee {
         this.stateLicenseId = stateLicenseId;
     }
 
-    public void retrieveMedicationsFromInventory(Inventory inventory, Prescription prescription)
-        throws InsufficientQuantityException {
+    public void retrieveMedicationsFromInventory(Inventory inventory, Prescription prescription) {
         Medication prescribedMed = prescription.getMedication();
         int prescribedQuantity = prescription.getPrescribedQuantity();
         try {
@@ -51,7 +51,9 @@ public class Pharmacist extends Employee {
             LOG.warn("Unable to retrieve prescribed quantity of +" + prescribedQuantity
                 + ". Current quantity of " + prescribedMed.getName() + " is " + medQuantity + ".");
         } catch (ProductDoesNotExistException e) {
-            LOG.warn("Medication for "+prescribedMed.getName() + "does not exist.");
+            LOG.warn("Medication for " + prescribedMed.getName() + "does not exist.");
+        } catch (ProductOutOfStockException e) {
+            LOG.warn("Medication " + prescribedMed.getName() + "is out of stock.");
         }
     }
 
@@ -70,22 +72,17 @@ public class Pharmacist extends Employee {
             System.out.println("No more refills available");
             return;
         }
-        try {
-            retrieveMedicationsFromInventory(inventory, prescription);
+        retrieveMedicationsFromInventory(inventory, prescription);
 
-            // complete prescription
-            prescription.setNumRefills(prescription.getNumRefills() - 1);
-            prescription.setFilled(true);
+        // complete prescription
+        prescription.setNumRefills(prescription.getNumRefills() - 1);
+        prescription.setFilled(true);
 
-            // TODO: Upon patient picking up prescription, setFilled to false to be ready for next refill
-            // Confirmation message
-            String msg = "prescription: " + prescription.getPrescriptionId() + " for patient: "
-                + prescription.getPatient().getName() + " is filled.";
-            System.out.println(msg);
-
-        } catch (InsufficientQuantityException e) {
-            e.printStackTrace();
-        }
+        // TODO: Upon patient picking up prescription, setFilled to false to be ready for next refill
+        // Confirmation message
+        String msg = "prescription: " + prescription.getPrescriptionId() + " for patient: "
+            + prescription.getPatient().getName() + " is filled.";
+        System.out.println(msg);
     }
 
     /**

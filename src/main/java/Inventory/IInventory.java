@@ -2,6 +2,7 @@ package Inventory;
 
 import Exceptions.InsufficientQuantityException;
 import Exceptions.ProductDoesNotExistException;
+import Exceptions.ProductOutOfStockException;
 import Product.Product;
 
 public interface IInventory{
@@ -20,7 +21,7 @@ public interface IInventory{
      * @param quantity the quantity of the product to be removed
      */
     void removeProduct(Product product, int quantity)
-        throws InsufficientQuantityException, ProductDoesNotExistException;
+        throws InsufficientQuantityException, ProductDoesNotExistException, ProductOutOfStockException;
 
     /**
      * Returns the quantity of a product in the inventory.

@@ -2,6 +2,7 @@ package Person;
 
 import Exceptions.InsufficientQuantityException;
 import Exceptions.ProductDoesNotExistException;
+import Exceptions.ProductOutOfStockException;
 import Inventory.Cart;
 import Misc.Address;
 import Product.Product;
@@ -61,6 +62,8 @@ public abstract class Customer extends Person implements ICustomer {
                 + productQuantity + ".");
         } catch (ProductDoesNotExistException e) {
             LOG.warn("Product item " + product.getName() + "does not exist in cart.");
+        } catch (ProductOutOfStockException e) {
+            LOG.warn("Product item " + product.getName() + "is not in your cart.");
         }
     }
 }

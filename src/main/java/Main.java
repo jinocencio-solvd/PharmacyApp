@@ -21,7 +21,7 @@ public class Main {
         pharmacy.hireEmployee(pharmacists[1]);
         pharmacy.hireEmployee((technicians[0]));
         pharmacy.hireEmployee((technicians[1]));
-        Prescription.predefinedPrescriptions();
+        Prescription[] prescriptions = Prescription.predefinedPrescriptions();
 
 
 //        // Create products
