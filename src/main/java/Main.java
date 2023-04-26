@@ -2,8 +2,6 @@ import Exceptions.DuplicatePersonException;
 import Inventory.*;
 import Misc.Address;
 import Misc.Insurance;
-import Person.Consumer;
-import Person.Customer;
 import Person.Patient;
 import Person.Pharmacist;
 import Person.PharmacyTechnician;
@@ -11,6 +9,7 @@ import Pharmacy.Pharmacy;
 import Product.Item;
 import Product.Medication;
 import Product.Prescription;
+import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,7 +21,7 @@ public class Main {
     private static final Address[] ADDRESSES = Address.predefinedAddresses();
     private static final Pharmacist[] PHARMACISTS = Pharmacist.predefinedPharmacist();
     private static final PharmacyTechnician[] TECHNICIANS = PharmacyTechnician.predefinedPharmacyTechnicians();
-    private static final Pharmacy PHARMACY = new Pharmacy("Joffrey's Pharmacy.Pharmacy",
+    private static final Pharmacy PHARMACY = new Pharmacy("PharmacyRx",
         ADDRESSES[0], "123-321-4567", "PHARMEMAIL@EMAIL.COM");
     private static final Prescription[] PRESCRIPTIONS = Prescription.predefinedPrescriptions();
     private static final Medication[] MEDICATIONS = Medication.predefinedMedications();
@@ -63,6 +62,30 @@ public class Main {
         LOG.info("Completed populating product inventory");
         return PRODUCT_INVENTORY;
     }
+    private static void userCreatePatient() {
+        LOG.trace("In userCreatePatient");
+        System.out.println("Welcome to " + PHARMACY.getName());
+        Scanner s = new Scanner(System.in);
+        String name = "";
+        try {
+            System.out.println("Enter patient name:");
+            name = s.nextLine();
+            if (name.isBlank()) {
+                throw new IllegalArgumentException("Name cannot be empty");
+            }
+            Patient userPatient = new Patient(name, "phoneNumber", Address.predefinedAddresses()[0],
+                null);
+
+            LOG.info("Patient " + userPatient.getName() + " created with patientId: "
+                + userPatient.getPatientID());
+            System.out.println("Thank you see you later.");
+        } catch (IllegalArgumentException e) {
+            LOG.warn("Name cannot be empty");
+            userCreatePatient();
+        } finally {
+            s.close();
+        }
+    }
 
     public static void main(String[] args) throws DuplicatePersonException {
         // Pharmacy Operations
@@ -72,7 +95,6 @@ public class Main {
         PHARMACY.releaseEmployee(TECHNICIANS[1]);
         PHARMACY.releaseEmployee(TECHNICIANS[1]);
 
-        //Consumer operations
-
+        userCreatePatient();
     }
 }

@@ -1,0 +1,120 @@
+13:54:41.850 TRACE Person.Pharmacist.<init> - Pharmacist created with eID: EID-1
+13:54:41.854 TRACE Person.Pharmacist.<init> - Pharmacist created with eID: EID-2
+13:54:41.856 TRACE Person.Pharmacist.<init> - Pharmacist created with eID: EID-3
+13:54:41.857 TRACE Person.Pharmacist.<init> - Pharmacist created with eID: EID-4
+13:54:41.857 TRACE Person.Pharmacist.<init> - Pharmacist created with eID: EID-5
+13:54:41.859 TRACE Person.Pharmacist.<init> - Pharmacist created with eID: EID-6
+13:54:41.860 TRACE Person.Pharmacist.<init> - Pharmacist created with eID: EID-7
+13:54:41.861 TRACE Person.Pharmacist.<init> - Pharmacist created with eID: EID-8
+13:54:41.862 TRACE Person.Pharmacist.<init> - Pharmacist created with eID: EID-9
+13:54:41.865 TRACE Person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-10
+13:54:41.866 TRACE Person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-11
+13:54:41.867 TRACE Person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-12
+13:54:41.868 TRACE Person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-13
+13:54:41.868 TRACE Person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-14
+13:54:41.869 TRACE Person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-15
+13:54:41.870 TRACE Person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-16
+13:54:41.870 TRACE Person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-17
+13:54:41.870 TRACE Person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-18
+13:54:41.886 TRACE Product.Medication.<init> - Medication created: Aspirin
+13:54:41.886 TRACE Product.Medication.<init> - Medication created: Ibuprofen
+13:54:41.886 TRACE Product.Medication.<init> - Medication created: Acetaminophen
+13:54:41.887 TRACE Product.Medication.<init> - Medication created: Naproxen
+13:54:41.888 TRACE Person.Pharmacist.<init> - Pharmacist created with eID: EID-19
+13:54:41.889 TRACE Person.Pharmacist.<init> - Pharmacist created with eID: EID-20
+13:54:41.889 TRACE Person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-21
+13:54:41.889 TRACE Person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-22
+13:54:41.890 TRACE Inventory.Inventory.addProduct - Added Band-Aids to inventory or cart
+13:54:41.890 TRACE Inventory.Inventory.addProduct - Added Hydrogen Peroxide to inventory or cart
+13:54:41.891 TRACE Inventory.Inventory.addProduct - Added Antacid Tablets to inventory or cart
+13:54:41.891 TRACE Inventory.Inventory.addProduct - Added Cough Drops to inventory or cart
+13:54:41.891 TRACE Inventory.Inventory.addProduct - Added Aspirin to inventory or cart
+13:54:41.892 TRACE Inventory.Inventory.addProduct - Added Ibuprofen to inventory or cart
+13:54:41.892 TRACE Inventory.Inventory.addProduct - Added Acetaminophen to inventory or cart
+13:54:41.893 TRACE Inventory.Inventory.addProduct - Added Naproxen to inventory or cart
+13:54:41.894 INFO  Pharmacy.Pharmacy.hireEmployee - EmployeeEID-19 was successfully registered in employee database
+13:54:41.894 INFO  Pharmacy.Pharmacy.hireEmployee - EmployeeEID-20 was successfully registered in employee database
+13:54:41.894 INFO  Pharmacy.Pharmacy.hireEmployee - EmployeeEID-21 was successfully registered in employee database
+13:54:41.895 INFO  Pharmacy.Pharmacy.hireEmployee - EmployeeEID-22 was successfully registered in employee database
+13:54:41.896 TRACE Product.Medication.<init> - Medication created: Aspirin
+13:54:41.896 TRACE Product.Medication.<init> - Medication created: Ibuprofen
+13:54:41.896 TRACE Product.Medication.<init> - Medication created: Acetaminophen
+13:54:41.897 TRACE Product.Medication.<init> - Medication created: Naproxen
+13:54:41.898 TRACE Person.Pharmacist.<init> - Pharmacist created with eID: EID-23
+13:54:41.898 TRACE Person.Pharmacist.<init> - Pharmacist created with eID: EID-24
+13:54:41.899 TRACE Person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-25
+13:54:41.899 TRACE Person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-26
+13:54:41.899 TRACE Inventory.Inventory.addProduct - Added Band-Aids to inventory or cart
+13:54:41.900 TRACE Inventory.Inventory.addProduct - Added Hydrogen Peroxide to inventory or cart
+13:54:41.900 TRACE Inventory.Inventory.addProduct - Added Antacid Tablets to inventory or cart
+13:54:41.900 TRACE Inventory.Inventory.addProduct - Added Cough Drops to inventory or cart
+13:54:41.901 TRACE Inventory.Inventory.addProduct - Added Aspirin to inventory or cart
+13:54:41.901 TRACE Inventory.Inventory.addProduct - Added Ibuprofen to inventory or cart
+13:54:41.901 TRACE Inventory.Inventory.addProduct - Added Acetaminophen to inventory or cart
+13:54:41.902 TRACE Inventory.Inventory.addProduct - Added Naproxen to inventory or cart
+13:54:41.902 INFO  Pharmacy.Pharmacy.hireEmployee - EmployeeEID-23 was successfully registered in employee database
+13:54:41.902 INFO  Pharmacy.Pharmacy.hireEmployee - EmployeeEID-24 was successfully registered in employee database
+13:54:41.902 INFO  Pharmacy.Pharmacy.hireEmployee - EmployeeEID-25 was successfully registered in employee database
+13:54:41.903 INFO  Pharmacy.Pharmacy.hireEmployee - EmployeeEID-26 was successfully registered in employee database
+13:54:41.911 TRACE Product.Medication.<init> - Medication created: Aspirin
+13:54:41.912 TRACE Product.Medication.<init> - Medication created: Ibuprofen
+13:54:41.912 TRACE Product.Medication.<init> - Medication created: Acetaminophen
+13:54:41.912 TRACE Product.Medication.<init> - Medication created: Naproxen
+13:54:41.913 TRACE Inventory.Inventory.addProduct - Added Hydrogen Peroxide to inventory or cart
+13:54:41.914 TRACE Inventory.Inventory.addProduct - Added Antacid Tablets to inventory or cart
+13:54:41.914 TRACE Inventory.Inventory.addProduct - Added Band-Aids to inventory or cart
+13:54:41.915 TRACE Inventory.Inventory.addProduct - Added Cough Drops to inventory or cart
+13:54:41.915 TRACE Inventory.Inventory.addProduct - Added Aspirin to inventory or cart
+13:54:41.915 TRACE Inventory.Inventory.addProduct - Added Ibuprofen to inventory or cart
+13:54:41.915 TRACE Inventory.Inventory.addProduct - Added Acetaminophen to inventory or cart
+13:54:41.915 TRACE Inventory.Inventory.addProduct - Added Naproxen to inventory or cart
+13:54:41.916 TRACE Inventory.Inventory.addProduct - Added Naproxen to inventory or cart
+13:54:41.916 TRACE Product.Medication.<init> - Medication created: Aspirin
+13:54:41.916 TRACE Product.Medication.<init> - Medication created: Ibuprofen
+13:54:41.917 TRACE Product.Medication.<init> - Medication created: Acetaminophen
+13:54:41.917 TRACE Product.Medication.<init> - Medication created: Naproxen
+13:54:41.918 TRACE Inventory.Inventory.addProduct - Added Hydrogen Peroxide to inventory or cart
+13:54:41.918 TRACE Inventory.Inventory.addProduct - Added Antacid Tablets to inventory or cart
+13:54:41.918 TRACE Inventory.Inventory.addProduct - Added Band-Aids to inventory or cart
+13:54:41.918 TRACE Inventory.Inventory.addProduct - Added Cough Drops to inventory or cart
+13:54:41.919 TRACE Inventory.Inventory.addProduct - Added Aspirin to inventory or cart
+13:54:41.919 TRACE Inventory.Inventory.addProduct - Added Ibuprofen to inventory or cart
+13:54:41.919 TRACE Inventory.Inventory.addProduct - Added Acetaminophen to inventory or cart
+13:54:41.919 TRACE Inventory.Inventory.addProduct - Added Naproxen to inventory or cart
+13:54:41.920 TRACE Product.Medication.<init> - Medication created: Aspirin
+13:54:41.921 TRACE Product.Medication.<init> - Medication created: Ibuprofen
+13:54:41.921 TRACE Product.Medication.<init> - Medication created: Acetaminophen
+13:54:41.921 TRACE Product.Medication.<init> - Medication created: Naproxen
+13:54:41.922 TRACE Inventory.Inventory.addProduct - Added Hydrogen Peroxide to inventory or cart
+13:54:41.922 TRACE Inventory.Inventory.addProduct - Added Antacid Tablets to inventory or cart
+13:54:41.922 TRACE Inventory.Inventory.addProduct - Added Band-Aids to inventory or cart
+13:54:41.923 TRACE Inventory.Inventory.addProduct - Added Cough Drops to inventory or cart
+13:54:41.923 TRACE Inventory.Inventory.addProduct - Added Aspirin to inventory or cart
+13:54:41.923 TRACE Inventory.Inventory.addProduct - Added Ibuprofen to inventory or cart
+13:54:41.923 TRACE Inventory.Inventory.addProduct - Added Acetaminophen to inventory or cart
+13:54:41.924 TRACE Inventory.Inventory.addProduct - Added Naproxen to inventory or cart
+13:54:41.924 TRACE Inventory.Inventory.addProduct - Added Naproxen to inventory or cart
+13:54:41.925 TRACE Product.Medication.<init> - Medication created: Aspirin
+13:54:41.925 TRACE Product.Medication.<init> - Medication created: Ibuprofen
+13:54:41.926 TRACE Product.Medication.<init> - Medication created: Acetaminophen
+13:54:41.926 TRACE Product.Medication.<init> - Medication created: Naproxen
+13:54:41.927 TRACE Inventory.Inventory.addProduct - Added Hydrogen Peroxide to inventory or cart
+13:54:41.927 TRACE Inventory.Inventory.addProduct - Added Antacid Tablets to inventory or cart
+13:54:41.927 TRACE Inventory.Inventory.addProduct - Added Band-Aids to inventory or cart
+13:54:41.927 TRACE Inventory.Inventory.addProduct - Added Cough Drops to inventory or cart
+13:54:41.927 TRACE Inventory.Inventory.addProduct - Added Aspirin to inventory or cart
+13:54:41.927 TRACE Inventory.Inventory.addProduct - Added Ibuprofen to inventory or cart
+13:54:41.928 TRACE Inventory.Inventory.addProduct - Added Acetaminophen to inventory or cart
+13:54:41.928 TRACE Inventory.Inventory.addProduct - Added Naproxen to inventory or cart
+13:54:41.928 TRACE Product.Medication.<init> - Medication created: Aspirin
+13:54:41.928 TRACE Product.Medication.<init> - Medication created: Ibuprofen
+13:54:41.929 TRACE Product.Medication.<init> - Medication created: Acetaminophen
+13:54:41.929 TRACE Product.Medication.<init> - Medication created: Naproxen
+13:54:41.930 TRACE Inventory.Inventory.addProduct - Added Hydrogen Peroxide to inventory or cart
+13:54:41.930 TRACE Inventory.Inventory.addProduct - Added Antacid Tablets to inventory or cart
+13:54:41.930 TRACE Inventory.Inventory.addProduct - Added Band-Aids to inventory or cart
+13:54:41.930 TRACE Inventory.Inventory.addProduct - Added Cough Drops to inventory or cart
+13:54:41.930 TRACE Inventory.Inventory.addProduct - Added Aspirin to inventory or cart
+13:54:41.930 TRACE Inventory.Inventory.addProduct - Added Ibuprofen to inventory or cart
+13:54:41.930 TRACE Inventory.Inventory.addProduct - Added Acetaminophen to inventory or cart
+13:54:41.931 TRACE Inventory.Inventory.addProduct - Added Naproxen to inventory or cart
