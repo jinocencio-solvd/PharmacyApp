@@ -19,18 +19,6 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public static Address[] predefinedAddresses() {
-        return new Address[]{
-            new Address("001 Pearl St", "Anytown", "CA", 12345),
-            new Address("123 Main St", "Anytown", "CA", 12345),
-            new Address("456 Elm St", "Anytown", "NY", 67890),
-            new Address("789 Oak St", "Sometown", "FL", 24680),
-            new Address("321 Pine St", "Othertown", "TX", 13579),
-            new Address("111 Maple St", "Another Town", "GA", 97531),
-            new Address("222 Cedar St", "Someplace", "VA", 86420)
-        };
-    }
-
     public String getStreet() {
         return street;
     }

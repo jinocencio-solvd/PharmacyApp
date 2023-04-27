@@ -3,7 +3,7 @@ package person;
 import exceptions.PersonDoesNotExistException;
 import misc.Address;
 import pharmacy.Pharmacy;
-import product.Prescription;
+import prescriptionRegistry.Prescription;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

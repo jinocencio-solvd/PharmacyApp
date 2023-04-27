@@ -3,7 +3,6 @@ package prescriptionRegistry;
 import exceptions.DuplicatePersonException;
 import exceptions.PersonDoesNotExistException;
 import person.Patient;
-import product.Prescription;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.apache.logging.log4j.LogManager;

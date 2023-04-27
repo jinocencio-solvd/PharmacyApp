@@ -1,9 +1,10 @@
-package product;
+package prescriptionRegistry;
 
 import person.Patient;
 import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import product.Medication;
 
 
 /**
@@ -44,16 +45,6 @@ public class Prescription {
         this.prescribedQuantity = prescribedQuantity;
 
         LOG.trace("Prescription created with Id: " + this.prescriptionId);
-    }
-
-    public static Prescription[] predefinedPrescriptions() {
-        Patient[] patients = Patient.predefinedPatients();
-        Medication[] medications = Medication.predefinedMedications();
-        return new Prescription[]{
-            new Prescription(2, false, medications[0], patients[0], 35),
-            new Prescription(2, false, medications[1], patients[0], 50),
-            new Prescription(2, false, medications[2], patients[1], 35)
-        };
     }
 
     public String getPrescriptionId() {

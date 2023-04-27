@@ -17,13 +17,6 @@ public class Insurance {
         this.percentInsuranceCovered = percentInsuranceCovered;
     }
 
-    public static Insurance[] predefinedInsurance() {
-        return new Insurance[]{
-            new Insurance("MediCare", 80.0),
-            new Insurance("Blue Cross", 70.0)
-        };
-    }
-
     public String getInsuranceName() {
         return insuranceName;
     }

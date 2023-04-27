@@ -62,9 +62,9 @@ class PharmacyTest {
         inventory.addProduct(medication3, 200);
         inventory.addProduct(medication4, 75);
 
-        pharmacy = new Pharmacy("Joffrey's Pharmacy.Pharmacy", address0, "123" + "-321-4567",
-            "pharmEmail@email.com", inventory, employees);
-
+        pharmacy = new Pharmacy("Joffrey's Pharmacy.Pharmacy", address0, "123" + "-321-4567", "pharmEmail@email.com");
+        pharmacy.setInventory(inventory);
+        pharmacy.setEmployees(employees);
         // Copy created using overloaded constructor
         pharmacyCopy = new Pharmacy("Joffrey's Pharmacy.Pharmacy", address0, "123" + "-321-4567",
             "pharmEmail@email.com");

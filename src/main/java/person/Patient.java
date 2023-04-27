@@ -5,7 +5,7 @@ import misc.Address;
 import misc.Insurance;
 
 import pharmacy.Pharmacy;
-import product.Prescription;
+import prescriptionRegistry.Prescription;
 import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,15 +42,7 @@ public class Patient extends Customer {
         this.insuranceName = null;
     }
 
-    public static Patient[] predefinedPatients() {
-        Address[] addresses = Address.predefinedAddresses();
-        Insurance[] insurances = Insurance.predefinedInsurance();
-        return new Patient[]{
-            new Patient("Tom Davis", "555-7890", addresses[5], insurances[0]),
-            new Patient("Sara Johnson", "555-2345", addresses[6], insurances[1]),
-            new Patient("Sara Johnson", "555-2345", addresses[6])
-        };
-    }
+
 
     public String getPatientID() {
         return patientID;

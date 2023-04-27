@@ -11,6 +11,10 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Represents a pharmacy with HR capabilities. This class represents a pharmacy, which has a name,
+ * address, phone number, email address, and  a list of employees.
+ */
 public class Pharmacy implements IPharmacy {
 
     private static final Logger LOG = LogManager.getLogger(Pharmacy.class);
@@ -24,16 +28,14 @@ public class Pharmacy implements IPharmacy {
     private PrescriptionRegistry prescriptionRegistry;
 
 
-    public Pharmacy(String name, Address address, String phoneNumber, String emailAddress,
-        Inventory inventory, ArrayList<Employee> employees) {
-        this.name = name;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.emailAddress = emailAddress;
-        this.inventory = inventory;
-        this.employees = employees;
-    }
-
+    /**
+     * Constructs a new Pharmacy object.
+     *
+     * @param name         The name of the pharmacy.
+     * @param address      The address of the pharmacy.
+     * @param phoneNumber  The phone number of the pharmacy.
+     * @param emailAddress The email address of the pharmacy.
+     */
     public Pharmacy(String name, Address address, String phoneNumber, String emailAddress) {
         this.name = name;
         this.address = address;

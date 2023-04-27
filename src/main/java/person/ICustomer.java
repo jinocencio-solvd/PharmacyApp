@@ -1,7 +1,7 @@
 package person;
 import inventory.Cart;
 import pharmacy.Pharmacy;
-import product.Prescription;
+import prescriptionRegistry.Prescription;
 import product.Product;
 
 /**

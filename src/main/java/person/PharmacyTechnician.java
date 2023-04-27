@@ -2,6 +2,7 @@ package person;
 
 import misc.Address;
 import java.util.Objects;
+import misc.DataProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,16 +23,6 @@ public class PharmacyTechnician extends Employee {
         this.isCashierTrained = false;
 
         LOG.trace("Pharmacist created with eID: " + super.employeeId);
-    }
-
-    public static PharmacyTechnician[] predefinedPharmacyTechnicians() {
-        Address[] addresses = Address.predefinedAddresses();
-        return new PharmacyTechnician[]{
-            new PharmacyTechnician("John Tech", "555-1234", addresses[3],
-                "CA123456"),
-            new PharmacyTechnician("Jane Tech", "555-5678", addresses[4],
-                "CA654321")
-        };
     }
 
     public String getStateLicenseId() {

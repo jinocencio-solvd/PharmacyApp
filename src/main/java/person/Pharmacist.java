@@ -5,6 +5,8 @@ import exceptions.NoMoreRefillsException;
 import exceptions.ProductDoesNotExistException;
 import exceptions.ProductOutOfStockException;
 import misc.Address;
+import misc.DataProvider;
+import prescriptionRegistry.Prescription;
 import product.*;
 import inventory.Inventory;
 import java.util.Objects;
@@ -27,12 +29,7 @@ public class Pharmacist extends Employee {
         LOG.trace("Pharmacist created with eID: " + super.employeeId);
     }
 
-    public static Pharmacist[] predefinedPharmacist() {
-        Address[] addresses = Address.predefinedAddresses();
-        return new Pharmacist[]{
-            new Pharmacist("John Doe", "555-1234", addresses[1], "CA-12345"),
-            new Pharmacist("Jane Smith", "555-5678", addresses[2], "NY-67890")};
-    }
+
 
     public String getStateLicenseId() {
         return stateLicenseId;

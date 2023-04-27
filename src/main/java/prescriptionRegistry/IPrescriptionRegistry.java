@@ -2,7 +2,6 @@ package prescriptionRegistry;
 
 import exceptions.PersonDoesNotExistException;
 import person.Patient;
-import product.Prescription;
 import java.util.ArrayList;
 
 public interface IPrescriptionRegistry {

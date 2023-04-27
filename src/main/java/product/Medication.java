@@ -19,15 +19,6 @@ public class Medication extends Product {
         LOG.trace("Medication created: " + this.name);
     }
 
-    public static Medication[] predefinedMedications() {
-        return new Medication[]{
-            new Medication("Aspirin", "500 mg", 0.10),
-            new Medication("Ibuprofen", "200 mg", 0.08),
-            new Medication("Acetaminophen", "325 mg", 0.05),
-            new Medication("Naproxen", "220 mg", 0.12)
-        };
-    }
-
     public String getDosage() {
         return dosage;
     }
