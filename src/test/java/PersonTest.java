@@ -1,5 +1,5 @@
-import Misc.Address;
-import Person.Person;
+import misc.Address;
+import person.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

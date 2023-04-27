@@ -1,16 +1,16 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import Exceptions.InsufficientQuantityException;
-import Exceptions.ProductDoesNotExistException;
-import Exceptions.ProductOutOfStockException;
-import Product.Item;
-import Product.Medication;
-import Product.Product;
+import exceptions.InsufficientQuantityException;
+import exceptions.ProductDoesNotExistException;
+import exceptions.ProductOutOfStockException;
+import product.Item;
+import product.Medication;
+import product.Product;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import Inventory.ProductInventory;
+import inventory.ProductInventory;
 class ProductInventoryTest {
 
     ProductInventory inventory = new ProductInventory();
