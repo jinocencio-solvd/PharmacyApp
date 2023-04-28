@@ -1,10 +1,16 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import exceptions.InsufficientQuantityException;
+import exceptions.ProductDoesNotExistException;
+import exceptions.ProductOutOfStockException;
+import product.Item;
+import product.Medication;
+import product.Product;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import inventory.ProductInventory;
 class ProductInventoryTest {
 
     ProductInventory inventory = new ProductInventory();
@@ -45,7 +51,8 @@ class ProductInventoryTest {
     }
 
     @Test
-    void removeProduct() {
+    void removeProduct()
+        throws ProductOutOfStockException, ProductDoesNotExistException, InsufficientQuantityException {
         inventory.removeProduct(medication4, 75);
         products.put(medication4, 0);
         assertEquals(products, inventory.getProducts());
@@ -54,7 +61,8 @@ class ProductInventoryTest {
     }
 
     @Test
-    void getQuantity() {
+    void getQuantity()
+        throws ProductOutOfStockException, ProductDoesNotExistException, InsufficientQuantityException {
         assertEquals(75, inventory.getQuantity(medication4));
         inventory.addProduct(medication4, 75);
         assertEquals(150, inventory.getQuantity(medication4));
@@ -68,7 +76,8 @@ class ProductInventoryTest {
     }
 
     @Test
-    void testHashCode() {
+    void testHashCode()
+        throws ProductOutOfStockException, ProductDoesNotExistException, InsufficientQuantityException {
         assertEquals(products.hashCode(), inventory.getProducts().hashCode());
         inventory.removeProduct(medication4, 10);
         assertNotEquals(products.hashCode(), inventory.getProducts().hashCode());

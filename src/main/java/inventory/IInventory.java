@@ -1,3 +1,10 @@
+package inventory;
+
+import exceptions.InsufficientQuantityException;
+import exceptions.ProductDoesNotExistException;
+import exceptions.ProductOutOfStockException;
+import product.Product;
+
 public interface IInventory{
     /**
      * Adds a product to the inventory with the specified quantity.
@@ -13,7 +20,8 @@ public interface IInventory{
      * @param product  the product to be removed from the inventory
      * @param quantity the quantity of the product to be removed
      */
-    void removeProduct(Product product, int quantity);
+    void removeProduct(Product product, int quantity)
+        throws InsufficientQuantityException, ProductDoesNotExistException, ProductOutOfStockException;
 
     /**
      * Returns the quantity of a product in the inventory.

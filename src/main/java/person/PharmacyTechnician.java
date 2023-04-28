@@ -1,10 +1,17 @@
+package person;
+
+import misc.Address;
 import java.util.Objects;
+import misc.DataProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
- * The PharmacyTechnician class represents an employee who is a pharmacy technician, with a state
+ * The Person.PharmacyTechnician class represents an employee who is a pharmacy technician, with a state
  * license ID and cashier training.
  */
 public class PharmacyTechnician extends Employee {
+    private static final Logger LOG = LogManager.getLogger(PharmacyTechnician.class);
 
     private String stateLicenseId;
     private boolean isCashierTrained;
@@ -14,16 +21,8 @@ public class PharmacyTechnician extends Employee {
         super(name, phoneNumber, address);
         this.stateLicenseId = stateLicenseId;
         this.isCashierTrained = false;
-    }
 
-    public static PharmacyTechnician[] predefinedPharmacyTechnicians() {
-        Address[] addresses = Address.predefinedAddresses();
-        return new PharmacyTechnician[]{
-            new PharmacyTechnician("John Tech", "555-1234", addresses[3],
-                "CA123456"),
-            new PharmacyTechnician("Jane Tech", "555-5678", addresses[4],
-                "CA654321")
-        };
+        LOG.trace("Pharmacist created with eID: " + super.employeeId);
     }
 
     public String getStateLicenseId() {
@@ -48,7 +47,7 @@ public class PharmacyTechnician extends Employee {
     @Override
     public void printEmployeeDetails() {
         super.printDetails();
-        System.out.println("Position: Pharmacy Technician");
+        System.out.println("Position: Pharmacy.Pharmacy Technician");
         System.out.println("EmployeeId: " + super.employeeId);
         System.out.println("LicenseId: " + this.stateLicenseId);
         System.out.println("Cashier Trained: " + this.isCashierTrained);
@@ -58,7 +57,7 @@ public class PharmacyTechnician extends Employee {
 
     @Override
     public String toString() {
-        return "PharmacyTechnician{" +
+        return "Person.PharmacyTechnician{" +
             "stateLicenseId='" + stateLicenseId + '\'' +
             ", isCashierTrained=" + isCashierTrained +
             "} " + super.toString();

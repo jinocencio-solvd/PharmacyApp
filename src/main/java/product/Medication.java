@@ -1,15 +1,22 @@
+package product;
+
 import java.util.Objects;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
- * The Medication class represents a medication with a name, dosage, price, and quantity.
+ * The Product.Medication class represents a medication with a name, dosage, price, and quantity.
  */
 public class Medication extends Product {
 
+    private static final Logger LOG = LogManager.getLogger(Medication.class);
     private String dosage;
 
     public Medication(String name, String dosage, double price) {
         super(name, price);
         this.dosage = dosage;
+
+        LOG.trace("Medication created: " + this.name);
     }
 
     public String getDosage() {
@@ -22,7 +29,7 @@ public class Medication extends Product {
 
     @Override
     public String toString() {
-        return "Medication{" +
+        return "Product.Medication{" +
             "dosage='" + dosage + '\'' +
             ", name='" + name + '\'' +
             ", price=" + price +

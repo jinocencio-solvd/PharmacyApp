@@ -1,3 +1,12 @@
+import exceptions.DuplicatePersonException;
+import inventory.Inventory;
+import misc.Address;
+import person.Employee;
+import person.Pharmacist;
+import person.PharmacyTechnician;
+import pharmacy.Pharmacy;
+import product.Item;
+import product.Medication;
 import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +31,7 @@ class PharmacyTest {
     Medication medication3 = new Medication("Acetaminophen", "325 mg", 0.05);
     Medication medication4 = new Medication("Naproxen", "220 mg", 0.12);
     ArrayList<Employee> employees = new ArrayList<>();
-    ProductInventory inventory = new ProductInventory();
+    Inventory inventory = new Inventory();
     Pharmacist pharmacist1;
     Pharmacist pharmacist2;
     PharmacyTechnician tech2;
@@ -31,7 +40,7 @@ class PharmacyTest {
     Pharmacy pharmacyCopy;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws DuplicatePersonException {
         pharmacist1 = new Pharmacist("John Doe", "555-1234", address1, "CA-12345");
         pharmacist2 = new Pharmacist("Jane Smith", "555-5678", address2, "NY-67890");
         tech1 = new PharmacyTechnician("John Tech", "555-1234", address3, "CA123456");
@@ -53,11 +62,11 @@ class PharmacyTest {
         inventory.addProduct(medication3, 200);
         inventory.addProduct(medication4, 75);
 
-        pharmacy = new Pharmacy("Joffrey's Pharmacy", address0, "123" + "-321-4567",
-            "pharmEmail@email.com", inventory, employees);
-
+        pharmacy = new Pharmacy("Joffrey's Pharmacy.Pharmacy", address0, "123" + "-321-4567", "pharmEmail@email.com");
+        pharmacy.setInventory(inventory);
+        pharmacy.setEmployees(employees);
         // Copy created using overloaded constructor
-        pharmacyCopy = new Pharmacy("Joffrey's Pharmacy", address0, "123" + "-321-4567",
+        pharmacyCopy = new Pharmacy("Joffrey's Pharmacy.Pharmacy", address0, "123" + "-321-4567",
             "pharmEmail@email.com");
         pharmacyCopy.hireEmployee(pharmacist1);
         pharmacyCopy.hireEmployee(pharmacist2);

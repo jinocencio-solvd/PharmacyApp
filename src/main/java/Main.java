@@ -1,71 +1,84 @@
+import exceptions.DuplicatePersonException;
+
+import inventory.ProductInventory;
+import java.util.Scanner;
+import misc.DataProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import person.Patient;
+import person.Pharmacist;
+import person.PharmacyTechnician;
+import pharmacy.Pharmacy;
+import product.Item;
+import product.Medication;
+
 public class Main {
 
-    public static void main(String[] args) {
-        Address[] addresses = Address.predefinedAddresses();
-        Pharmacist[] pharmacists = Pharmacist.predefinedPharmacist();
-        PharmacyTechnician[] technicians = PharmacyTechnician.predefinedPharmacyTechnicians();
-        Pharmacy pharmacy = new Pharmacy("Joffrey's Pharmacy", addresses[0], "123-321-4567",
-            "pharmEmail@email.com");
-        pharmacy.setPrescriptionRegistry(new PrescriptionRegistry());
-        PrescriptionRegistry prescriptionRegistry = pharmacy.getPrescriptionRegistry();
-        ProductInventory inventory = new ProductInventory();
-        Item product1 = new Item("Band-Aids", 2.99);
-        Item product2 = new Item("Hydrogen Peroxide", 1.99);
-        Item product3 = new Item("Antacid Tablets", 4.99);
-        Item product4 = new Item("Cough Drops", 3.49);
-        Medication medication1 = new Medication("Aspirin", "500 mg", 0.10);
-        Medication medication2 = new Medication("Ibuprofen", "200 mg", 0.08);
-        Medication medication3 = new Medication("Acetaminophen", "325 mg", 0.05);
-        Medication medication4 = new Medication("Naproxen", "220 mg", 0.12);
-        Insurance insurance1 = new Insurance("MediCare", "123456", 80.0);
-        Insurance insurance2 = new Insurance("Blue Cross", "123456", 70.0);
-        Patient patient1 = new Patient("Tom Davis", "555-7890", addresses[5], insurance1);
-        Patient patient2 = new Patient("Sara Johnson", "555-2345", addresses[6], insurance2);
-        Patient patient3 = new Patient("Sara Johnson", "555-2345", addresses[6]);
-        Prescription prescription1 = new Prescription("rxId:1", 2, false, medication1, patient1,
-            35);
-        Prescription prescription2 = new Prescription("rxId:2", 2, false, medication2, patient1,
-            50);
-        Prescription prescription3 = new Prescription("rxId:3", 2, false, medication2, patient2,
-            35);
+    private static final Logger LOG = LogManager.getLogger(Main.class);
+    private static final Pharmacist[] PHARMACISTS = DataProvider.predefinedPharmacist();
+    private static final PharmacyTechnician[] TECHNICIANS = DataProvider.predefinedPharmacyTechnicians();
 
-        // pharmacy interface methods
-        pharmacy.hireEmployee(pharmacists[0]);
-        pharmacy.hireEmployee(pharmacists[1]);
-        pharmacy.hireEmployee((technicians[0]));
-        pharmacy.hireEmployee((technicians[1]));
-        pharmacy.releaseEmployee((technicians[1]));
-        pharmacy.printPharmacyInformation();
+    public static void hirePharmacyEmployees(Pharmacy pharmacy) throws DuplicatePersonException {
+        LOG.info("Start hiring employees");
+        pharmacy.hireEmployee(PHARMACISTS[0]);
+        pharmacy.hireEmployee(PHARMACISTS[1]);
+        pharmacy.hireEmployee((TECHNICIANS[0]));
+        pharmacy.hireEmployee((TECHNICIANS[0])); // hire duplicate
+        pharmacy.hireEmployee((TECHNICIANS[1]));
+        LOG.info("Completed hiring employees");
+    }
 
-        // Employee interface methods
-        pharmacists[0].printEmployeeDetails();
-        pharmacists[0].clockIn();
-        pharmacists[0].clockOut();
+    public static ProductInventory populateInventory() {
+        LOG.info("Start populating product inventory");
+        ProductInventory productInventory = new ProductInventory();
+        for (Item item : DataProvider.predefinedItems()) {
+            productInventory.addProduct(item, 50);
+        }
+        for (Medication medication : DataProvider.predefinedMedications()) {
+            productInventory.addProduct(medication, 100);
+        }
+        LOG.info("Completed populating product inventory");
+        return productInventory;
+    }
 
-        // inventory interface methods
-        inventory.addProduct(product1, 50);
-        inventory.addProduct(product2, 25);
-        inventory.addProduct(product3, 30);
-        inventory.addProduct(product4, 40);
-        inventory.addProduct(medication1, 100);
-        inventory.addProduct(medication2, 50);
-        inventory.addProduct(medication3, 200);
-        inventory.addProduct(medication4, 75);
-        inventory.removeProduct(product4, 20);
-        System.out.println(inventory.getQuantity(product4));        // 20
-        System.out.println(inventory.getQuantity(medication2));     // 25
+    private static void userCreatePatient(Pharmacy pharmacy) {
+        LOG.trace("In userCreatePatient");
+        System.out.println("Welcome to " + pharmacy.getName());
+        Scanner s = new Scanner(System.in);
+        String name = "";
+        try {
+            System.out.println("Enter patient name:");
+            name = s.nextLine();
+            if (name.isBlank()) {
+                throw new IllegalArgumentException("Name cannot be empty");
+            }
+            Patient userPatient = new Patient(name, "phoneNumber",
+                DataProvider.predefinedAddresses()[0],
+                null);
 
-        // Customer interface methods / PrescriptionRegistry
-        Customer customerToPatient = new Consumer("customer", "123456789", addresses[0]);
+            LOG.info("Patient " + userPatient.getName() + " created with patientId: "
+                + userPatient.getPatientID());
+            System.out.println("Thank you see you later.");
+        } catch (IllegalArgumentException e) {
+            LOG.warn("Name cannot be empty");
+            userCreatePatient(pharmacy);
+        } finally {
+            s.close();
+        }
+    }
 
-        // provision of prescription by customer creates new patient --> patient 4
-        // .providePrescription uses pharmacy to access PrescriptionRegistry
-        customerToPatient.providePrescription(pharmacy, prescription1);
+    public static void main(String[] args) throws DuplicatePersonException {
+        // Pharmacy Operations
+        Pharmacy pharmacy = DataProvider.predefinedPharmacy();
+        hirePharmacyEmployees(pharmacy);
+        ProductInventory productInventory = populateInventory();
+        pharmacy.setInventory(productInventory);
 
-        // patient 5
-        Patient patient5 = new Patient("patient5", "555-2345", addresses[6]);
-        System.out.println(patient5.getPatientID()); // patientId-5
-        System.out.println(patient5); // patientId-5
-        System.out.println(Patient.getNumberOfPatients());// patientId-5
+        pharmacy.hireEmployee(TECHNICIANS[1]); // duplicate hire
+        pharmacy.releaseEmployee(TECHNICIANS[1]);
+        pharmacy.releaseEmployee(TECHNICIANS[1]); // not found
+
+        userCreatePatient(pharmacy);
     }
 }

@@ -1,11 +1,22 @@
+package person;
+
+import exceptions.PersonDoesNotExistException;
+import misc.Address;
+import misc.Insurance;
+
+import pharmacy.Pharmacy;
+import prescriptionRegistry.Prescription;
 import java.util.Objects;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
- * The Patient class represents a person who is a patient, with a patient ID and insurance
+ * The Person.Patient class represents a person who is a patient, with a patient ID and insurance
  * information.
  */
 public class Patient extends Customer {
 
+    private static final Logger LOG = LogManager.getLogger(Patient.class);
     private static int count = 0;
 
     private String patientID;
@@ -19,6 +30,8 @@ public class Patient extends Customer {
         count++;
         this.patientID = "patientId-" + count;
         this.insurance = insurance;
+
+        LOG.trace("Patient created with Id: " + patientID);
     }
 
     // Represents a patient without insurance
@@ -28,6 +41,8 @@ public class Patient extends Customer {
         this.patientID = "patientId-" + count;
         this.insuranceName = null;
     }
+
+
 
     public String getPatientID() {
         return patientID;
@@ -67,12 +82,18 @@ public class Patient extends Customer {
 
     @Override
     public void providePrescription(Pharmacy pharmacy, Prescription prescription) {
-        pharmacy.getPrescriptionRegistry().addPrescription(this, prescription);
+        try {
+            pharmacy.getPrescriptionRegistry().addPrescription(this, prescription);
+        } catch (PersonDoesNotExistException e) {
+            LOG.info("New Patient added into registry");
+            pharmacy.getPrescriptionRegistry().addPatientToRegistry(this);
+
+        }
     }
 
     @Override
     public String toString() {
-        return "Patient{" +
+        return "Person.Patient{" +
             "patientID='" + patientID + '\'' +
             ", insuranceName='" + insuranceName + '\'' +
             ", percentInsuranceCovered=" + percentInsuranceCovered +

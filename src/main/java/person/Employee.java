@@ -1,10 +1,13 @@
+package person;
+
+import misc.Address;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
- * Represents an employee that extends the Person class. Contains an employee ID field in addition
- * to the Person class fields.
+ * Represents an employee that extends the Person.Person class. Contains an employee ID field in addition
+ * to the Person.Person class fields.
  */
 public abstract class Employee extends Person implements IEmployee {
 
@@ -47,7 +50,7 @@ public abstract class Employee extends Person implements IEmployee {
 
     @Override
     public String toString() {
-        return "Employee{" +
+        return "Person.Employee{" +
             "employeeId='" + employeeId + '\'' +
             "} " + super.toString();
     }

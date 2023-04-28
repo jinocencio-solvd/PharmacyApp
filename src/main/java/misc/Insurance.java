@@ -1,13 +1,19 @@
+package misc;
+
 import java.util.Objects;
 
 public class Insurance {
+
+    private static int count = 0;
+
     private String insuranceName;
     private String insuranceId;
     private double percentInsuranceCovered;
 
-    public Insurance(String insuranceName, String insuranceId, double percentInsuranceCovered) {
+    public Insurance(String insuranceName, double percentInsuranceCovered) {
+        count++;
         this.insuranceName = insuranceName;
-        this.insuranceId = insuranceId;
+        this.insuranceId = "InsuranceID-" + count;
         this.percentInsuranceCovered = percentInsuranceCovered;
     }
 
@@ -37,7 +43,7 @@ public class Insurance {
 
     @Override
     public String toString() {
-        return "Insurance{" +
+        return "Misc.Insurance{" +
             "insuranceName='" + insuranceName + '\'' +
             ", insuranceId='" + insuranceId + '\'' +
             ", percentInsuranceCovered=" + percentInsuranceCovered +

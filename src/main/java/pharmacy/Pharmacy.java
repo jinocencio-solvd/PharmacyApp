@@ -1,7 +1,23 @@
+package pharmacy;
+
+import exceptions.DuplicatePersonException;
+import exceptions.PersonDoesNotExistException;
+import inventory.Inventory;
+import misc.Address;
+import person.Employee;
+import prescriptionRegistry.PrescriptionRegistry;
 import java.util.ArrayList;
 import java.util.Objects;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+/**
+ * Represents a pharmacy with HR capabilities. This class represents a pharmacy, which has a name,
+ * address, phone number, email address, and  a list of employees.
+ */
 public class Pharmacy implements IPharmacy {
+
+    private static final Logger LOG = LogManager.getLogger(Pharmacy.class);
 
     private String name;
     private Address address;
@@ -12,16 +28,14 @@ public class Pharmacy implements IPharmacy {
     private PrescriptionRegistry prescriptionRegistry;
 
 
-    public Pharmacy(String name, Address address, String phoneNumber, String emailAddress,
-        Inventory inventory, ArrayList<Employee> employees) {
-        this.name = name;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.emailAddress = emailAddress;
-        this.inventory = inventory;
-        this.employees = employees;
-    }
-
+    /**
+     * Constructs a new Pharmacy object.
+     *
+     * @param name         The name of the pharmacy.
+     * @param address      The address of the pharmacy.
+     * @param phoneNumber  The phone number of the pharmacy.
+     * @param emailAddress The email address of the pharmacy.
+     */
     public Pharmacy(String name, Address address, String phoneNumber, String emailAddress) {
         this.name = name;
         this.address = address;
@@ -86,19 +100,27 @@ public class Pharmacy implements IPharmacy {
         this.employees = employees;
     }
 
+
     /**
      * Hires a new employee and adds them to the pharmacy's list of employees.
      *
      * @param newEmployee the person to hire as an employee
      */
     @Override
-    public void hireEmployee(Employee newEmployee) {
-        if (!this.employees.contains(newEmployee)) {
+    public void hireEmployee(Employee newEmployee) throws DuplicatePersonException {
+        //TODO: Perhaps this would make more sense if hireEmployee took a "Person" as a parameter
+        // and then create an "Employee". Logic flow would have to completely change.
+        try {
+            if (this.employees.contains(newEmployee)) {
+                throw new DuplicatePersonException(
+                    "The employee is already hired in the employee system.");
+            }
             this.employees.add(newEmployee);
-            return;
+            LOG.info("Employee" + newEmployee.getEmployeeID()
+                + " was successfully registered in employee database");
+        } catch (DuplicatePersonException e) {
+            LOG.warn("Employee is already registered in employee database");
         }
-        //TODO: Replace with error handling
-        System.out.println("The employee is already hired in the employee system.");
     }
 
     /**
@@ -108,14 +130,17 @@ public class Pharmacy implements IPharmacy {
      */
     @Override
     public void releaseEmployee(Employee employee) {
-        for (Employee e : this.employees) {
-            if (e.equals(employee)) {
-                this.employees.remove(e);
+        LOG.trace("In releaseEmployee for " + employee.getEmployeeID());
+        try {
+            if (this.employees.contains((employee))) {
+                this.employees.remove(employee);
+                LOG.info("Employee " + employee.getEmployeeID() + " was released");
                 return;
             }
+            throw new PersonDoesNotExistException("Employee not found in employee database");
+        } catch (PersonDoesNotExistException e) {
+            LOG.error("Error occurred. Employee not found in employee database.");
         }
-        //TODO: Replace with error handling
-        System.out.println("The employee is does not exist in employee system.");
     }
 
     /**
@@ -129,7 +154,7 @@ public class Pharmacy implements IPharmacy {
 
     @Override
     public String toString() {
-        return "Pharmacy{" +
+        return "Pharmacy.Pharmacy{" +
             "name='" + name + '\'' +
             ", address=" + address +
             ", phoneNumber='" + phoneNumber + '\'' +

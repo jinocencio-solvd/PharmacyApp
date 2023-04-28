@@ -1,3 +1,5 @@
+import misc.DataProvider;
+import person.PharmacyTechnician;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +10,7 @@ class PharmacyTechnicianTest {
     PharmacyTechnician tech1;
     PharmacyTechnician tech2;
     PharmacyTechnician tech1Copy;
-    PharmacyTechnician[] technicians = PharmacyTechnician.predefinedPharmacyTechnicians();
+    PharmacyTechnician[] technicians = DataProvider.predefinedPharmacyTechnicians();
 
     @BeforeEach
     void setUp() {

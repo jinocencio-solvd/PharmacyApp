@@ -1,9 +1,24 @@
+package person;
+
+import exceptions.InsufficientQuantityException;
+import exceptions.NoMoreRefillsException;
+import exceptions.ProductDoesNotExistException;
+import exceptions.ProductOutOfStockException;
+import misc.Address;
+import misc.DataProvider;
+import prescriptionRegistry.Prescription;
+import product.*;
+import inventory.Inventory;
 import java.util.Objects;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
- * The Pharmacist class represents an employee who is a pharmacist, with a state license ID.
+ * The Person.Pharmacist class represents an employee who is a pharmacist, with a state license ID.
  */
 public class Pharmacist extends Employee {
+
+    private static final Logger LOG = LogManager.getLogger(Pharmacist.class);
 
     private String stateLicenseId;
 
@@ -11,14 +26,10 @@ public class Pharmacist extends Employee {
     public Pharmacist(String name, String phoneNumber, Address address, String stateLicenseId) {
         super(name, phoneNumber, address);
         this.stateLicenseId = stateLicenseId;
+        LOG.trace("Pharmacist created with eID: " + super.employeeId);
     }
 
-    public static Pharmacist[] predefinedPharmacist() {
-        Address[] addresses = Address.predefinedAddresses();
-        return new Pharmacist[]{
-            new Pharmacist("John Doe", "555-1234", addresses[1], "CA-12345"),
-            new Pharmacist("Jane Smith", "555-5678", addresses[2], "NY-67890")};
-    }
+
 
     public String getStateLicenseId() {
         return stateLicenseId;
@@ -31,7 +42,17 @@ public class Pharmacist extends Employee {
     public void retrieveMedicationsFromInventory(Inventory inventory, Prescription prescription) {
         Medication prescribedMed = prescription.getMedication();
         int prescribedQuantity = prescription.getPrescribedQuantity();
-        inventory.removeProduct(prescribedMed, prescribedQuantity);
+        try {
+            inventory.removeProduct(prescribedMed, prescribedQuantity);
+        } catch (InsufficientQuantityException e) {
+            int medQuantity = inventory.getQuantity(prescribedMed);
+            LOG.warn("Unable to retrieve prescribed quantity of +" + prescribedQuantity
+                + ". Current quantity of " + prescribedMed.getName() + " is " + medQuantity + ".");
+        } catch (ProductDoesNotExistException e) {
+            LOG.warn("Medication for " + prescribedMed.getName() + "does not exist.");
+        } catch (ProductOutOfStockException e) {
+            LOG.warn("Medication " + prescribedMed.getName() + "is out of stock.");
+        }
     }
 
     /**
@@ -44,23 +65,22 @@ public class Pharmacist extends Employee {
      * @param prescription the prescription to be filled
      */
     public void fillPrescription(Inventory inventory, Prescription prescription) {
-        if (prescription.getNumRefills() == 0) {
-            //TODO: implement proper error handling
-            System.out.println("No more refills available");
-            return;
+        try {
+            if (prescription.getNumRefills() == 0) {
+                throw new NoMoreRefillsException("No more refills available");
+            }
+            retrieveMedicationsFromInventory(inventory, prescription);
+            prescription.setNumRefills(prescription.getNumRefills() - 1);
+            prescription.setFilled(true);
+
+            // TODO: Upon patient picking up prescription,
+            //  setFilled to false to be ready for next refill
+
+            LOG.info("Prescription: " + prescription.getPrescriptionId() + " for patient: "
+                + prescription.getPatient().getName() + " is filled.");
+        } catch (NoMoreRefillsException e) {
+            LOG.warn("Prescription is out of refills");
         }
-
-        retrieveMedicationsFromInventory(inventory, prescription);
-
-        // complete prescription
-        prescription.setNumRefills(prescription.getNumRefills() - 1);
-        prescription.setFilled(true);
-
-        // TODO: Upon patient picking up prescription, setFilled to false to be ready for next refill
-        // Confirmation message
-        String msg = "prescription: " + prescription.getPrescriptionId() + " for patient: "
-            + prescription.getPatient().getName() + " is filled.";
-        System.out.println(msg);
     }
 
     /**
@@ -69,14 +89,14 @@ public class Pharmacist extends Employee {
     @Override
     public void printEmployeeDetails() {
         super.printDetails();
-        System.out.println("Position Title: Pharmacist");
+        System.out.println("Position Title: Person.Pharmacist");
         System.out.println("EmployeeId: " + super.employeeId);
         System.out.println("LicenseId: " + this.stateLicenseId);
     }
 
     @Override
     public String toString() {
-        return "Pharmacist{" +
+        return "Person.Pharmacist{" +
             "stateLicenseId='" + stateLicenseId + '\'' +
             "} " + super.toString();
     }

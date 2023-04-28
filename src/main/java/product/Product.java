@@ -1,7 +1,9 @@
+package product;
+
 import java.util.Objects;
 
 /**
- * The Product class represents an abstract product with a name, price, and quantity.
+ * The Product.Product class represents an abstract product with a name, price, and quantity.
  */
 public abstract class Product {
 
@@ -31,7 +33,7 @@ public abstract class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "Product.Product{" +
             "name='" + name + '\'' +
             ", price=" + price +
             '}';

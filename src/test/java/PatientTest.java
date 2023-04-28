@@ -1,3 +1,5 @@
+import misc.Address;
+import person.Patient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

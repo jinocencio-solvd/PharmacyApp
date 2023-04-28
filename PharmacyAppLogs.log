@@ -1,0 +1,33 @@
+15:17:40.916 TRACE person.Pharmacist.<init> - Pharmacist created with eID: EID-1
+15:17:40.919 TRACE person.Pharmacist.<init> - Pharmacist created with eID: EID-2
+15:17:40.920 TRACE person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-3
+15:17:40.920 TRACE person.PharmacyTechnician.<init> - Pharmacist created with eID: EID-4
+15:17:40.921 INFO  Main.hirePharmacyEmployees - Start hiring employees
+15:17:40.922 INFO  pharmacy.Pharmacy.hireEmployee - EmployeeEID-1 was successfully registered in employee database
+15:17:40.922 INFO  pharmacy.Pharmacy.hireEmployee - EmployeeEID-2 was successfully registered in employee database
+15:17:40.922 INFO  pharmacy.Pharmacy.hireEmployee - EmployeeEID-3 was successfully registered in employee database
+15:17:40.922 WARN  pharmacy.Pharmacy.hireEmployee - Employee is already registered in employee database
+15:17:40.923 INFO  pharmacy.Pharmacy.hireEmployee - EmployeeEID-4 was successfully registered in employee database
+15:17:40.923 INFO  Main.hirePharmacyEmployees - Completed hiring employees
+15:17:40.923 INFO  Main.populateInventory - Start populating product inventory
+15:17:40.924 TRACE inventory.Inventory.addProduct - Added Band-Aids to inventory or cart
+15:17:40.924 TRACE inventory.Inventory.addProduct - Added Hydrogen Peroxide to inventory or cart
+15:17:40.924 TRACE inventory.Inventory.addProduct - Added Antacid Tablets to inventory or cart
+15:17:40.924 TRACE inventory.Inventory.addProduct - Added Cough Drops to inventory or cart
+15:17:40.925 TRACE product.Medication.<init> - Medication created: Aspirin
+15:17:40.926 TRACE product.Medication.<init> - Medication created: Ibuprofen
+15:17:40.926 TRACE product.Medication.<init> - Medication created: Acetaminophen
+15:17:40.926 TRACE product.Medication.<init> - Medication created: Naproxen
+15:17:40.926 TRACE inventory.Inventory.addProduct - Added Aspirin to inventory or cart
+15:17:40.927 TRACE inventory.Inventory.addProduct - Added Ibuprofen to inventory or cart
+15:17:40.927 TRACE inventory.Inventory.addProduct - Added Acetaminophen to inventory or cart
+15:17:40.927 TRACE inventory.Inventory.addProduct - Added Naproxen to inventory or cart
+15:17:40.927 INFO  Main.populateInventory - Completed populating product inventory
+15:17:40.927 WARN  pharmacy.Pharmacy.hireEmployee - Employee is already registered in employee database
+15:17:40.928 TRACE pharmacy.Pharmacy.releaseEmployee - In releaseEmployee for EID-4
+15:17:40.929 INFO  pharmacy.Pharmacy.releaseEmployee - Employee EID-4 was released
+15:17:40.929 TRACE pharmacy.Pharmacy.releaseEmployee - In releaseEmployee for EID-4
+15:17:40.930 ERROR pharmacy.Pharmacy.releaseEmployee - Error occurred. Employee not found in employee database.
+15:17:40.930 TRACE Main.userCreatePatient - In userCreatePatient
+15:17:43.744 TRACE person.Patient.<init> - Patient created with Id: patientId-1
+15:17:43.750 INFO  Main.userCreatePatient - Patient Joffrey created with patientId: patientId-1

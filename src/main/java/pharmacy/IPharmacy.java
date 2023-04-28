@@ -1,5 +1,10 @@
+package pharmacy;
+
+import exceptions.DuplicatePersonException;
+import person.Employee;
+
 /**
- * The IPharmacy interface defines methods for hiring and releasing employees and printing
+ * The Pharmacy.IPharmacy interface defines methods for hiring and releasing employees and printing
  * information about the pharmacy.
  */
 public interface IPharmacy {
@@ -9,7 +14,7 @@ public interface IPharmacy {
      *
      * @param newEmployee the person to hire as an employee
      */
-    void hireEmployee(Employee newEmployee);
+    void hireEmployee(Employee newEmployee) throws DuplicatePersonException;
 
     /**
      * Releases an employee and removes them from the pharmacy's list of employees.

@@ -1,4 +1,15 @@
+package person;
+
+import exceptions.PersonDoesNotExistException;
+import misc.Address;
+import pharmacy.Pharmacy;
+import prescriptionRegistry.Prescription;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Consumer extends Customer {
+
+    private static final Logger LOG = LogManager.getLogger(Consumer.class);
 
     public Consumer(String name, String phoneNumber, Address address) {
         super(name, phoneNumber, address);
@@ -13,13 +24,15 @@ public class Consumer extends Customer {
      */
     @Override
     public void providePrescription(Pharmacy pharmacy, Prescription prescription) {
-        // create a new Patient object and copy over the relevant information
-        //TODO: generate patientID via static class counter
         Patient newPatient = new Patient(super.name, super.phoneNumber, super.address);
         if (newPatient.getInsurance() != null) {
             newPatient.setInsurance(newPatient.getInsurance());
         }
         pharmacy.getPrescriptionRegistry().addPatientToRegistry(newPatient);
-        pharmacy.getPrescriptionRegistry().addPrescription(newPatient, prescription);
+        try {
+            pharmacy.getPrescriptionRegistry().addPrescription(newPatient, prescription);
+        } catch (PersonDoesNotExistException e) {
+            LOG.error("An error occurred. Consumer may already be a patient.");
+        }
     }
 }
