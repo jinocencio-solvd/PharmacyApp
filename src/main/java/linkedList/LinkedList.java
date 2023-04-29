@@ -3,7 +3,10 @@ package linkedList;
 import java.util.NoSuchElementException;
 
 /**
- *LinkedList implementation of IlinkedList. Supports adding and removing elements from front and back, getting first and last elements, and get size of list. Linked list is generic and can be used to store any type of object
+ * LinkedList implementation of IlinkedList. Supports adding and removing elements from front and
+ * back, getting first and last elements, and get size of list. Linked list is generic and can be
+ * used to store any type of object
+ *
  * @param <T> the type of object to store in linked list
  */
 public class LinkedList<T> implements IlinkedList<T> {
@@ -52,6 +55,8 @@ public class LinkedList<T> implements IlinkedList<T> {
 
     /**
      * Remove an item from the beginning of the list
+     *
+     * @throws NoSuchElementException if the list is empty.
      */
     @Override
     public void removeFirst() {
@@ -66,6 +71,8 @@ public class LinkedList<T> implements IlinkedList<T> {
 
     /**
      * Remove an item from the end of the list
+     *
+     * @throws NoSuchElementException if the list is empty.
      */
     @Override
     public void removeLast() {
@@ -88,6 +95,8 @@ public class LinkedList<T> implements IlinkedList<T> {
 
     /**
      * Get the item at the beginning of the list
+     *
+     * @throws NoSuchElementException if the list is empty.
      */
     @Override
     public T getFirst() {
@@ -100,6 +109,8 @@ public class LinkedList<T> implements IlinkedList<T> {
 
     /**
      * Get the item at the end of the list
+     *
+     * @throws NoSuchElementException if the list is empty.
      */
     @Override
     public T getLast() {
@@ -129,6 +140,23 @@ public class LinkedList<T> implements IlinkedList<T> {
      */
     @Override
     public String printList() {
-        return null;
+        if (head == null) {
+            return "[]";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("head -> ");
+
+        Node<T> curr = head;
+        while (curr != null) {
+            sb.append(curr.data);
+            sb.append(" -> ");
+
+            // move to next node
+            curr = curr.next;
+        }
+
+        sb.append("tail");
+        return sb.toString();
     }
 }
