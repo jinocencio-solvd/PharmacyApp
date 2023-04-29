@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class genericLinkedListTest {
+class GenericLinkedListTest {
     private static GenericLinkedList<Integer> genericLinkedList;
     @BeforeEach
     void setUp() {
