@@ -34,11 +34,18 @@ public interface IGenericLinkedList<T> {
 
     /**
      * Get size of linkedList
+     *
      * @return size of linkedList
      */
     int size();
+
     /**
      * Return a string representation of the GenericLinkedList
      */
     String printList();
+
+    /**
+     * Returns true if linked list is empty, else false
+     */
+    boolean isEmpty();
 }

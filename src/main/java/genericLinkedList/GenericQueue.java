@@ -15,4 +15,6 @@ public class GenericQueue<T> extends GenericLinkedList<T> {
     public T peek(){
         return getFirst();
     }
+
+
 }

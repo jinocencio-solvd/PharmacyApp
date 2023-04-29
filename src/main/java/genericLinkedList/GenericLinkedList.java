@@ -3,9 +3,9 @@ package genericLinkedList;
 import java.util.NoSuchElementException;
 
 /**
- * GenericLinkedList implementation of IGenericLinkedList. Supports adding and removing elements from front and
- * back, getting first and last elements, and get size of list. Linked list is generic and can be
- * used to store any type of object
+ * GenericLinkedList implementation of IGenericLinkedList. Supports adding and removing elements
+ * from front and back, getting first and last elements, and get size of list. Linked list is
+ * generic and can be used to store any type of object
  *
  * @param <T> the type of object to store in linked list
  */
@@ -158,5 +158,13 @@ public class GenericLinkedList<T> implements IGenericLinkedList<T> {
 
         sb.append("tail");
         return sb.toString();
+    }
+
+    /**
+     * Returns true if linked list is empty, else false
+     */
+    @Override
+    public boolean isEmpty() {
+        return head == null && size == 0;
     }
 }
