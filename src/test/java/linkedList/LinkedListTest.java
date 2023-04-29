@@ -2,6 +2,7 @@ package linkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,6 +36,16 @@ class LinkedListTest {
         linkedList.removeFirst();
         assertEquals(5, linkedList.getFirst());
         assertEquals(1, linkedList.size());
+    }
+
+    @Test
+    void testThrowNoSuchElementException() {
+        assertThrows(NoSuchElementException.class, ()-> linkedList.removeFirst());
+        assertThrows(NoSuchElementException.class, ()-> linkedList.removeLast());
+        linkedList.addFirst(3);
+        assertDoesNotThrow(()-> linkedList.removeLast());
+        assertThrows(NoSuchElementException.class, ()-> linkedList.removeFirst());
+        assertThrows(NoSuchElementException.class, ()-> linkedList.removeLast());
     }
 
     @Test
