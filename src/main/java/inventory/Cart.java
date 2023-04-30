@@ -1,5 +1,6 @@
 package inventory;
 
+import java.util.LinkedHashMap;
 import person.Customer;
 import java.util.Objects;
 
@@ -8,6 +9,7 @@ public class Cart extends Inventory {
 
     public Cart(Customer customer) {
         this.customer = customer;
+        this.products = new LinkedHashMap<>();
     }
 
     public Customer getCustomer() {
