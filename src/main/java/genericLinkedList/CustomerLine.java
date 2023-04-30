@@ -16,18 +16,21 @@ public class CustomerLine extends GenericQueue<Customer> {
     }
 
     public void addCustomer(Customer customer) {
+        LOG.info(customer.getName() + " is now in line");
         customerLine.enqueue(customer);
     }
 
     public Customer getNextCustomer() {
         if (customerLine.isEmpty()) {
-            LOG.info("The line is empty");
+            LOG.warn("The line is empty");
             return null;
         }
+        LOG.info("The next customer is: " + customerLine.peek().getName());
         return customerLine.dequeue();
     }
 
     public int getLineLength() {
+        LOG.debug("There are " + customerLine.size() + " people in line");
         return customerLine.size();
     }
 

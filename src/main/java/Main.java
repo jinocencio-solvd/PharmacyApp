@@ -1,11 +1,13 @@
 import exceptions.DuplicatePersonException;
 
+import genericLinkedList.CustomerLine;
 import inventory.ProductInventory;
 import java.util.Scanner;
 import misc.DataProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import person.Consumer;
 import person.Patient;
 import person.Pharmacist;
 import person.PharmacyTechnician;
@@ -18,6 +20,8 @@ public class Main {
     private static final Logger LOG = LogManager.getLogger(Main.class);
     private static final Pharmacist[] PHARMACISTS = DataProvider.predefinedPharmacist();
     private static final PharmacyTechnician[] TECHNICIANS = DataProvider.predefinedPharmacyTechnicians();
+    private static final Patient[] PATIENTS = DataProvider.predefinedPatients();
+    private static final Consumer[] CONSUMERS = DataProvider.predefinedConsumers();
 
     public static void hirePharmacyEmployees(Pharmacy pharmacy) throws DuplicatePersonException {
         LOG.info("Start hiring employees");
@@ -79,6 +83,23 @@ public class Main {
         pharmacy.releaseEmployee(TECHNICIANS[1]);
         pharmacy.releaseEmployee(TECHNICIANS[1]); // not found
 
-        userCreatePatient(pharmacy);
+        CustomerLine customerLine = new CustomerLine();
+        for (Patient p : PATIENTS) {
+            customerLine.addCustomer(p);
+        }
+        for (Consumer c : CONSUMERS) {
+            customerLine.addCustomer(c);
+        }
+        customerLine.getLineLength();
+        customerLine.getNextCustomer();
+
+        customerLine.getLineLength();
+        customerLine.getNextCustomer();
+        ;
+        for (int i = 0; i < 10; i++) {
+            customerLine.getNextCustomer();
+        }
+
+
     }
 }
