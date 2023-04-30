@@ -95,11 +95,8 @@ public class Main {
 
         customerLine.getLineLength();
         customerLine.getNextCustomer();
-        ;
         for (int i = 0; i < 10; i++) {
             customerLine.getNextCustomer();
         }
-
-
     }
 }

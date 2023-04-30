@@ -5,6 +5,7 @@ import person.Customer;
 import java.util.Objects;
 
 public class Cart extends Inventory {
+
     private Customer customer;
 
     public Cart(Customer customer) {

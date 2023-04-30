@@ -5,7 +5,8 @@ import exceptions.ProductDoesNotExistException;
 import exceptions.ProductOutOfStockException;
 import product.Product;
 
-public interface IInventory{
+public interface IInventory {
+
     /**
      * Adds a product to the inventory with the specified quantity.
      *

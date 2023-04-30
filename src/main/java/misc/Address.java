@@ -3,7 +3,8 @@ package misc;
 import java.util.Objects;
 
 /**
- * This class represents an Misc.Address object which contains the street, city, state, and postal code.
+ * This class represents an Misc.Address object which contains the street, city, state, and postal
+ * code.
  */
 public class Address {
 
