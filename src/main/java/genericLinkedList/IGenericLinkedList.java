@@ -48,4 +48,21 @@ public interface IGenericLinkedList<T> {
      * Returns true if linked list is empty, else false
      */
     boolean isEmpty();
+
+    /**
+     * Inserts an item at an index
+     *
+     * @param data The data to be inserted
+     * @param idx  The index to insert at
+     * @return true if successful, else false
+     */
+    boolean insertAt(T data, int idx);
+
+    /**
+     * Retrieves an item given an index
+     *
+     * @param idx The index to retrieve the item
+     * @return The item
+     */
+    T get(int idx);
 }

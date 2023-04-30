@@ -1,6 +1,8 @@
 package genericLinkedList;
 
 import java.util.NoSuchElementException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * GenericLinkedList implementation of IGenericLinkedList. Supports adding and removing elements
@@ -10,6 +12,8 @@ import java.util.NoSuchElementException;
  * @param <T> the type of object to store in linked list
  */
 public class GenericLinkedList<T> implements IGenericLinkedList<T> {
+
+    private static final Logger LOG = LogManager.getLogger(GenericLinkedList.class);
 
     private GenericNode<T> head;
     private int size;
@@ -166,5 +170,68 @@ public class GenericLinkedList<T> implements IGenericLinkedList<T> {
     @Override
     public boolean isEmpty() {
         return head == null && size == 0;
+    }
+
+    /**
+     * Inserts an item at an index
+     *
+     * @param data The data to be inserted
+     * @param idx  The index to insert at
+     * @return true if successful, else false
+     */
+    @Override
+    public boolean insertAt(T data, int idx) {
+        GenericNode<T> newNode = new GenericNode<>(data);
+        // Edge case: empty list and incorrect idx
+        if (head == null && idx != 0) {
+            return false;
+        }
+
+        // Insert at beginning
+        if (idx == 0) {
+            newNode.next = head;
+            head = newNode;
+            size++;
+            return true;
+        }
+
+        // iterate up until idx - 1 and insert newNode;
+        GenericNode<T> curr = head;
+        int currIdx = 0;
+        while (curr != null && currIdx < idx - 1) {
+            curr = curr.next;
+            currIdx++;
+        }
+        // check if out of bounds
+        if (curr == null) {
+            return false;
+        }
+
+        newNode.next = curr.next;
+        curr.next = newNode;
+        size++;
+        return true;
+    }
+
+    /**
+     * Retrieves an item given an index
+     *
+     * @param idx The index to retrieve the item
+     * @return The item at idx
+     */
+    @Override
+    public T get(int idx) {
+        GenericNode<T> curr = head;
+        int currIdx = 0;
+
+        while (curr != null && currIdx < idx) {
+            curr = curr.next;
+            currIdx++;
+        }
+        if (curr == null) {
+            LOG.debug("Index out of bounds");
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+        return curr.data;
     }
 }

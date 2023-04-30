@@ -7,7 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class GenericLinkedListTest {
+
     private static GenericLinkedList<Integer> genericLinkedList;
+
     @BeforeEach
     void setUp() {
         genericLinkedList = new GenericLinkedList<>();
@@ -40,12 +42,12 @@ class GenericLinkedListTest {
 
     @Test
     void testThrowNoSuchElementException() {
-        assertThrows(NoSuchElementException.class, ()-> genericLinkedList.removeFirst());
-        assertThrows(NoSuchElementException.class, ()-> genericLinkedList.removeLast());
+        assertThrows(NoSuchElementException.class, () -> genericLinkedList.removeFirst());
+        assertThrows(NoSuchElementException.class, () -> genericLinkedList.removeLast());
         genericLinkedList.addFirst(3);
-        assertDoesNotThrow(()-> genericLinkedList.removeLast());
-        assertThrows(NoSuchElementException.class, ()-> genericLinkedList.removeFirst());
-        assertThrows(NoSuchElementException.class, ()-> genericLinkedList.removeLast());
+        assertDoesNotThrow(() -> genericLinkedList.removeLast());
+        assertThrows(NoSuchElementException.class, () -> genericLinkedList.removeFirst());
+        assertThrows(NoSuchElementException.class, () -> genericLinkedList.removeLast());
     }
 
     @Test
@@ -89,5 +91,26 @@ class GenericLinkedListTest {
         genericLinkedList.addLast(3);
         genericLinkedList.addLast(4);
         assertEquals("head -> 1 -> 2 -> 3 -> 4 -> tail", genericLinkedList.printList());
+    }
+
+    @Test
+    void insertAt() {
+        assertFalse(genericLinkedList.insertAt(5, 2));
+        assertTrue(genericLinkedList.insertAt(0, 0));
+        genericLinkedList.addFirst(2);
+        genericLinkedList.addFirst(1);
+        genericLinkedList.addLast(3);
+        genericLinkedList.addLast(4);
+        assertTrue(genericLinkedList.insertAt(5, 4));
+
+    }
+
+    @Test
+    void get() {
+        genericLinkedList.addFirst(2);
+        genericLinkedList.addFirst(1);
+        genericLinkedList.addLast(3);
+        genericLinkedList.addLast(4);
+        assertEquals(3, genericLinkedList.get(2));
     }
 }
