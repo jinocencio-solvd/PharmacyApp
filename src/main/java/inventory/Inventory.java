@@ -13,10 +13,10 @@ import org.apache.logging.log4j.Logger;
 /**
  * Represents an inventory of products with their quantities.
  */
-public class Inventory implements IInventory {
+public abstract class Inventory implements IInventory {
 
     private static final Logger LOG = LogManager.getLogger(Inventory.class);
-    private final Map<Product, Integer> products;
+    protected Map<Product, Integer> products;
 
     public Inventory() {
         products = new HashMap<>();

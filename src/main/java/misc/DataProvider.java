@@ -1,5 +1,6 @@
 package misc;
 
+import person.Consumer;
 import person.Patient;
 import person.Pharmacist;
 import person.PharmacyTechnician;
@@ -36,9 +37,20 @@ public class DataProvider {
         return new Patient[]{
             new Patient("Tom Davis", "555-7890", addresses[5], insurances[0]),
             new Patient("Sara Johnson", "555-2345", addresses[6], insurances[1]),
-            new Patient("Sara Johnson", "555-2345", addresses[6])
+            new Patient("Sara II Johnson", "555-2345", addresses[6])
         };
     }
+
+    public static Consumer[] predefinedConsumers() {
+        Address[] addresses = predefinedAddresses();
+        Insurance[] insurances = predefinedInsurance();
+        return new Consumer[]{
+            new Consumer("Todd Daver", "555-7890", addresses[5]),
+            new Consumer("Saul Johnson", "555-2345", addresses[6]),
+            new Consumer("Saul II Johnson", "555-2345", addresses[6])
+        };
+    }
+
 
     public static Prescription[] predefinedPrescriptions() {
         Patient[] patients = predefinedPatients();

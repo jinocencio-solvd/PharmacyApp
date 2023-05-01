@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 public abstract class Customer extends Person implements ICustomer {
 
-    private static final Logger LOG = LogManager.getLogger(Pharmacist.class);
+    private static final Logger LOG = LogManager.getLogger(Customer.class);
     private double creditBalance;
 
     public Customer(String name, String phoneNumber, Address address) {

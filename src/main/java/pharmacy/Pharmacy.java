@@ -3,6 +3,7 @@ package pharmacy;
 import exceptions.DuplicatePersonException;
 import exceptions.PersonDoesNotExistException;
 import inventory.Inventory;
+import java.util.LinkedHashSet;
 import misc.Address;
 import person.Employee;
 import prescriptionRegistry.PrescriptionRegistry;
@@ -24,7 +25,7 @@ public class Pharmacy implements IPharmacy {
     private String phoneNumber;
     private String emailAddress;
     private Inventory inventory;
-    private ArrayList<Employee> employees;
+    private LinkedHashSet<Employee> employees;
     private PrescriptionRegistry prescriptionRegistry;
 
 
@@ -41,7 +42,7 @@ public class Pharmacy implements IPharmacy {
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
-        this.employees = new ArrayList<Employee>();
+        this.employees = new LinkedHashSet<>();
     }
 
     public PrescriptionRegistry getPrescriptionRegistry() {
@@ -92,11 +93,11 @@ public class Pharmacy implements IPharmacy {
         this.inventory = inventory;
     }
 
-    public ArrayList<Employee> getEmployees() {
+    public LinkedHashSet<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(ArrayList<Employee> employees) {
+    public void setEmployees(LinkedHashSet<Employee> employees) {
         this.employees = employees;
     }
 

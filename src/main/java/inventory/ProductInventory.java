@@ -1,6 +1,6 @@
 package inventory;
 
-public class ProductInventory extends Inventory{
+public class ProductInventory extends Inventory {
 
     public ProductInventory() {
         super();

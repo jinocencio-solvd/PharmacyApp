@@ -11,6 +11,7 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import inventory.ProductInventory;
+
 class ProductInventoryTest {
 
     ProductInventory inventory = new ProductInventory();
@@ -68,6 +69,30 @@ class ProductInventoryTest {
         assertEquals(150, inventory.getQuantity(medication4));
         inventory.removeProduct(medication4, 10);
         assertEquals(140, inventory.getQuantity(medication4));
+    }
+
+    @Test
+    void testRemoveProductWithInsufficientQuantity() {
+        assertThrows(InsufficientQuantityException.class,
+            () -> inventory.removeProduct(medication4, 1000));
+        assertDoesNotThrow(() -> inventory.removeProduct(medication4, 5));
+    }
+
+    @Test
+    void testProductDoesNotExist() {
+        Medication medication5 = new Medication("testProduct", "220 mg", 0.12);
+        assertThrows(ProductDoesNotExistException.class,
+            () -> inventory.removeProduct(medication5, 1000));
+        inventory.addProduct(medication5, 1000);
+        assertDoesNotThrow(() -> inventory.removeProduct(medication5, 1000));
+    }
+
+    @Test
+    void testProductOutOfStock()
+        throws ProductDoesNotExistException, ProductOutOfStockException, InsufficientQuantityException {
+        inventory.removeProduct(medication1, 100);
+        assertThrows(ProductOutOfStockException.class,
+            () -> inventory.removeProduct(medication1, 100));
     }
 
     @Test

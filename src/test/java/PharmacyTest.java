@@ -1,5 +1,7 @@
 import exceptions.DuplicatePersonException;
 import inventory.Inventory;
+import inventory.ProductInventory;
+import java.util.LinkedHashSet;
 import misc.Address;
 import person.Employee;
 import person.Pharmacist;
@@ -30,8 +32,8 @@ class PharmacyTest {
     Medication medication2 = new Medication("Ibuprofen", "200 mg", 0.08);
     Medication medication3 = new Medication("Acetaminophen", "325 mg", 0.05);
     Medication medication4 = new Medication("Naproxen", "220 mg", 0.12);
-    ArrayList<Employee> employees = new ArrayList<>();
-    Inventory inventory = new Inventory();
+    LinkedHashSet<Employee> employees = new LinkedHashSet<>();
+    ProductInventory inventory = new ProductInventory();
     Pharmacist pharmacist1;
     Pharmacist pharmacist2;
     PharmacyTechnician tech2;
