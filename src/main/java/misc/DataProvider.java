@@ -1,5 +1,6 @@
 package misc;
 
+import inventory.Cart;
 import person.Consumer;
 import person.Patient;
 import person.Pharmacist;
@@ -100,5 +101,13 @@ public class DataProvider {
     public static Pharmacy predefinedPharmacy() {
         return new Pharmacy("PharmacyRx", predefinedAddresses()[0], "(123)-342-4344",
             "pharm@pharmaEmail.com");
+    }
+
+    public static Cart predefinedCartItems() {
+        Cart cart = new Cart();
+        for (Item i : predefinedItems()) {
+            cart.addProduct(i, 1);
+        }
+        return cart;
     }
 }
