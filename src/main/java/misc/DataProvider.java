@@ -103,11 +103,20 @@ public class DataProvider {
             "pharm@pharmaEmail.com");
     }
 
-    public static Cart predefinedCartItems() {
-        Cart cart = new Cart();
+    public static Cart[] predefinedCarts() {
+        Cart itemsOnly = new Cart();
+        Cart itemsOnly2 = new Cart();
+        Cart medicationsOnly = new Cart();
+        Cart itemsAndMedications = new Cart();
         for (Item i : predefinedItems()) {
-            cart.addProduct(i, 1);
+            itemsOnly.addProduct(i, 1);
+            itemsOnly2.addProduct(i, 3);
+            itemsAndMedications.addProduct(i, 1);
         }
-        return cart;
+        for (Medication i : predefinedMedications()) {
+            medicationsOnly.addProduct(i, 1);
+            itemsAndMedications.addProduct(i, 1);
+        }
+        return new Cart[]{itemsOnly, itemsOnly2, medicationsOnly, itemsAndMedications};
     }
 }

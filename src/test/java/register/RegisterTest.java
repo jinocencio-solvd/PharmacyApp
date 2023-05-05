@@ -23,7 +23,7 @@ class RegisterTest {
     void setUp() {
         register = new Register(tech1);
         register.setCustomer(customer);
-        itemsCart = DataProvider.predefinedCartItems();
+        itemsCart = DataProvider.predefinedCarts()[0];
 
         register.setCustomer(customer);
         register.setCart(itemsCart);
