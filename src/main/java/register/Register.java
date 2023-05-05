@@ -1,7 +1,8 @@
 package register;
 
-import exceptions.AbsentCustomerException;
 import exceptions.InsufficientQuantityException;
+import exceptions.ProductDoesNotExistException;
+import exceptions.ProductOutOfStockException;
 import inventory.Cart;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -59,6 +60,10 @@ public class Register implements IRegister {
         this.cart = cart;
     }
 
+    public boolean isTransactionCompleted() {
+        return transactionCompleted;
+    }
+
     @Override
     public double getTotal() {
         double total = 0;
@@ -80,9 +85,9 @@ public class Register implements IRegister {
         }
     }
 
-    public void scanAllProductsInCart() throws AbsentCustomerException {
+    public void scanAllProductsInCart() {
         if (customer == null) {
-            throw new AbsentCustomerException("Customer is not set for checkout");
+            LOG.warn("Customer is not set");
         }
         for (Product p : cart.getProducts().keySet()) {
             int productQty = cart.getProducts().get(p);
@@ -94,28 +99,31 @@ public class Register implements IRegister {
 
     @Override
     public void scanProduct(Product product) {
+        try {
+            cart.removeProduct(product, 1);
+        } catch (InsufficientQuantityException | ProductDoesNotExistException | ProductOutOfStockException e) {
+            LOG.warn(e.getMessage());
+        }
         scannedProducts.add(product);
         LOG.info("Scanned " + product.getName() + " for $" + product.getPrice());
     }
 
     @Override
     public void processTransaction() {
-        try {
-            if (customer == null) {
-                throw new AbsentCustomerException("Customer is not set for checkout");
-            }
-            if (customer.getCreditBalance() < this.getTotal()) {
-                throw new InsufficientQuantityException("Customer does not have enough funds");
-            }
-            double newCustomerBalance = customer.getCreditBalance() - this.getTotal();
-            customer.setCreditBalance(newCustomerBalance);
-            this.transactionCompleted = true;
-            transactionId += 1;
-        } catch (InsufficientQuantityException e) {
-            LOG.warn("Payment Declined: Insufficient funds available");
-        } catch (AbsentCustomerException e) {
+        if (customer == null) {
             LOG.warn("Customer is not set");
         }
+        if (customer.getCreditBalance() < this.getTotal()) {
+            LOG.warn("Payment Declined: Insufficient funds available");
+            LOG.debug(
+                "Customer has " + customer.getCreditBalance() + ". Total is " + this.getTotal());
+        }
+
+        double newCustomerBalance = customer.getCreditBalance() - this.getTotal();
+        customer.setCreditBalance(newCustomerBalance);
+        this.transactionCompleted = true;
+        transactionId += 1;
+
     }
 
     public String generateReceiptString() {

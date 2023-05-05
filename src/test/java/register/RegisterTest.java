@@ -24,6 +24,9 @@ class RegisterTest {
         register = new Register(tech1);
         register.setCustomer(customer);
         itemsCart = DataProvider.predefinedCartItems();
+
+        register.setCustomer(customer);
+        register.setCart(itemsCart);
     }
 
     @Test
@@ -45,9 +48,10 @@ class RegisterTest {
 
     @Test
     void processTransaction() {
-    }
-
-    @Test
-    void generateReceiptString() {
+        assertFalse(register.isTransactionCompleted());
+        customer.setCreditBalance(15.0);
+        register.scanAllProductsInCart();
+        register.processTransaction();
+        assertTrue(register.isTransactionCompleted());
     }
 }
