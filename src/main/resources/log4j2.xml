@@ -9,14 +9,14 @@
         pattern="%highlight{%d{HH:mm:ss.SSS} %-5level %logger{36}.%M - %msg%n}{FATAL=red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue, TRACE=white}"
         disableAnsi="false"/>
     </Console>
-<!--    <File name="file" fileName="PharmacyAppLogs.log" append="false">-->
-<!--      <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %logger{36}.%M - %msg%n" disableAnsi="false"/>-->
-<!--    </File>-->
+    <File name="file" fileName="PharmacyAppLogs.log" append="false">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %logger{36}.%M - %msg%n" disableAnsi="false"/>
+    </File>
   </Appenders>
   <Loggers>
     <Root level="trace" additivity="false">
       <AppenderRef ref="console"/>
-<!--      <AppenderRef ref="file"/>-->
+      <AppenderRef ref="file"/>
     </Root>
   </Loggers>
 </Configuration>
