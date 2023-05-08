@@ -1,12 +1,11 @@
 import exceptions.DuplicatePersonException;
-
+import fileReadWriter.FileReadWriter;
 import genericLinkedList.CustomerLine;
 import inventory.ProductInventory;
 import java.util.Scanner;
 import misc.DataProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import person.Consumer;
 import person.Patient;
 import person.Pharmacist;
@@ -72,7 +71,7 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) throws DuplicatePersonException {
+    private static void pharmacyOperations() throws DuplicatePersonException {
         // Pharmacy Operations
         Pharmacy pharmacy = DataProvider.predefinedPharmacy();
         hirePharmacyEmployees(pharmacy);
@@ -82,7 +81,9 @@ public class Main {
         pharmacy.hireEmployee(TECHNICIANS[1]); // duplicate hire
         pharmacy.releaseEmployee(TECHNICIANS[1]);
         pharmacy.releaseEmployee(TECHNICIANS[1]); // not found
+    }
 
+    private static void customerLineOperations() {
         CustomerLine customerLine = new CustomerLine();
         for (Patient p : PATIENTS) {
             customerLine.addCustomer(p);
@@ -98,5 +99,10 @@ public class Main {
         for (int i = 0; i < 10; i++) {
             customerLine.getNextCustomer();
         }
+    }
+
+    public static void main(String[] args) throws DuplicatePersonException {
+        String filePath = "src/main/resources/PharmacyRxDescription.txt";
+        FileReadWriter.runFileWriteWithUtils(filePath);
     }
 }
