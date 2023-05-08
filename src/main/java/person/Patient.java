@@ -21,7 +21,6 @@ public class Patient extends Customer {
 
     private String patientID;
     private String insuranceName;
-    private double percentInsuranceCovered;
     private Insurance insurance;
 
     // Represents a patient with insurance
@@ -42,8 +41,6 @@ public class Patient extends Customer {
         this.insuranceName = null;
     }
 
-
-
     public String getPatientID() {
         return patientID;
     }
@@ -58,14 +55,6 @@ public class Patient extends Customer {
 
     public void setInsuranceName(String insuranceName) {
         this.insuranceName = insuranceName;
-    }
-
-    public double getPercentInsuranceCovered() {
-        return percentInsuranceCovered;
-    }
-
-    public void setPercentInsuranceCovered(double percentInsuranceCovered) {
-        this.percentInsuranceCovered = percentInsuranceCovered;
     }
 
     public Insurance getInsurance() {
@@ -96,7 +85,6 @@ public class Patient extends Customer {
         return "Person.Patient{" +
             "patientID='" + patientID + '\'' +
             ", insuranceName='" + insuranceName + '\'' +
-            ", percentInsuranceCovered=" + percentInsuranceCovered +
             ", insurance=" + insurance +
             "} " + super.toString();
     }
@@ -113,16 +101,13 @@ public class Patient extends Customer {
             return false;
         }
         Patient patient = (Patient) o;
-        return
-            Double.compare(patient.getPercentInsuranceCovered(), getPercentInsuranceCovered())
-                == 0 && Objects.equals(getPatientID(), patient.getPatientID())
-                && Objects.equals(getInsuranceName(), patient.getInsuranceName())
-                && Objects.equals(getInsurance(), patient.getInsurance());
+        return Objects.equals(getPatientID(), patient.getPatientID())
+            && Objects.equals(getInsuranceName(), patient.getInsuranceName())
+            && Objects.equals(getInsurance(), patient.getInsurance());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getPatientID(), getInsuranceName(),
-            getPercentInsuranceCovered(), getInsurance());
+        return Objects.hash(super.hashCode(), getPatientID(), getInsuranceName(), getInsurance());
     }
 }

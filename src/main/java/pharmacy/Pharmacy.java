@@ -4,13 +4,12 @@ import exceptions.DuplicatePersonException;
 import exceptions.PersonDoesNotExistException;
 import inventory.Inventory;
 import java.util.LinkedHashSet;
-import misc.Address;
-import person.Employee;
-import prescriptionRegistry.PrescriptionRegistry;
-import java.util.ArrayList;
 import java.util.Objects;
+import misc.Address;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import person.Employee;
+import prescriptionRegistry.PrescriptionRegistry;
 
 /**
  * Represents a pharmacy with HR capabilities. This class represents a pharmacy, which has a name,
@@ -108,7 +107,7 @@ public class Pharmacy implements IPharmacy {
      * @param newEmployee the person to hire as an employee
      */
     @Override
-    public void hireEmployee(Employee newEmployee) throws DuplicatePersonException {
+    public void hireEmployee(Employee newEmployee) {
         //TODO: Perhaps this would make more sense if hireEmployee took a "Person" as a parameter
         // and then create an "Employee". Logic flow would have to completely change.
         try {

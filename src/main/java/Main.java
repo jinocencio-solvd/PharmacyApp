@@ -1,12 +1,10 @@
-import exceptions.DuplicatePersonException;
-
+import fileReadWriter.FileReadWriter;
 import genericLinkedList.CustomerLine;
 import inventory.ProductInventory;
 import java.util.Scanner;
 import misc.DataProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import person.Consumer;
 import person.Patient;
 import person.Pharmacist;
@@ -23,7 +21,7 @@ public class Main {
     private static final Patient[] PATIENTS = DataProvider.predefinedPatients();
     private static final Consumer[] CONSUMERS = DataProvider.predefinedConsumers();
 
-    public static void hirePharmacyEmployees(Pharmacy pharmacy) throws DuplicatePersonException {
+    public static void hirePharmacyEmployees(Pharmacy pharmacy) {
         LOG.info("Start hiring employees");
         pharmacy.hireEmployee(PHARMACISTS[0]);
         pharmacy.hireEmployee(PHARMACISTS[1]);
@@ -72,17 +70,17 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) throws DuplicatePersonException {
+    private static void pharmacyOperations() {
         // Pharmacy Operations
         Pharmacy pharmacy = DataProvider.predefinedPharmacy();
         hirePharmacyEmployees(pharmacy);
         ProductInventory productInventory = populateInventory();
         pharmacy.setInventory(productInventory);
-
-        pharmacy.hireEmployee(TECHNICIANS[1]); // duplicate hire
         pharmacy.releaseEmployee(TECHNICIANS[1]);
         pharmacy.releaseEmployee(TECHNICIANS[1]); // not found
+    }
 
+    private static void customerLineOperations() {
         CustomerLine customerLine = new CustomerLine();
         for (Patient p : PATIENTS) {
             customerLine.addCustomer(p);
@@ -98,5 +96,16 @@ public class Main {
         for (int i = 0; i < 10; i++) {
             customerLine.getNextCustomer();
         }
+    }
+
+    public static void runCountWords(){
+        String filePath = "src/main/resources/PharmacyRxDescription.txt";
+        FileReadWriter.runFileWriteWithUtils(filePath);
+    }
+
+    public static void main(String[] args) {
+        pharmacyOperations();
+        customerLineOperations();
+        runCountWords();
     }
 }
