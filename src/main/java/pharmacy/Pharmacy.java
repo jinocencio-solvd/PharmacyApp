@@ -5,11 +5,14 @@ import exceptions.PersonDoesNotExistException;
 import inventory.Inventory;
 import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.function.Predicate;
 import misc.Address;
+import misc.BusinessDays;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import person.Employee;
 import prescriptionRegistry.PrescriptionRegistry;
+import java.time.DayOfWeek;
 
 /**
  * Represents a pharmacy with HR capabilities. This class represents a pharmacy, which has a name,
@@ -26,7 +29,6 @@ public class Pharmacy implements IPharmacy {
     private Inventory inventory;
     private LinkedHashSet<Employee> employees;
     private PrescriptionRegistry prescriptionRegistry;
-
 
     /**
      * Constructs a new Pharmacy object.
@@ -100,6 +102,13 @@ public class Pharmacy implements IPharmacy {
         this.employees = employees;
     }
 
+    public boolean isOpen(DayOfWeek dayToCheck) {
+        Predicate<DayOfWeek> checkDay = day -> {
+            BusinessDays businessDay = BusinessDays.getBusinessDay(dayToCheck.name());
+            return day.getValue() == businessDay.getId() && businessDay.isOpen();
+        };
+        return checkDay.test(dayToCheck);
+    }
 
     /**
      * Hires a new employee and adds them to the pharmacy's list of employees.

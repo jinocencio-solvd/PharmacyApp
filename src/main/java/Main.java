@@ -1,7 +1,9 @@
 import fileReadWriter.FileReadWriter;
 import genericLinkedList.CustomerLine;
 import inventory.ProductInventory;
+import java.time.DayOfWeek;
 import java.util.Scanner;
+import misc.BusinessDays;
 import misc.DataProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +22,7 @@ public class Main {
     private static final PharmacyTechnician[] TECHNICIANS = DataProvider.predefinedPharmacyTechnicians();
     private static final Patient[] PATIENTS = DataProvider.predefinedPatients();
     private static final Consumer[] CONSUMERS = DataProvider.predefinedConsumers();
+    private static Pharmacy pharmacy;
 
     public static void hirePharmacyEmployees(Pharmacy pharmacy) {
         LOG.info("Start hiring employees");
@@ -72,12 +75,25 @@ public class Main {
 
     private static void pharmacyOperations() {
         // Pharmacy Operations
-        Pharmacy pharmacy = DataProvider.predefinedPharmacy();
+        pharmacy = DataProvider.predefinedPharmacy();
         hirePharmacyEmployees(pharmacy);
         ProductInventory productInventory = populateInventory();
         pharmacy.setInventory(productInventory);
         pharmacy.releaseEmployee(TECHNICIANS[1]);
         pharmacy.releaseEmployee(TECHNICIANS[1]); // not found
+    }
+
+    private static void pharmacyOperationDays() {
+        for (DayOfWeek day : DayOfWeek.values()) {
+            String dayStr = day.name();
+            BusinessDays businessDay = BusinessDays.getBusinessDay(dayStr);
+            LOG.info(businessDay.getDescription());
+            if (pharmacy.isOpen(day)) {
+                LOG.info("Come on in!");
+            } else {
+                LOG.info("Come back later!");
+            }
+        }
     }
 
     private static void customerLineOperations() {
@@ -98,7 +114,7 @@ public class Main {
         }
     }
 
-    public static void runCountWords(){
+    public static void runCountWords() {
         String filePath = "src/main/resources/PharmacyRxDescription.txt";
         FileReadWriter.runFileWriteWithUtils(filePath);
     }
@@ -106,6 +122,6 @@ public class Main {
     public static void main(String[] args) {
         pharmacyOperations();
         customerLineOperations();
-        runCountWords();
+        pharmacyOperationDays();
     }
 }
