@@ -24,6 +24,7 @@ public class Register implements IRegister {
     private Employee employee;
     private AbstractCustomer abstractCustomer;
     private Cart cart;
+    private PaymentType paymentType;
 
     private List<Product> scannedProducts;
     private boolean transactionCompleted;
@@ -32,6 +33,16 @@ public class Register implements IRegister {
         this.employee = employee;
         this.scannedProducts = new ArrayList<>();
         this.transactionCompleted = false;
+        this.paymentType = PaymentType.NOT_SELECTED;
+    }
+
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    // TODO: Customer or Cashier can select payment type
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
     }
 
     public List<Product> getScannedProducts() {
@@ -180,5 +191,6 @@ public class Register implements IRegister {
         this.abstractCustomer = null;
         this.scannedProducts.clear();
         this.transactionCompleted = false;
+        setPaymentType(PaymentType.NOT_SELECTED);
     }
 }
