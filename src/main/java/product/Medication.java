@@ -15,6 +15,7 @@ public class Medication extends Product {
     public Medication(String name, String dosage, double price) {
         super(name, price);
         this.dosage = dosage;
+        this.productType = ProductType.PRESCRIBED_MEDICINE;
 
         LOG.trace("Medication created: " + this.name);
     }
