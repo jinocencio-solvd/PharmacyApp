@@ -132,7 +132,10 @@ public class Register implements IRegister {
         }
         StringBuilder sb = new StringBuilder();
         String txnIdLine = "TransactionId: " + "txn-" + transactionId + System.lineSeparator();
+        String cashierInfo = "Cashier: " + employee.getName() + System.lineSeparator() + "Id: "
+            + employee.getEmployeeID() + System.lineSeparator();
         sb.append(txnIdLine);
+        sb.append(cashierInfo);
         for (Product p : scannedProducts) {
             String itemLine = p.getName() + "   " + p.getPrice() + System.lineSeparator();
             sb.append(itemLine);

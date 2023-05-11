@@ -12,6 +12,7 @@ import person.Patient;
 import person.Pharmacist;
 import person.PharmacyTechnician;
 import pharmacy.Pharmacy;
+import prescriptionRegistry.Prescription;
 import product.Item;
 import product.Medication;
 
@@ -20,7 +21,7 @@ public class Main {
     private static final Logger LOG = LogManager.getLogger(Main.class);
     private static final Pharmacist[] PHARMACISTS = DataProvider.predefinedPharmacist();
     private static final PharmacyTechnician[] TECHNICIANS = DataProvider.predefinedPharmacyTechnicians();
-    private static final Patient[] PATIENTS = DataProvider.predefinedPatients();
+    private static final Patient[] PATIENTS = DataProvider.PATIENTS;
     private static final Consumer[] CONSUMERS = DataProvider.predefinedConsumers();
     private static Pharmacy pharmacy;
 
@@ -41,7 +42,7 @@ public class Main {
             productInventory.addProduct(item, 50);
         }
         for (Medication medication : DataProvider.predefinedMedications()) {
-            productInventory.addProduct(medication, 100);
+            productInventory.addProduct(medication, 150);
         }
         LOG.info("Completed populating product inventory");
         return productInventory;
@@ -123,5 +124,25 @@ public class Main {
         pharmacyOperations();
         customerLineOperations();
         pharmacyOperationDays();
+        prescriptionOperations();
+    }
+
+    private static void prescriptionOperations() {
+        Patient patient = PATIENTS[0];
+        Pharmacist pharmacist = DataProvider.predefinedPharmacist()[0];
+        Prescription prescriptionForPatient = DataProvider.predefinedPrescriptions()[0];
+        Runnable runPharmacistFillAllRxReq = () -> pharmacist.fulfillAllPrescriptionLogRequests(
+            pharmacy.getPrescriptionRequestLog(), pharmacy.getInventory(),
+            pharmacy.getPrescriptionRegistry());
+
+        patient.providePrescription(pharmacy, prescriptionForPatient);
+        runPharmacistFillAllRxReq.run();
+
+        // Demo for refill requests
+        for (int i = 0; i < 3; i++) {
+            patient.requestPrescriptionRefill(pharmacy, prescriptionForPatient);
+            runPharmacistFillAllRxReq.run();
+        }
+
     }
 }

@@ -13,6 +13,15 @@ import prescriptionRegistry.Prescription;
 
 public class DataProvider {
 
+
+    private static final Address[] addresses = predefinedAddresses();
+    private static final Insurance[] insurances = predefinedInsurance();
+    // TODO: implement getters for global variables;
+    //  {BUG}: calling predefined methods instantiates new objects rather than referencing the
+    //  objects created in this class. Temporary fix is setting global var to public
+    public static final Patient[] PATIENTS = predefinedPatients();
+    private static final Medication[] medications = predefinedMedications();
+
     public static Address[] predefinedAddresses() {
         return new Address[]{
             new Address("001 Pearl St", "Anytown", "CA", 12345),
@@ -33,8 +42,6 @@ public class DataProvider {
     }
 
     public static Patient[] predefinedPatients() {
-        Address[] addresses = predefinedAddresses();
-        Insurance[] insurances = predefinedInsurance();
         return new Patient[]{
             new Patient("Tom Davis", "555-7890", addresses[5], insurances[0]),
             new Patient("Sara Johnson", "555-2345", addresses[6], insurances[1]),
@@ -43,8 +50,6 @@ public class DataProvider {
     }
 
     public static Consumer[] predefinedConsumers() {
-        Address[] addresses = predefinedAddresses();
-        Insurance[] insurances = predefinedInsurance();
         return new Consumer[]{
             new Consumer("Todd Daver", "555-7890", addresses[5]),
             new Consumer("Saul Johnson", "555-2345", addresses[6]),
@@ -54,24 +59,20 @@ public class DataProvider {
 
 
     public static Prescription[] predefinedPrescriptions() {
-        Patient[] patients = predefinedPatients();
-        Medication[] medications = predefinedMedications();
         return new Prescription[]{
-            new Prescription(2, false, medications[0], patients[0], 35),
-            new Prescription(2, false, medications[1], patients[0], 50),
-            new Prescription(2, false, medications[2], patients[1], 35)
+            new Prescription(2, false, medications[0], PATIENTS[0], 35),
+            new Prescription(2, false, medications[1], PATIENTS[0], 50),
+            new Prescription(2, false, medications[2], PATIENTS[1], 35)
         };
     }
 
     public static Pharmacist[] predefinedPharmacist() {
-        Address[] addresses = predefinedAddresses();
         return new Pharmacist[]{
             new Pharmacist("John Doe", "555-1234", addresses[1], "CA-12345"),
             new Pharmacist("Jane Smith", "555-5678", addresses[2], "NY-67890")};
     }
 
     public static PharmacyTechnician[] predefinedPharmacyTechnicians() {
-        Address[] addresses = DataProvider.predefinedAddresses();
         return new PharmacyTechnician[]{
             new PharmacyTechnician("John Tech", "555-1234", addresses[3],
                 "CA123456"),

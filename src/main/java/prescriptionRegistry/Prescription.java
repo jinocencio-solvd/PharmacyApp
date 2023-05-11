@@ -22,6 +22,7 @@ public class Prescription {
     private Patient patient;
     private int prescribedQuantity;
     private static int countId = 0;
+    private PrescriptionStatus prescriptionStatus;
 
     /**
      * Constructs a new Prescription object with the given prescription ID, number of refills,
@@ -43,6 +44,7 @@ public class Prescription {
         this.medication = medication;
         this.patient = patient;
         this.prescribedQuantity = prescribedQuantity;
+        this.prescriptionStatus = PrescriptionStatus.NEW;
 
         LOG.trace("Prescription created with Id: " + this.prescriptionId);
     }
@@ -93,6 +95,14 @@ public class Prescription {
 
     public void setPrescribedQuantity(int prescribedQuantity) {
         this.prescribedQuantity = prescribedQuantity;
+    }
+
+    public PrescriptionStatus getPrescriptionStatus() {
+        return prescriptionStatus;
+    }
+
+    public void setPrescriptionStatus(PrescriptionStatus prescriptionStatus) {
+        this.prescriptionStatus = prescriptionStatus;
     }
 
     @Override

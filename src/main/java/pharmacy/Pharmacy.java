@@ -1,8 +1,11 @@
 package pharmacy;
 
 import exceptions.DuplicatePersonException;
+import exceptions.InvalidPrescriptionException;
 import exceptions.PersonDoesNotExistException;
+import genericLinkedList.PrescriptionRequestLog;
 import inventory.Inventory;
+import java.time.DayOfWeek;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -11,8 +14,10 @@ import misc.BusinessDays;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import person.Employee;
+import person.Patient;
+import prescriptionRegistry.Prescription;
 import prescriptionRegistry.PrescriptionRegistry;
-import java.time.DayOfWeek;
+import prescriptionRegistry.PrescriptionStatus;
 
 /**
  * Represents a pharmacy with HR capabilities. This class represents a pharmacy, which has a name,
@@ -29,6 +34,7 @@ public class Pharmacy implements IPharmacy {
     private Inventory inventory;
     private LinkedHashSet<Employee> employees;
     private PrescriptionRegistry prescriptionRegistry;
+    private PrescriptionRequestLog prescriptionRequestLog;
 
     /**
      * Constructs a new Pharmacy object.
@@ -44,6 +50,8 @@ public class Pharmacy implements IPharmacy {
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
         this.employees = new LinkedHashSet<>();
+        this.prescriptionRegistry = new PrescriptionRegistry();
+        this.prescriptionRequestLog = new PrescriptionRequestLog();
     }
 
     public PrescriptionRegistry getPrescriptionRegistry() {
@@ -52,6 +60,14 @@ public class Pharmacy implements IPharmacy {
 
     public void setPrescriptionRegistry(PrescriptionRegistry prescriptionRegistry) {
         this.prescriptionRegistry = prescriptionRegistry;
+    }
+
+    public PrescriptionRequestLog getPrescriptionRequestLog() {
+        return prescriptionRequestLog;
+    }
+
+    public void setPrescriptionRequestLog(PrescriptionRequestLog prescriptionRequestLog) {
+        this.prescriptionRequestLog = prescriptionRequestLog;
     }
 
     public String getName() {
@@ -108,6 +124,55 @@ public class Pharmacy implements IPharmacy {
             return day.getValue() == businessDay.getId() && businessDay.isOpen();
         };
         return checkDay.test(dayToCheck);
+    }
+
+    public void receivePrescription(Patient patient, Prescription prescription)
+        throws InvalidPrescriptionException {
+        if (!patient.equals(prescription.getPatient())) {
+            throw new InvalidPrescriptionException(
+                "The prescription does not belong to the patient.");
+        }
+        try {
+            this.getPrescriptionRegistry().addPrescription(patient, prescription);
+            prescriptionRequestLog.addPrescriptionRequest(prescription);
+
+        } catch (PersonDoesNotExistException e) {
+            LOG.info("New Patient added into registry");
+            this.getPrescriptionRegistry().addPatientToRegistry(patient);
+            receivePrescription(patient, prescription);
+
+        }
+    }
+
+    public void receivePrescriptionRefillRequest(Patient patient, Prescription prescription)
+        throws InvalidPrescriptionException {
+        if (!patient.equals(prescription.getPatient())) {
+            throw new InvalidPrescriptionException(
+                "The prescription does not belong to the patient.");
+        }
+        if (isPatientPrescriptionRefillable(prescription)) {
+            prescriptionRequestLog.addPrescriptionRequest(prescription);
+            int numRefillsAfterFilled = prescription.getNumRefills() - 1;
+            LOG.info("Refill request accepted. Refills remaining: " + numRefillsAfterFilled);
+        } else {
+            LOG.error("Refill request denied");
+        }
+    }
+
+    /**
+     * Checks whether the patient prescription request is valid
+     *
+     * @param prescription prescription concerning the patient
+     */
+    public boolean isPatientPrescriptionRefillable(Prescription prescription) {
+        boolean isRefillable =
+            prescription.getPrescriptionStatus() == PrescriptionStatus.REFILL_UPON_REQUEST;
+        if (!isRefillable) {
+            LOG.error("Unable to refill. There are no more refills available.");
+        } else {
+            LOG.info("Current request is refillable");
+        }
+        return isRefillable;
     }
 
     /**

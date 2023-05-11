@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public interface IPrescriptionRegistry {
 
-    ArrayList<Prescription> getPrescriptionList(Patient patient);
+    ArrayList<Prescription> getPrescriptionList(Patient patient) throws PersonDoesNotExistException;
 
     void addPatientToRegistry(Patient patient);
 
