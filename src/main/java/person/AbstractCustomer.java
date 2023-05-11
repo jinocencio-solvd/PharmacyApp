@@ -4,10 +4,11 @@ import exceptions.InsufficientQuantityException;
 import exceptions.ProductDoesNotExistException;
 import exceptions.ProductOutOfStockException;
 import inventory.Cart;
+import java.util.function.Supplier;
 import misc.Address;
-import product.Product;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import product.Product;
 
 public abstract class AbstractCustomer extends Person implements ICustomer {
 
@@ -30,6 +31,11 @@ public abstract class AbstractCustomer extends Person implements ICustomer {
 
     public void setCreditBalance(double creditBalance) {
         this.creditBalance = creditBalance;
+    }
+
+    public void increaseCreditBalanceByOneHundred(){
+        Supplier<Double> supplyCredit = () -> this.creditBalance + 100;
+        this.setCreditBalance(supplyCredit.get());
     }
 
     /**

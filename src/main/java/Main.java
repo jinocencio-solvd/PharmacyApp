@@ -127,9 +127,11 @@ public class Main {
         pharmacyOperationDays();
         prescriptionOperations();
     }
-
     private static void prescriptionOperations() {
         Patient patient = PATIENTS[0];
+        LOG.info("Patient balance for " + patient.getName()+ " is " + patient.getCreditBalance());
+        patient.increaseCreditBalanceByOneHundred();
+        LOG.info("Patient balance for " + patient.getName()+ " after being supplied with more credit is " + patient.getCreditBalance());
         Pharmacist pharmacist = DataProvider.predefinedPharmacist()[0];
         Prescription prescriptionForPatient = DataProvider.predefinedPrescriptions()[0];
         Consumer<Pharmacy> runPharmacistFillAllRxReq = (Pharmacy p) -> pharmacist.fulfillAllPrescriptionLogRequests(
@@ -142,6 +144,5 @@ public class Main {
             patient.requestPrescriptionRefill(pharmacy, prescriptionForPatient);
             runPharmacistFillAllRxReq.accept(pharmacy);
         }
-
     }
 }
