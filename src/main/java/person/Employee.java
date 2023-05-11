@@ -13,6 +13,7 @@ public abstract class Employee extends Person implements IEmployee {
 
     private static int count;
     protected String employeeId;
+    protected EmployeeType employeeType;
 
     static {
         count = 0;
@@ -22,6 +23,7 @@ public abstract class Employee extends Person implements IEmployee {
         super(name, phoneNumber, address);
         count++;
         this.employeeId = "EID-" + count;
+        this.employeeType = EmployeeType.FULL_TIME;
     }
 
     public String getEmployeeID() {
@@ -36,6 +38,14 @@ public abstract class Employee extends Person implements IEmployee {
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return currentDateTime.format(formatter);
+    }
+
+    public EmployeeType getEmployeeType() {
+        return employeeType;
+    }
+
+    public void setEmployeeType(EmployeeType employeeType) {
+        this.employeeType = employeeType;
     }
 
     @Override
