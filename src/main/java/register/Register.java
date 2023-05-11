@@ -7,6 +7,7 @@ import inventory.Cart;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import misc.Insurance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -77,7 +78,8 @@ public class Register implements IRegister {
 
     private double calculatePrice(double originalPrice) {
         if (abstractCustomer instanceof Patient) {
-            Insurance patientInsurance = ((Patient) abstractCustomer).getInsurance();
+            Function<AbstractCustomer, Patient> abstractCustomerToPatient = p -> (Patient) p;
+            Insurance patientInsurance = abstractCustomerToPatient.apply(abstractCustomer).getInsurance();
             double insuranceDiscount = patientInsurance.getPercentInsuranceCovered();
             return originalPrice * (1 - insuranceDiscount / 100);
         } else {

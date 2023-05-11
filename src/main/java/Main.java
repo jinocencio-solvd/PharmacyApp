@@ -132,12 +132,8 @@ public class Main {
         Patient patient = PATIENTS[0];
         Pharmacist pharmacist = DataProvider.predefinedPharmacist()[0];
         Prescription prescriptionForPatient = DataProvider.predefinedPrescriptions()[0];
-        Consumer<Pharmacy> runPharmacistFillAllRxReq =  (Pharmacy p) -> pharmacist.fulfillAllPrescriptionLogRequests(
-            p.getPrescriptionRequestLog(), p.getInventory(),
-            p.getPrescriptionRegistry());
-//        Runnable runPharmacistFillAllRxReq = () -> pharmacist.fulfillAllPrescriptionLogRequests(
-//            pharmacy.getPrescriptionRequestLog(), pharmacy.getInventory(),
-//            pharmacy.getPrescriptionRegistry());
+        Consumer<Pharmacy> runPharmacistFillAllRxReq = (Pharmacy p) -> pharmacist.fulfillAllPrescriptionLogRequests(
+            p.getPrescriptionRequestLog(), p.getInventory(), p.getPrescriptionRegistry());
         patient.providePrescription(pharmacy, prescriptionForPatient);
         runPharmacistFillAllRxReq.accept(pharmacy);
 
