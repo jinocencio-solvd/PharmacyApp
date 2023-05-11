@@ -83,7 +83,7 @@ public class DataProvider {
 
     public static Medication[] predefinedMedications() {
         return new Medication[]{
-            new Medication("Aspirin", "500 mg", 0.10),
+            new Medication("Insulin", "50 mg/dL", 30.0),
             new Medication("Ibuprofen", "200 mg", 0.08),
             new Medication("Acetaminophen", "325 mg", 0.05),
             new Medication("Naproxen", "220 mg", 0.12)

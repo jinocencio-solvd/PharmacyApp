@@ -1,7 +1,5 @@
 package register;
 
-import pharmacy.Pharmacy;
-
 public class Receipt {
 
     private String content;
@@ -16,5 +14,12 @@ public class Receipt {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "Receipt{" +
+            "content='" + content + '\'' +
+            '}';
     }
 }

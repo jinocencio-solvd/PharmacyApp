@@ -1,5 +1,6 @@
 import fileReadWriter.FileReadWriter;
 import genericLinkedList.CustomerLine;
+import inventory.Cart;
 import inventory.ProductInventory;
 import java.time.DayOfWeek;
 import java.util.Scanner;
@@ -16,6 +17,8 @@ import pharmacy.Pharmacy;
 import prescriptionRegistry.Prescription;
 import product.Item;
 import product.Medication;
+import register.Receipt;
+import register.Register;
 
 public class Main {
 
@@ -128,18 +131,41 @@ public class Main {
         prescriptionOperations();
     }
     private static void prescriptionOperations() {
+        // Patient actions
         Patient patient = PATIENTS[0];
         LOG.info("Patient balance for " + patient.getName()+ " is " + patient.getCreditBalance());
         patient.increaseCreditBalanceByOneHundred();
         LOG.info("Patient balance for " + patient.getName()+ " after being supplied with more credit is " + patient.getCreditBalance());
+
+        // Pharmacists action
         Pharmacist pharmacist = DataProvider.predefinedPharmacist()[0];
         Prescription prescriptionForPatient = DataProvider.predefinedPrescriptions()[0];
         Consumer<Pharmacy> runPharmacistFillAllRxReq = (Pharmacy p) -> pharmacist.fulfillAllPrescriptionLogRequests(
             p.getPrescriptionRequestLog(), p.getInventory(), p.getPrescriptionRegistry());
+
+        // Patient requests refill
         patient.providePrescription(pharmacy, prescriptionForPatient);
         runPharmacistFillAllRxReq.accept(pharmacy);
 
-        // Demo for refill requests
+        // Demo for Patient transaction
+        Register register = new Register(TECHNICIANS[0]);
+        Cart cart = new Cart();
+        cart.addProduct(prescriptionForPatient.getMedication(), prescriptionForPatient.getPrescribedQuantity());
+        register.setCustomer(patient);
+        register.setCart(cart);
+        register.scanAllProductsInCart();
+        register.processTransaction(); // InsufficientFunds
+        // TODO: receipt should not be printed if transaction is not completed
+
+        // Patient withdraws more funds
+        patient.increaseCreditBalanceByOneHundred();
+        patient.increaseCreditBalanceByOneHundred();
+        register.processTransaction(); // InsufficientFunds
+
+        Receipt receipt = register.printReceipt();
+        System.out.println(receipt);
+
+        // Demo for refill requests and denial
         for (int i = 0; i < 3; i++) {
             patient.requestPrescriptionRefill(pharmacy, prescriptionForPatient);
             runPharmacistFillAllRxReq.accept(pharmacy);

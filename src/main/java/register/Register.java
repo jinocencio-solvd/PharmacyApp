@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import person.AbstractCustomer;
 import person.Employee;
 import person.Patient;
+import product.Medication;
 import product.Product;
 
 public class Register implements IRegister {
@@ -77,14 +78,22 @@ public class Register implements IRegister {
     }
 
     private double calculatePrice(double originalPrice) {
-        if (abstractCustomer instanceof Patient) {
-            Function<AbstractCustomer, Patient> abstractCustomerToPatient = p -> (Patient) p;
-            Insurance patientInsurance = abstractCustomerToPatient.apply(abstractCustomer).getInsurance();
-            double insuranceDiscount = patientInsurance.getPercentInsuranceCovered();
-            return originalPrice * (1 - insuranceDiscount / 100);
+        if (abstractCustomer.isPatient()) {
+            return calculateDiscountPrice(originalPrice);
         } else {
             return originalPrice;
         }
+    }
+
+    private double calculateDiscountPrice(double originalPrice) {
+        Function<AbstractCustomer, Patient> abstractCustomerToPatient = p -> (Patient) p;
+        Insurance patientInsurance = abstractCustomerToPatient.apply(abstractCustomer)
+            .getInsurance();
+        double insuranceDiscount = patientInsurance.getPercentInsuranceCovered();
+        double discountedPrice = originalPrice * (1 - insuranceDiscount / 100);
+        DecimalFormat df = new DecimalFormat("#.##");
+        return Double.parseDouble(df.format(discountedPrice));
+
     }
 
     public void scanAllProductsInCart() {
@@ -107,7 +116,8 @@ public class Register implements IRegister {
             LOG.warn(e.getMessage());
         }
         scannedProducts.add(product);
-        LOG.info("Scanned " + product.getName() + " for $" + product.getPrice());
+        LOG.info(
+            "Scanned " + product.getName() + " for Non-discounted price of $" + product.getPrice());
     }
 
     @Override
@@ -118,7 +128,8 @@ public class Register implements IRegister {
         if (abstractCustomer.getCreditBalance() < this.getTotal()) {
             LOG.warn("Payment Declined: Insufficient funds available");
             LOG.debug(
-                "AbstractCustomer has " + abstractCustomer.getCreditBalance() + ". Total is " + this.getTotal());
+                "AbstractCustomer has " + abstractCustomer.getCreditBalance() + ". Total is "
+                    + this.getTotal());
         }
 
         double newCustomerBalance = abstractCustomer.getCreditBalance() - this.getTotal();
@@ -141,9 +152,15 @@ public class Register implements IRegister {
         for (Product p : scannedProducts) {
             String itemLine = p.getName() + "   " + p.getPrice() + System.lineSeparator();
             sb.append(itemLine);
+            if (p instanceof Medication && abstractCustomer.isPatient()) {
+                String medicationLine =
+                    "\tDiscounted price: " + calculateDiscountPrice(p.getPrice())
+                        + System.lineSeparator();
+                sb.append(medicationLine);
+            }
 
         }
-        String totalLine = "Total: " + this.getTotal();
+        String totalLine = "Total: " + this.getTotal() + System.lineSeparator();
         sb.append(totalLine);
         return sb.toString();
     }
@@ -154,7 +171,9 @@ public class Register implements IRegister {
     }
 
     public Receipt printReceipt() {
-        return new Receipt(this.generateReceiptString());
+        Receipt receipt = new Receipt(this.generateReceiptString());
+        this.reset();
+        return receipt;
     }
 
     private void reset() {

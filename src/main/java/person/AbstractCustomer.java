@@ -4,6 +4,7 @@ import exceptions.InsufficientQuantityException;
 import exceptions.ProductDoesNotExistException;
 import exceptions.ProductOutOfStockException;
 import inventory.Cart;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 import misc.Address;
 import org.apache.logging.log4j.LogManager;
@@ -36,6 +37,13 @@ public abstract class AbstractCustomer extends Person implements ICustomer {
     public void increaseCreditBalanceByOneHundred(){
         Supplier<Double> supplyCredit = () -> this.creditBalance + 100;
         this.setCreditBalance(supplyCredit.get());
+    }
+
+    public boolean isPatient(){
+        BooleanSupplier isPatient = () -> {
+            return this instanceof Patient;
+        };
+        return isPatient.getAsBoolean();
     }
 
     /**
