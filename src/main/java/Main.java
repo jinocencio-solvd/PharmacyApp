@@ -124,12 +124,6 @@ public class Main {
         FileReadWriter.runFileWriteWithUtils(filePath);
     }
 
-    public static void main(String[] args) {
-        pharmacyOperations();
-        customerLineOperations();
-        pharmacyOperationDays();
-        prescriptionOperations();
-    }
     private static void prescriptionOperations() {
         // Patient actions
         Patient patient = PATIENTS[0];
@@ -170,5 +164,12 @@ public class Main {
             patient.requestPrescriptionRefill(pharmacy, prescriptionForPatient);
             runPharmacistFillAllRxReq.accept(pharmacy);
         }
+    }
+
+    public static void main(String[] args) {
+        pharmacyOperations();
+        customerLineOperations();
+        pharmacyOperationDays();
+        prescriptionOperations();
     }
 }
