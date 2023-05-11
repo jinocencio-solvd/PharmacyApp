@@ -2,25 +2,25 @@ package genericLinkedList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import person.Customer;
+import person.AbstractCustomer;
 import person.Patient;
 
-public class CustomerLine extends GenericQueue<Customer> {
+public class CustomerLine extends GenericQueue<AbstractCustomer> {
 
     private static final Logger LOG = LogManager.getLogger(CustomerLine.class);
 
-    public GenericQueue<Customer> customerLine;
+    public GenericQueue<AbstractCustomer> customerLine;
 
     public CustomerLine() {
         this.customerLine = new GenericQueue<>();
     }
 
-    public void addCustomer(Customer customer) {
-        LOG.info(customer.getName() + " is now in line");
-        customerLine.enqueue(customer);
+    public void addCustomer(AbstractCustomer abstractCustomer) {
+        LOG.info(abstractCustomer.getName() + " is now in line");
+        customerLine.enqueue(abstractCustomer);
     }
 
-    public Customer getNextCustomer() {
+    public AbstractCustomer getNextCustomer() {
         if (customerLine.isEmpty()) {
             LOG.warn("The line is empty");
             return null;
@@ -34,7 +34,7 @@ public class CustomerLine extends GenericQueue<Customer> {
         return customerLine.size();
     }
 
-    public boolean isCustomerPatient(Customer customer) {
-        return customer instanceof Patient;
+    public boolean isCustomerPatient(AbstractCustomer abstractCustomer) {
+        return abstractCustomer instanceof Patient;
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import misc.Insurance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import person.Customer;
+import person.AbstractCustomer;
 import person.Employee;
 import person.Patient;
 import product.Product;
@@ -20,7 +20,7 @@ public class Register implements IRegister {
     private static final Logger LOG = LogManager.getLogger(Register.class);
     private static String transactionId;
     private Employee employee;
-    private Customer customer;
+    private AbstractCustomer abstractCustomer;
     private Cart cart;
 
     private List<Product> scannedProducts;
@@ -44,12 +44,12 @@ public class Register implements IRegister {
         this.employee = employee;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public AbstractCustomer getCustomer() {
+        return abstractCustomer;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomer(AbstractCustomer abstractCustomer) {
+        this.abstractCustomer = abstractCustomer;
     }
 
     public Cart getCart() {
@@ -76,8 +76,8 @@ public class Register implements IRegister {
     }
 
     private double calculatePrice(double originalPrice) {
-        if (customer instanceof Patient) {
-            Insurance patientInsurance = ((Patient) customer).getInsurance();
+        if (abstractCustomer instanceof Patient) {
+            Insurance patientInsurance = ((Patient) abstractCustomer).getInsurance();
             double insuranceDiscount = patientInsurance.getPercentInsuranceCovered();
             return originalPrice * (1 - insuranceDiscount / 100);
         } else {
@@ -86,8 +86,8 @@ public class Register implements IRegister {
     }
 
     public void scanAllProductsInCart() {
-        if (customer == null) {
-            LOG.warn("Customer is not set");
+        if (abstractCustomer == null) {
+            LOG.warn("AbstractCustomer is not set");
         }
         for (Product p : cart.getProducts().keySet()) {
             int productQty = cart.getProducts().get(p);
@@ -110,17 +110,17 @@ public class Register implements IRegister {
 
     @Override
     public void processTransaction() {
-        if (customer == null) {
-            LOG.warn("Customer is not set");
+        if (abstractCustomer == null) {
+            LOG.warn("AbstractCustomer is not set");
         }
-        if (customer.getCreditBalance() < this.getTotal()) {
+        if (abstractCustomer.getCreditBalance() < this.getTotal()) {
             LOG.warn("Payment Declined: Insufficient funds available");
             LOG.debug(
-                "Customer has " + customer.getCreditBalance() + ". Total is " + this.getTotal());
+                "AbstractCustomer has " + abstractCustomer.getCreditBalance() + ". Total is " + this.getTotal());
         }
 
-        double newCustomerBalance = customer.getCreditBalance() - this.getTotal();
-        customer.setCreditBalance(newCustomerBalance);
+        double newCustomerBalance = abstractCustomer.getCreditBalance() - this.getTotal();
+        abstractCustomer.setCreditBalance(newCustomerBalance);
         this.transactionCompleted = true;
         transactionId += 1;
 
@@ -128,7 +128,7 @@ public class Register implements IRegister {
 
     public String generateReceiptString() {
         if (!this.transactionCompleted) {
-            LOG.warn("Cannot generate receipt before customer payment");
+            LOG.warn("Cannot generate receipt before abstractCustomer payment");
         }
         StringBuilder sb = new StringBuilder();
         String txnIdLine = "TransactionId: " + "txn-" + transactionId + System.lineSeparator();
@@ -156,7 +156,7 @@ public class Register implements IRegister {
     }
 
     private void reset() {
-        this.customer = null;
+        this.abstractCustomer = null;
         this.scannedProducts.clear();
         this.transactionCompleted = false;
     }

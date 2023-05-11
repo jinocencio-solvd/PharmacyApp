@@ -1,69 +1,38 @@
 package person;
 
-import exceptions.InsufficientQuantityException;
-import exceptions.ProductDoesNotExistException;
-import exceptions.ProductOutOfStockException;
-import inventory.Cart;
+import exceptions.PersonDoesNotExistException;
 import misc.Address;
-import product.Product;
+import pharmacy.Pharmacy;
+import prescriptionRegistry.Prescription;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public abstract class Customer extends Person implements ICustomer {
+public class Customer extends AbstractCustomer {
 
     private static final Logger LOG = LogManager.getLogger(Customer.class);
-    private double creditBalance;
 
     public Customer(String name, String phoneNumber, Address address) {
         super(name, phoneNumber, address);
-        this.creditBalance = 0;
-    }
-
-    public Customer(String name, String phoneNumber, Address address, double creditBalance) {
-        super(name, phoneNumber, address);
-        this.creditBalance = creditBalance;
-    }
-
-    public double getCreditBalance() {
-        return creditBalance;
-    }
-
-    public void setCreditBalance(double creditBalance) {
-        this.creditBalance = creditBalance;
     }
 
     /**
-     * Adds the given quantity of the given product to the specified cart.
+     * Provides a prescription for the given prescription, which can be used to purchase
+     * medication.
      *
-     * @param cart     the cart to add the product to
-     * @param product  the product to add
-     * @param quantity the quantity of the product to add
+     * @param pharmacy     the pharmacy to provide the prescription to
+     * @param prescription the prescription to provide
      */
     @Override
-    public final void addToCart(Cart cart, Product product, int quantity) {
-        cart.addProduct(product, quantity);
-    }
-
-    /**
-     * Removes the given quantity of the given product from the specified cart.
-     *
-     * @param cart     the cart to remove the product from
-     * @param product  the product to remove
-     * @param quantity the quantity of the product to remove
-     */
-    @Override
-    public final void removeFromCart(Cart cart, Product product, int quantity) {
+    public void providePrescription(Pharmacy pharmacy, Prescription prescription) {
+        Patient newPatient = new Patient(super.name, super.phoneNumber, super.address);
+        if (newPatient.getInsurance() != null) {
+            newPatient.setInsurance(newPatient.getInsurance());
+        }
+        pharmacy.getPrescriptionRegistry().addPatientToRegistry(newPatient);
         try {
-            cart.removeProduct(product, quantity);
-        } catch (InsufficientQuantityException e) {
-            int productQuantity = cart.getQuantity(product);
-            LOG.warn("Unable to retrieve product of +" + quantity
-                + " from the cart. Current quantity of " + product.getName() + " in cart is "
-                + productQuantity + ".");
-        } catch (ProductDoesNotExistException e) {
-            LOG.warn("Product item " + product.getName() + "does not exist in cart.");
-        } catch (ProductOutOfStockException e) {
-            LOG.warn("Product item " + product.getName() + "is not in your cart.");
+            pharmacy.getPrescriptionRegistry().addPrescription(newPatient, prescription);
+        } catch (PersonDoesNotExistException e) {
+            LOG.error("An error occurred. Customer may already be a patient.");
         }
     }
 }

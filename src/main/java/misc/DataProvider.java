@@ -1,7 +1,7 @@
 package misc;
 
 import inventory.Cart;
-import person.Consumer;
+import person.Customer;
 import person.Patient;
 import person.Pharmacist;
 import person.PharmacyTechnician;
@@ -49,11 +49,11 @@ public class DataProvider {
         };
     }
 
-    public static Consumer[] predefinedConsumers() {
-        return new Consumer[]{
-            new Consumer("Todd Daver", "555-7890", addresses[5]),
-            new Consumer("Saul Johnson", "555-2345", addresses[6]),
-            new Consumer("Saul II Johnson", "555-2345", addresses[6])
+    public static Customer[] predefinedConsumers() {
+        return new Customer[]{
+            new Customer("Todd Daver", "555-7890", addresses[5]),
+            new Customer("Saul Johnson", "555-2345", addresses[6]),
+            new Customer("Saul II Johnson", "555-2345", addresses[6])
         };
     }
 

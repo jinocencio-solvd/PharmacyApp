@@ -3,11 +3,12 @@ import genericLinkedList.CustomerLine;
 import inventory.ProductInventory;
 import java.time.DayOfWeek;
 import java.util.Scanner;
+import java.util.function.Consumer;
 import misc.BusinessDays;
 import misc.DataProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import person.Consumer;
+import person.Customer;
 import person.Patient;
 import person.Pharmacist;
 import person.PharmacyTechnician;
@@ -22,7 +23,7 @@ public class Main {
     private static final Pharmacist[] PHARMACISTS = DataProvider.predefinedPharmacist();
     private static final PharmacyTechnician[] TECHNICIANS = DataProvider.predefinedPharmacyTechnicians();
     private static final Patient[] PATIENTS = DataProvider.PATIENTS;
-    private static final Consumer[] CONSUMERS = DataProvider.predefinedConsumers();
+    private static final Customer[] CUSTOMERS = DataProvider.predefinedConsumers();
     private static Pharmacy pharmacy;
 
     public static void hirePharmacyEmployees(Pharmacy pharmacy) {
@@ -102,7 +103,7 @@ public class Main {
         for (Patient p : PATIENTS) {
             customerLine.addCustomer(p);
         }
-        for (Consumer c : CONSUMERS) {
+        for (Customer c : CUSTOMERS) {
             customerLine.addCustomer(c);
         }
         customerLine.getLineLength();
@@ -131,17 +132,19 @@ public class Main {
         Patient patient = PATIENTS[0];
         Pharmacist pharmacist = DataProvider.predefinedPharmacist()[0];
         Prescription prescriptionForPatient = DataProvider.predefinedPrescriptions()[0];
-        Runnable runPharmacistFillAllRxReq = () -> pharmacist.fulfillAllPrescriptionLogRequests(
-            pharmacy.getPrescriptionRequestLog(), pharmacy.getInventory(),
-            pharmacy.getPrescriptionRegistry());
-
+        Consumer<Pharmacy> runPharmacistFillAllRxReq =  (Pharmacy p) -> pharmacist.fulfillAllPrescriptionLogRequests(
+            p.getPrescriptionRequestLog(), p.getInventory(),
+            p.getPrescriptionRegistry());
+//        Runnable runPharmacistFillAllRxReq = () -> pharmacist.fulfillAllPrescriptionLogRequests(
+//            pharmacy.getPrescriptionRequestLog(), pharmacy.getInventory(),
+//            pharmacy.getPrescriptionRegistry());
         patient.providePrescription(pharmacy, prescriptionForPatient);
-        runPharmacistFillAllRxReq.run();
+        runPharmacistFillAllRxReq.accept(pharmacy);
 
         // Demo for refill requests
         for (int i = 0; i < 3; i++) {
             patient.requestPrescriptionRefill(pharmacy, prescriptionForPatient);
-            runPharmacistFillAllRxReq.run();
+            runPharmacistFillAllRxReq.accept(pharmacy);
         }
 
     }

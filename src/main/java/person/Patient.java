@@ -13,7 +13,7 @@ import prescriptionRegistry.Prescription;
  * The Person.Patient class represents a person who is a patient, with a patient ID and insurance
  * information.
  */
-public class Patient extends Customer {
+public class Patient extends AbstractCustomer {
 
     private static final Logger LOG = LogManager.getLogger(Patient.class);
     private static int count = 0;
