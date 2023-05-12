@@ -1,3 +1,5 @@
+import customLambdaFunctions.PerformOperation;
+import customLambdaFunctions.Repeater;
 import fileReadWriter.FileReadWriter;
 import genericLinkedList.CustomerLine;
 import inventory.Cart;
@@ -9,6 +11,7 @@ import misc.BusinessDays;
 import misc.DataProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import person.AbstractCustomer;
 import person.Customer;
 import person.Patient;
 import person.Pharmacist;
@@ -29,7 +32,11 @@ public class Main {
     private static final Customer[] CUSTOMERS = DataProvider.predefinedConsumers();
     private static Pharmacy pharmacy;
 
-    public static void hirePharmacyEmployees(Pharmacy pharmacy) {
+    private static void performPharmacyOperation(PerformOperation<Pharmacy> operation) {
+        operation.perform(pharmacy);
+    }
+
+    private static final PerformOperation<Pharmacy> hirePharmacyEmployees = (Pharmacy pharmacy) -> {
         LOG.info("Start hiring employees");
         pharmacy.hireEmployee(PHARMACISTS[0]);
         pharmacy.hireEmployee(PHARMACISTS[1]);
@@ -37,9 +44,9 @@ public class Main {
         pharmacy.hireEmployee((TECHNICIANS[0])); // hire duplicate
         pharmacy.hireEmployee((TECHNICIANS[1]));
         LOG.info("Completed hiring employees");
-    }
+    };
 
-    public static ProductInventory populateInventory() {
+    private static final PerformOperation<Pharmacy> populateInventory = (Pharmacy pharmacy) -> {
         LOG.info("Start populating product inventory");
         ProductInventory productInventory = new ProductInventory();
         for (Item item : DataProvider.predefinedItems()) {
@@ -49,8 +56,8 @@ public class Main {
             productInventory.addProduct(medication, 150);
         }
         LOG.info("Completed populating product inventory");
-        return productInventory;
-    }
+        pharmacy.setInventory(productInventory);
+    };
 
     private static void userCreatePatient(Pharmacy pharmacy) {
         LOG.trace("In userCreatePatient");
@@ -79,11 +86,9 @@ public class Main {
     }
 
     private static void pharmacyOperations() {
-        // Pharmacy Operations
         pharmacy = DataProvider.predefinedPharmacy();
-        hirePharmacyEmployees(pharmacy);
-        ProductInventory productInventory = populateInventory();
-        pharmacy.setInventory(productInventory);
+        performPharmacyOperation(hirePharmacyEmployees);
+        performPharmacyOperation(populateInventory);
         pharmacy.releaseEmployee(TECHNICIANS[1]);
         pharmacy.releaseEmployee(TECHNICIANS[1]); // not found
     }
@@ -127,43 +132,51 @@ public class Main {
     private static void prescriptionOperations() {
         // Patient actions
         Patient patient = PATIENTS[0];
-        LOG.info("Patient balance for " + patient.getName()+ " is " + patient.getCreditBalance());
-        patient.increaseCreditBalanceByOneHundred();
-        LOG.info("Patient balance for " + patient.getName()+ " after being supplied with more credit is " + patient.getCreditBalance());
+        Prescription prescriptionForPatient = DataProvider.predefinedPrescriptions()[0];
+        patient.providePrescription(pharmacy, prescriptionForPatient);
 
         // Pharmacists action
         Pharmacist pharmacist = DataProvider.predefinedPharmacist()[0];
-        Prescription prescriptionForPatient = DataProvider.predefinedPrescriptions()[0];
         Consumer<Pharmacy> runPharmacistFillAllRxReq = (Pharmacy p) -> pharmacist.fulfillAllPrescriptionLogRequests(
             p.getPrescriptionRequestLog(), p.getInventory(), p.getPrescriptionRegistry());
 
-        // Patient requests refill
-        patient.providePrescription(pharmacy, prescriptionForPatient);
         runPharmacistFillAllRxReq.accept(pharmacy);
 
         // Demo for Patient transaction
         Register register = new Register(TECHNICIANS[0]);
         Cart cart = new Cart();
-        cart.addProduct(prescriptionForPatient.getMedication(), prescriptionForPatient.getPrescribedQuantity());
+        cart.addProduct(prescriptionForPatient.getMedication(),
+            prescriptionForPatient.getPrescribedQuantity());
         register.setCustomer(patient);
         register.setCart(cart);
         register.scanAllProductsInCart();
         register.processTransaction(); // InsufficientFunds
+        // TODO: Transaction should not be processed if customer has insufficient funds, subtracts to negative balance
         // TODO: receipt should not be printed if transaction is not completed
 
-        // Patient withdraws more funds
-        patient.increaseCreditBalanceByOneHundred();
-        patient.increaseCreditBalanceByOneHundred();
-        register.processTransaction(); // InsufficientFunds
+        Repeater<Patient> patientRepeater = ((numRepeats, operation) -> {
+            for (int i = 0; i < numRepeats; i++) {
+                operation.perform(patient);
+            }
+        });
 
+        // Patient withdraws more funds
+        LOG.info("Patient balance for " + patient.getName() + " is " + patient.getCreditBalance());
+        patientRepeater.repeat(10, AbstractCustomer::increaseCreditBalanceByOneHundred);
+        LOG.info("Patient balance for " + patient.getName()
+            + " after being supplied with more credit is " + patient.getCreditBalance());
+
+        // Try transaction again
+        register.processTransaction();
+
+        // Print receipt to reset register
         Receipt receipt = register.printReceipt();
-        System.out.println(receipt);
 
         // Demo for refill requests and denial
-        for (int i = 0; i < 3; i++) {
-            patient.requestPrescriptionRefill(pharmacy, prescriptionForPatient);
+        patientRepeater.repeat(3, (p) -> {
+            p.requestPrescriptionRefill(pharmacy, prescriptionForPatient);
             runPharmacistFillAllRxReq.accept(pharmacy);
-        }
+        });
     }
 
     public static void main(String[] args) {
