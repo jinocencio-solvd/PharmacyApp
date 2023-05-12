@@ -1,5 +1,6 @@
 package register;
 
+import customLambdaFunctions.NullChecker;
 import exceptions.InsufficientQuantityException;
 import exceptions.ProductDoesNotExistException;
 import exceptions.ProductOutOfStockException;
@@ -7,6 +8,7 @@ import inventory.Cart;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import misc.Insurance;
 import org.apache.logging.log4j.LogManager;
@@ -77,6 +79,8 @@ public class Register implements IRegister {
         return transactionCompleted;
     }
 
+    NullChecker<AbstractCustomer> abstractCustomerNullChecker = Objects::isNull;
+
     @Override
     public double getTotal() {
         double total = 0;
@@ -108,7 +112,7 @@ public class Register implements IRegister {
     }
 
     public void scanAllProductsInCart() {
-        if (abstractCustomer == null) {
+        if (abstractCustomerNullChecker.isNull(abstractCustomer)) {
             LOG.warn("AbstractCustomer is not set");
         }
         for (Product p : cart.getProducts().keySet()) {
@@ -133,7 +137,7 @@ public class Register implements IRegister {
 
     @Override
     public void processTransaction() {
-        if (abstractCustomer == null) {
+        if (abstractCustomerNullChecker.isNull(abstractCustomer)) {
             LOG.warn("AbstractCustomer is not set");
         }
         if (abstractCustomer.getCreditBalance() < this.getTotal()) {
