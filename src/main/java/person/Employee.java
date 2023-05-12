@@ -1,5 +1,6 @@
 package person;
 
+import enums.EmployeeType;
 import misc.Address;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

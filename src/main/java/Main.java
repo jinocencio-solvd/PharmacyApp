@@ -1,5 +1,5 @@
-import customLambdaFunctions.PerformOperation;
-import customLambdaFunctions.Repeater;
+import customLambdaFunctions.IPerformOperation;
+import customLambdaFunctions.IRepeater;
 import fileReadWriter.FileReadWriter;
 import genericLinkedList.CustomerLine;
 import inventory.Cart;
@@ -7,7 +7,7 @@ import inventory.ProductInventory;
 import java.time.DayOfWeek;
 import java.util.Scanner;
 import java.util.function.Consumer;
-import misc.BusinessDays;
+import enums.BusinessDay;
 import misc.DataProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,11 +32,11 @@ public class Main {
     private static final Customer[] CUSTOMERS = DataProvider.predefinedConsumers();
     private static Pharmacy pharmacy;
 
-    private static void performPharmacyOperation(PerformOperation<Pharmacy> operation) {
+    private static void performPharmacyOperation(IPerformOperation<Pharmacy> operation) {
         operation.perform(pharmacy);
     }
 
-    private static final PerformOperation<Pharmacy> hirePharmacyEmployees = (Pharmacy pharmacy) -> {
+    private static final IPerformOperation<Pharmacy> hirePharmacyEmployees = (Pharmacy pharmacy) -> {
         LOG.info("Start hiring employees");
         pharmacy.hireEmployee(PHARMACISTS[0]);
         pharmacy.hireEmployee(PHARMACISTS[1]);
@@ -46,7 +46,7 @@ public class Main {
         LOG.info("Completed hiring employees");
     };
 
-    private static final PerformOperation<Pharmacy> populateInventory = (Pharmacy pharmacy) -> {
+    private static final IPerformOperation<Pharmacy> populateInventory = (Pharmacy pharmacy) -> {
         LOG.info("Start populating product inventory");
         ProductInventory productInventory = new ProductInventory();
         for (Item item : DataProvider.predefinedItems()) {
@@ -96,7 +96,7 @@ public class Main {
     private static void pharmacyOperationDays() {
         for (DayOfWeek day : DayOfWeek.values()) {
             String dayStr = day.name();
-            BusinessDays businessDay = BusinessDays.getBusinessDay(dayStr);
+            BusinessDay businessDay = BusinessDay.getBusinessDay(dayStr);
             LOG.info(businessDay.getDescription());
             if (pharmacy.isOpen(day)) {
                 LOG.info("Come on in!");
@@ -154,7 +154,7 @@ public class Main {
         // TODO: Transaction should not be processed if customer has insufficient funds, subtracts to negative balance
         // TODO: receipt should not be printed if transaction is not completed
 
-        Repeater<Patient> patientRepeater = ((numRepeats, operation) -> {
+        IRepeater<Patient> patientRepeater = ((numRepeats, operation) -> {
             for (int i = 0; i < numRepeats; i++) {
                 operation.perform(patient);
             }

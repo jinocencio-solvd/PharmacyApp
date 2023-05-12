@@ -1,6 +1,7 @@
 package register;
 
-import customLambdaFunctions.NullChecker;
+import customLambdaFunctions.INullChecker;
+import enums.PaymentType;
 import exceptions.InsufficientQuantityException;
 import exceptions.ProductDoesNotExistException;
 import exceptions.ProductOutOfStockException;
@@ -79,7 +80,7 @@ public class Register implements IRegister {
         return transactionCompleted;
     }
 
-    NullChecker<AbstractCustomer> abstractCustomerNullChecker = Objects::isNull;
+    INullChecker<AbstractCustomer> abstractCustomerNullChecker = Objects::isNull;
 
     @Override
     public double getTotal() {

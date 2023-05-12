@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import prescriptionRegistry.Prescription;
 import prescriptionRegistry.PrescriptionRegistry;
-import prescriptionRegistry.PrescriptionStatus;
+import enums.PrescriptionStatus;
 import product.Medication;
 
 /**

@@ -1,4 +1,4 @@
-package product;
+package enums;
 
 // TODO: Organize receipt display by ProductType, Display description as label
 public enum ProductType {

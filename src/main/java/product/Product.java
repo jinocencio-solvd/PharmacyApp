@@ -1,5 +1,6 @@
 package product;
 
+import enums.ProductType;
 import java.util.Objects;
 
 /**

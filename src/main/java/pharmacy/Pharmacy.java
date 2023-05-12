@@ -10,14 +10,14 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.function.Predicate;
 import misc.Address;
-import misc.BusinessDays;
+import enums.BusinessDay;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import person.Employee;
 import person.Patient;
 import prescriptionRegistry.Prescription;
 import prescriptionRegistry.PrescriptionRegistry;
-import prescriptionRegistry.PrescriptionStatus;
+import enums.PrescriptionStatus;
 
 /**
  * Represents a pharmacy with HR capabilities. This class represents a pharmacy, which has a name,
@@ -120,7 +120,7 @@ public class Pharmacy implements IPharmacy {
 
     public boolean isOpen(DayOfWeek dayToCheck) {
         Predicate<DayOfWeek> checkDay = day -> {
-            BusinessDays businessDay = BusinessDays.getBusinessDay(dayToCheck.name());
+            BusinessDay businessDay = BusinessDay.getBusinessDay(dayToCheck.name());
             return day.getValue() == businessDay.getId() && businessDay.isOpen();
         };
         return checkDay.test(dayToCheck);

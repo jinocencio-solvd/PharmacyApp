@@ -1,5 +1,5 @@
 package customLambdaFunctions;
 
-public interface PerformOperation<T> {
+public interface IPerformOperation<T> {
     void perform(T obj);
 }

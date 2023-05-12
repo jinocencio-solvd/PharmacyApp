@@ -1,5 +1,6 @@
 package prescriptionRegistry;
 
+import enums.PrescriptionStatus;
 import person.Patient;
 import java.util.Objects;
 import org.apache.logging.log4j.LogManager;

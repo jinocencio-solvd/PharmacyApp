@@ -1,4 +1,4 @@
-package register;
+package enums;
 
 public enum PaymentType {
     CASH(0, "Cash Payment"),

@@ -1,6 +1,6 @@
-package misc;
+package enums;
 
-public enum BusinessDays {
+public enum BusinessDay {
     MONDAY(1, "Monday - Open", true),
     TUESDAY(2, "Tuesday - Open", true),
     WEDNESDAY(3, "Wednesday - Open", true),
@@ -13,7 +13,7 @@ public enum BusinessDays {
     private String description;
     private boolean isOpen;
 
-    BusinessDays(int id, String description, boolean isOpen) {
+    BusinessDay(int id, String description, boolean isOpen) {
         this.id = id;
         this.description = description;
         this.isOpen = isOpen;
@@ -27,8 +27,8 @@ public enum BusinessDays {
         return isOpen;
     }
 
-    public static BusinessDays getBusinessDay(String day) {
-        return BusinessDays.valueOf(day);
+    public static BusinessDay getBusinessDay(String day) {
+        return BusinessDay.valueOf(day);
     }
 
     public String getDescription() {

@@ -1,4 +1,4 @@
-package person;
+package enums;
 
 public enum EmployeeType {
     FULL_TIME(0, "Full-time employee"),

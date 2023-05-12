@@ -1,4 +1,4 @@
-package prescriptionRegistry;
+package enums;
 
 public enum PrescriptionStatus {
     NEW(1, "Has been created, but not yet processed."),

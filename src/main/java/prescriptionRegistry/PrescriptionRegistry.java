@@ -1,5 +1,6 @@
 package prescriptionRegistry;
 
+import enums.PrescriptionStatus;
 import exceptions.DuplicatePersonException;
 import exceptions.PersonDoesNotExistException;
 import person.Patient;
@@ -9,7 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-public final class PrescriptionRegistry implements IPrescriptionRegistry {
+public class PrescriptionRegistry implements IPrescriptionRegistry {
 
     private static final Logger LOG = LogManager.getLogger(PrescriptionRegistry.class);
 

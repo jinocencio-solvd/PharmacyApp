@@ -1,5 +1,5 @@
 package customLambdaFunctions;
 
-public interface NullChecker<T> {
+public interface INullChecker<T> {
     boolean isNull(T obj);
 }
