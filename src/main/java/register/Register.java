@@ -8,6 +8,7 @@ import exceptions.ProductOutOfStockException;
 import inventory.Cart;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -114,12 +115,13 @@ public class Register implements IRegister {
         if (abstractCustomerNullChecker.isNull(abstractCustomer)) {
             LOG.warn("AbstractCustomer is not set");
         }
-        for (Product p : cart.getProducts().keySet()) {
-            int productQty = cart.getProducts().get(p);
-            for (int i = 0; i < productQty; i++) {
-                scanProduct(p);
-            }
-        }
+        cart.getProducts().entrySet().stream()
+            // Stream<Entry<Product, Integer>>
+            .flatMap(entry ->
+                // List of copied products transformed to Stream<Product>
+                // So we have streams within a stream that needs to be flattened
+                Collections.nCopies(entry.getValue(), entry.getKey()).stream()
+            ).forEach(this::scanProduct);
     }
 
     @Override
