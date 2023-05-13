@@ -1,14 +1,15 @@
 package misc;
 
+import enums.ProductType;
 import inventory.Cart;
 import person.Customer;
 import person.Patient;
 import person.Pharmacist;
 import person.PharmacyTechnician;
 import pharmacy.Pharmacy;
+import prescriptionRegistry.Prescription;
 import product.Item;
 import product.Medication;
-import prescriptionRegistry.Prescription;
 
 
 public class DataProvider {
@@ -84,18 +85,47 @@ public class DataProvider {
     public static Medication[] predefinedMedications() {
         return new Medication[]{
             new Medication("Insulin", "50 mg/dL", 30.0),
-            new Medication("Ibuprofen", "200 mg", 0.08),
-            new Medication("Acetaminophen", "325 mg", 0.05),
-            new Medication("Naproxen", "220 mg", 0.12)
+            new Medication("Metformin", "500 mg twice daily", 15.0),
+            new Medication("Levothyroxine", "50 mcg once daily", 20.0),
+            new Medication("Lisinopril", "10 mg once daily", 25.0),
+            new Medication("Atorvastatin", "20 mg once daily", 30.0),
+            new Medication("Metoprolol", "50 mg twice daily", 20.0),
+            new Medication("Omeprazole", "20 mg once daily", 15.0),
+            new Medication("Warfarin", "2.5 mg once daily", 35.0),
+            new Medication("Albuterol", "1-2 puffs every 4-6 hours as needed for asthma", 25.0),
+            new Medication("Fluoxetine", "20 mg once daily", 30.0)
         };
     }
 
     public static Item[] predefinedItems() {
         return new Item[]{
-            new Item("Band-Aids", 2.99),
-            new Item("Hydrogen Peroxide", 1.99),
-            new Item("Antacid Tablets", 4.99),
-            new Item("Cough Drops", 3.49)
+            new Item("Band-Aids", 2.99, ProductType.FIRST_AID, "BA001"),
+            new Item("Hydrogen Peroxide", 1.99, ProductType.FIRST_AID, "HP001"),
+            new Item("Antacid Tablets", 4.99, ProductType.OVER_THE_COUNTER_MEDICINE, "AT001"),
+            new Item("Cough Drops", 3.49, ProductType.OVER_THE_COUNTER_MEDICINE, "CD001"),
+            new Item("Sunscreen Lotion", 7.99, ProductType.FIRST_AID, "SL001"),
+            new Item("Insect Repellent", 5.99, ProductType.FIRST_AID, "IR001"),
+            new Item("Hand Sanitizer", 2.49, ProductType.FIRST_AID, "HS001"),
+            new Item("Multivitamin Tablets", 9.99, ProductType.VITAMINS_SUPPLEMENTS, "MT001"),
+            new Item("Calcium Supplements", 12.99, ProductType.VITAMINS_SUPPLEMENTS, "CS001"),
+            new Item("Fish Oil Supplements", 8.99, ProductType.VITAMINS_SUPPLEMENTS, "FOS001"),
+            new Item("Protein Powder", 17.99, ProductType.VITAMINS_SUPPLEMENTS, "PP001"),
+            new Item("Digital Thermometer", 12.49, ProductType.FIRST_AID, "DT001"),
+            new Item("Nasal Spray", 6.99, ProductType.OVER_THE_COUNTER_MEDICINE, "NS001"),
+            new Item("Muscle Rub Cream", 8.99, ProductType.FIRST_AID, "MRC001"),
+            new Item("Ear Wax Removal Drops", 5.99, ProductType.OVER_THE_COUNTER_MEDICINE, "EW001"),
+            new Item("Contact Lens Solution", 10.99, ProductType.UNLABELED, "CLS001"),
+            new Item("Sleeping Aid Tablets", 7.99, ProductType.OVER_THE_COUNTER_MEDICINE, "SAT001"),
+            new Item("Digestive Enzymes Supplements", 14.99, ProductType.VITAMINS_SUPPLEMENTS,
+                "DES001"),
+            new Item("Acetaminophen Tablets", 3.99, ProductType.OVER_THE_COUNTER_MEDICINE,
+                "ACT001"),
+            new Item("Ibuprofen Tablets", 4.99, ProductType.OVER_THE_COUNTER_MEDICINE, "IBU001"),
+            new Item("Antihistamine Tablets", 6.99, ProductType.OVER_THE_COUNTER_MEDICINE, "AH001"),
+            new Item("Anti-Diarrheal Tablets", 5.99, ProductType.OVER_THE_COUNTER_MEDICINE,
+                "ADT001"),
+            new Item("Cold and Flu Relief Syrup", 8.99, ProductType.OVER_THE_COUNTER_MEDICINE,
+                "CFS001")
         };
     }
 
