@@ -84,11 +84,9 @@ public class Register implements IRegister {
 
     @Override
     public double getTotal() {
-        double total = 0;
-        for (Product p : scannedProducts) {
-            double price = calculatePrice(p.getPrice());
-            total += price;
-        }
+        double total = scannedProducts.stream()
+            .map(p -> calculatePrice(p.getPrice()))
+            .reduce(0.0, Double::sum);
         DecimalFormat df = new DecimalFormat("#.##");
         return Double.parseDouble(df.format(total));
     }
