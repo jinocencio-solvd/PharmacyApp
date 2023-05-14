@@ -1,16 +1,20 @@
 package person;
 
-import misc.Address;
+import exceptions.InvalidPrescriptionException;
 import java.util.Objects;
-import misc.DataProvider;
+import misc.Address;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pharmacy.Pharmacy;
+import prescriptionRegistry.FilledPrescriptions;
+import prescriptionRegistry.Prescription;
 
 /**
- * The Person.PharmacyTechnician class represents an employee who is a pharmacy technician, with a state
- * license ID and cashier training.
+ * The Person.PharmacyTechnician class represents an employee who is a pharmacy technician, with a
+ * state license ID and cashier training.
  */
 public class PharmacyTechnician extends Employee {
+
     private static final Logger LOG = LogManager.getLogger(PharmacyTechnician.class);
 
     private String stateLicenseId;
@@ -39,6 +43,12 @@ public class PharmacyTechnician extends Employee {
 
     public void setCashierTrained(boolean cashierTrained) {
         isCashierTrained = cashierTrained;
+    }
+
+    public Prescription getPrescriptionFromFilledPrescriptions(Pharmacy pharmacy, Patient patient,
+        String medicationName) throws InvalidPrescriptionException {
+        FilledPrescriptions filledPrescriptions = pharmacy.getFilledPrescriptions();
+        return filledPrescriptions.getPrescriptionByPatientAndMedication(patient, medicationName);
     }
 
     /**

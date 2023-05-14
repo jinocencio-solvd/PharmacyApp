@@ -4,7 +4,7 @@ import exceptions.InsufficientQuantityException;
 import exceptions.NoMoreRefillsException;
 import exceptions.ProductDoesNotExistException;
 import exceptions.ProductOutOfStockException;
-import genericLinkedList.PrescriptionRequestLog;
+import prescriptionRegistry.PrescriptionRequestLog;
 import inventory.Inventory;
 import java.util.Objects;
 import misc.Address;

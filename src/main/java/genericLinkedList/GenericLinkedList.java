@@ -214,6 +214,45 @@ public class GenericLinkedList<T> implements IGenericLinkedList<T> {
     }
 
     /**
+     * Removes an item at an index
+     *
+     * @param idx  The index to remove at
+     * @return true if successful, else false
+     */
+    public boolean removeAt(int idx) {
+        // Edge case: empty list and incorrect idx
+        if (head == null || idx < 0) {
+            return false;
+        }
+
+        // Remove at beginning
+        if (idx == 0) {
+            head = head.next;
+            size--;
+            return true;
+        }
+
+        // iterate to find the node at idx
+        int currIdx = 0;
+        GenericNode<T> prev = null;
+        GenericNode<T> curr = head;
+        while (curr != null && currIdx < idx) {
+            prev = curr;
+            curr = curr.next;
+            currIdx++;
+        }
+        // check if out of bounds
+        if (curr == null) {
+            return false;
+        }
+
+        prev.next = curr.next;
+        size--;
+        return true;
+    }
+
+
+    /**
      * Retrieves an item given an index
      *
      * @param idx The index to retrieve the item
