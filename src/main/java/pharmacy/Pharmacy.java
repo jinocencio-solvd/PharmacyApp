@@ -141,6 +141,8 @@ public class Pharmacy implements IPharmacy {
         }
         try {
             this.getPrescriptionRegistry().addPrescription(patient, prescription);
+            //TODO: modify quick fix to handle refills logic. Added 1 b/c register decrements numRefill upon the first fill.
+            prescription.setNumRefills(prescription.getNumRefills() + 1);
             prescriptionRequestLog.addPrescriptionRequest(prescription);
 
         } catch (PersonDoesNotExistException e) {

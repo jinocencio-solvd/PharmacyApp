@@ -17,6 +17,10 @@ public class FilledPrescriptions {
         filledPrescriptions.put(prescription, medication);
     }
 
+    public void removeFilledPrescription(Prescription prescription) {
+        filledPrescriptions.remove(prescription);
+    }
+
     public List<Prescription> getFilledPrescriptionsByPatient(Patient patient)
         throws InvalidPrescriptionException {
         List<Prescription> filledPatientPrescriptions = filledPrescriptions.keySet().stream()

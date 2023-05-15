@@ -50,10 +50,6 @@ public class PharmacyTechnician extends Employee {
         return filledPrescriptions.getFilledPrescriptionsByPatient(patient);
     }
 
-    public void addPrescribedMedicationsToPatientCart() {
-//        TODO: addPrescribedMedicationsToPatientCart
-    }
-
     /**
      * method to print out employee details
      */

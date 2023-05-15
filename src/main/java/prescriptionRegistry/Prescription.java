@@ -107,6 +107,7 @@ public class Prescription {
             '}';
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -116,14 +117,16 @@ public class Prescription {
             return false;
         }
         Prescription that = (Prescription) o;
-        return getNumRefills() == that.getNumRefills() && getPrescriptionId().equals(
-            that.getPrescriptionId()) && getMedication().equals(
-            that.getMedication()) && getPatient().equals(that.getPatient());
+        return getNumRefills() == that.getNumRefills()
+            && getPrescribedQuantity() == that.getPrescribedQuantity() && Objects.equals(
+            getPrescriptionId(), that.getPrescriptionId()) && Objects.equals(getMedication(),
+            that.getMedication()) && Objects.equals(getPatient(), that.getPatient())
+            && getPrescriptionStatus() == that.getPrescriptionStatus();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPrescriptionId(), getNumRefills(), getMedication(),
-            getPatient());
+        return Objects.hash(getPrescriptionId(), getNumRefills(), getMedication(), getPatient(),
+            getPrescribedQuantity(), getPrescriptionStatus());
     }
 }

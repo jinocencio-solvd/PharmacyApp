@@ -85,8 +85,10 @@ public class Pharmacist extends Employee {
                 default:
                     List<Medication> medsFromRx = getMedicationsFromInventory(inventory,
                         prescription);
+                    prescription.setPrescriptionStatus(PrescriptionStatus.FILLED);
                     filledPrescriptions.addFilledPrescription(prescription, medsFromRx);
-                    prescription.setNumRefills(prescription.getNumRefills() - 1);
+
+
             }
         } catch (NoMoreRefillsException e) {
             LOG.error((e.getMessage()));
@@ -94,11 +96,11 @@ public class Pharmacist extends Employee {
 
         // TODO: refactor this block for when patient pickup logic is complete
         //  status Completed or refill should be after patient pick up
-        if (prescription.getNumRefills() == 0) {
-            prescription.setPrescriptionStatus(PrescriptionStatus.COMPLETED);
-        } else {
-            prescription.setPrescriptionStatus(PrescriptionStatus.REFILL_UPON_REQUEST);
-        }
+//        if (prescription.getNumRefills() == 0) {
+//            prescription.setPrescriptionStatus(PrescriptionStatus.COMPLETED);
+//        } else {
+//            prescription.setPrescriptionStatus(PrescriptionStatus.REFILL_UPON_REQUEST);
+//        }
         // TODO: set Prescription status to FILLED(ready for patient pickup)
         // TODO: refactor updatePrescriptionRegistry upon completion of transaction
 //            prescriptionRegistry.updatePrescriptionRegistry(prescription);

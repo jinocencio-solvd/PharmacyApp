@@ -21,7 +21,8 @@ public abstract class AbstractCustomer extends Person implements ICustomer {
         this.creditBalance = 0;
     }
 
-    public AbstractCustomer(String name, String phoneNumber, Address address, double creditBalance) {
+    public AbstractCustomer(String name, String phoneNumber, Address address,
+        double creditBalance) {
         super(name, phoneNumber, address);
         this.creditBalance = creditBalance;
     }
@@ -34,15 +35,13 @@ public abstract class AbstractCustomer extends Person implements ICustomer {
         this.creditBalance = creditBalance;
     }
 
-    public void increaseCreditBalanceByOneHundred(){
+    public void increaseCreditBalanceByOneHundred() {
         Supplier<Double> supplyCredit = () -> this.creditBalance + 100;
         this.setCreditBalance(supplyCredit.get());
     }
 
-    public boolean isPatient(){
-        BooleanSupplier isPatient = () -> {
-            return this instanceof Patient;
-        };
+    public boolean isPatient() {
+        BooleanSupplier isPatient = () -> this instanceof Patient;
         return isPatient.getAsBoolean();
     }
 
