@@ -1,11 +1,11 @@
 package person;
 
 import exceptions.InvalidPrescriptionException;
+import java.util.List;
 import java.util.Objects;
 import misc.Address;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pharmacy.Pharmacy;
 import prescriptionRegistry.FilledPrescriptions;
 import prescriptionRegistry.Prescription;
 
@@ -45,10 +45,13 @@ public class PharmacyTechnician extends Employee {
         isCashierTrained = cashierTrained;
     }
 
-    public Prescription getPrescriptionFromFilledPrescriptions(Pharmacy pharmacy, Patient patient,
-        String medicationName) throws InvalidPrescriptionException {
-        FilledPrescriptions filledPrescriptions = pharmacy.getFilledPrescriptions();
-        return filledPrescriptions.getPrescriptionByPatientAndMedication(patient, medicationName);
+    public List<Prescription> getFilledPrescriptionsByPatient(Patient patient,
+        FilledPrescriptions filledPrescriptions) throws InvalidPrescriptionException {
+        return filledPrescriptions.getFilledPrescriptionsByPatient(patient);
+    }
+
+    public void addPrescribedMedicationsToPatientCart() {
+//        TODO: addPrescribedMedicationsToPatientCart
     }
 
     /**

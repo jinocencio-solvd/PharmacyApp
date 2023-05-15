@@ -1,18 +1,22 @@
 package person;
 
+import enums.PrescriptionStatus;
 import exceptions.InsufficientQuantityException;
 import exceptions.NoMoreRefillsException;
 import exceptions.ProductDoesNotExistException;
 import exceptions.ProductOutOfStockException;
-import prescriptionRegistry.PrescriptionRequestLog;
 import inventory.Inventory;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import misc.Address;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import prescriptionRegistry.FilledPrescriptions;
 import prescriptionRegistry.Prescription;
 import prescriptionRegistry.PrescriptionRegistry;
-import enums.PrescriptionStatus;
+import prescriptionRegistry.PrescriptionRequestLog;
 import product.Medication;
 
 /**
@@ -40,11 +44,13 @@ public class Pharmacist extends Employee {
         this.stateLicenseId = stateLicenseId;
     }
 
-    public void retrieveMedicationsFromInventory(Inventory inventory, Prescription prescription) {
+    public List<Medication> getMedicationsFromInventory(Inventory inventory,
+        Prescription prescription) {
         Medication prescribedMed = prescription.getMedication();
         int prescribedQuantity = prescription.getPrescribedQuantity();
         try {
             inventory.removeProduct(prescribedMed, prescribedQuantity);
+
         } catch (InsufficientQuantityException e) {
             int medQuantity = inventory.getQuantity(prescribedMed);
             LOG.warn("Unable to retrieve prescribed quantity of +" + prescribedQuantity
@@ -54,6 +60,9 @@ public class Pharmacist extends Employee {
         } catch (ProductOutOfStockException e) {
             LOG.warn("Medication " + prescribedMed.getName() + "is out of stock.");
         }
+        return Stream.generate(() -> prescribedMed)
+            .limit(prescribedQuantity)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -65,46 +74,47 @@ public class Pharmacist extends Employee {
      *                     quantity
      * @param prescription the prescription to be filled
      */
-    public void fillPrescription(Inventory inventory, Prescription prescription,
-        PrescriptionRegistry prescriptionRegistry) {
+    public void fillPrescription(FilledPrescriptions filledPrescriptions, Inventory inventory,
+        Prescription prescription, PrescriptionRegistry prescriptionRegistry) {
         try {
-            if (prescription.getNumRefills() == 0
-                || prescription.getPrescriptionStatus() == PrescriptionStatus.COMPLETED) {
-                throw new NoMoreRefillsException("No more refills available");
+            switch (prescription.getPrescriptionStatus()) {
+                case COMPLETED:
+                    throw new NoMoreRefillsException("No more refills available");
+                case CANCELLED:
+                    throw new NoMoreRefillsException("The prescription has been cancelled");
+                default:
+                    List<Medication> medsFromRx = getMedicationsFromInventory(inventory,
+                        prescription);
+                    filledPrescriptions.addFilledPrescription(prescription, medsFromRx);
+                    prescription.setNumRefills(prescription.getNumRefills() - 1);
             }
-            if (prescription.getPrescriptionStatus() == PrescriptionStatus.CANCELLED) {
-                throw new NoMoreRefillsException("Prescription has been cancelled.");
-            }
-            retrieveMedicationsFromInventory(inventory, prescription);
-            if(prescription.getPrescriptionStatus() == PrescriptionStatus.REFILL_UPON_REQUEST){
-                prescription.setNumRefills(prescription.getNumRefills() - 1);
-            }
-            prescription.setFilled(true);
-            // TODO: refactor this block for when patient pickup logic is complete
-            //  status Completed or refill should be after patient pick up
-
-            if(prescription.getNumRefills() == 0){
-                prescription.setPrescriptionStatus(PrescriptionStatus.COMPLETED);
-            }else{
-                prescription.setPrescriptionStatus(PrescriptionStatus.REFILL_UPON_REQUEST);
-            }
-            // TODO: set Prescription status to FILLED(ready for patient pickup)
-            // TODO: refactor updatePrescriptionRegistry upon completion of transaction
-            prescriptionRegistry.updatePrescriptionRegistry(prescription);
-
-            LOG.info("Prescription: " + prescription.getPrescriptionId() + " for patient: "
-                + prescription.getPatient().getName() + " is filled.");
         } catch (NoMoreRefillsException e) {
-            LOG.warn("Prescription is out of refills");
+            LOG.error((e.getMessage()));
         }
+
+        // TODO: refactor this block for when patient pickup logic is complete
+        //  status Completed or refill should be after patient pick up
+        if (prescription.getNumRefills() == 0) {
+            prescription.setPrescriptionStatus(PrescriptionStatus.COMPLETED);
+        } else {
+            prescription.setPrescriptionStatus(PrescriptionStatus.REFILL_UPON_REQUEST);
+        }
+        // TODO: set Prescription status to FILLED(ready for patient pickup)
+        // TODO: refactor updatePrescriptionRegistry upon completion of transaction
+//            prescriptionRegistry.updatePrescriptionRegistry(prescription);
+
+        LOG.info("Prescription: " + prescription.getPrescriptionId() + " for patient: "
+            + prescription.getPatient().getName() + " is filled.");
     }
 
-    public void fulfillAllPrescriptionLogRequests(PrescriptionRequestLog prescriptionRequestLog,
-        Inventory inventory, PrescriptionRegistry prescriptionRegistry) {
+    public void fulfillAllPrescriptionLogRequests(FilledPrescriptions filledPrescriptions,
+        PrescriptionRequestLog prescriptionRequestLog, Inventory inventory,
+        PrescriptionRegistry prescriptionRegistry) {
 
         while (!prescriptionRequestLog.isEmpty()) {
             Prescription prescriptionToFulfill = prescriptionRequestLog.getNextPrescriptionRequest();
-            fillPrescription(inventory, prescriptionToFulfill, prescriptionRegistry);
+            fillPrescription(filledPrescriptions, inventory, prescriptionToFulfill,
+                prescriptionRegistry);
         }
     }
 

@@ -18,7 +18,6 @@ public class Prescription {
 
     private String prescriptionId;
     private int numRefills;
-    private boolean isFilled;
     private Medication medication;
     private Patient patient;
     private int prescribedQuantity;
@@ -41,7 +40,6 @@ public class Prescription {
         countId++;
         this.prescriptionId = "rxID-" + countId;
         this.numRefills = numRefills;
-        this.isFilled = isFilled;
         this.medication = medication;
         this.patient = patient;
         this.prescribedQuantity = prescribedQuantity;
@@ -64,14 +62,6 @@ public class Prescription {
 
     public void setNumRefills(int numRefills) {
         this.numRefills = numRefills;
-    }
-
-    public boolean isFilled() {
-        return isFilled;
-    }
-
-    public void setFilled(boolean filled) {
-        isFilled = filled;
     }
 
     public Medication getMedication() {
@@ -111,7 +101,6 @@ public class Prescription {
         return "Product.Prescription{" +
             "prescriptionId='" + prescriptionId + '\'' +
             ", numRefills=" + numRefills +
-            ", isFilled=" + isFilled +
             ", medication=" + medication +
             ", patient=" + patient +
             ", prescribedQuantity=" + prescribedQuantity +
@@ -127,14 +116,14 @@ public class Prescription {
             return false;
         }
         Prescription that = (Prescription) o;
-        return getNumRefills() == that.getNumRefills() && isFilled() == that.isFilled()
-            && getPrescriptionId().equals(that.getPrescriptionId()) && getMedication().equals(
+        return getNumRefills() == that.getNumRefills() && getPrescriptionId().equals(
+            that.getPrescriptionId()) && getMedication().equals(
             that.getMedication()) && getPatient().equals(that.getPatient());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPrescriptionId(), getNumRefills(), isFilled(), getMedication(),
+        return Objects.hash(getPrescriptionId(), getNumRefills(), getMedication(),
             getPatient());
     }
 }

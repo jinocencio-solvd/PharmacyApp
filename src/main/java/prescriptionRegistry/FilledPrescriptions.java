@@ -2,33 +2,34 @@ package prescriptionRegistry;
 
 import enums.PrescriptionStatus;
 import exceptions.InvalidPrescriptionException;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.Map;
+import java.util.stream.Collectors;
 import person.Patient;
 import product.Medication;
 
 public class FilledPrescriptions {
 
-    List<Prescription> filledPrescriptions = new LinkedList<>();
+    Map<Prescription, List<Medication>> filledPrescriptions = new HashMap<>();
 
-    public void addFilledPrescription(Prescription prescription) {
-        filledPrescriptions.add(prescription);
+    public void addFilledPrescription(Prescription prescription, List<Medication> medication) {
+        filledPrescriptions.put(prescription, medication);
     }
 
-    public Prescription getPrescriptionByPatientAndMedication(Patient patient,
-        String medicationName) throws InvalidPrescriptionException {
-        Optional<Prescription> prescription = filledPrescriptions.stream()
-            .filter((p -> p.getPatient() == patient
-                && Objects.equals(p.getMedication().getName(), medicationName)
-                && p.getPrescriptionStatus() == PrescriptionStatus.FILLED))
-            .findFirst();
-        return prescription.orElseThrow(
-            () -> new InvalidPrescriptionException("Prescription is not yet filled"));
+    public List<Prescription> getFilledPrescriptionsByPatient(Patient patient)
+        throws InvalidPrescriptionException {
+        List<Prescription> filledPatientPrescriptions = filledPrescriptions.keySet().stream()
+            .filter(prescription -> prescription.getPatient() == patient &&
+                prescription.getPrescriptionStatus() == PrescriptionStatus.FILLED)
+            .collect(Collectors.toList());
+        if (filledPatientPrescriptions.isEmpty()) {
+            throw new InvalidPrescriptionException("No filled prescriptions found for patient.");
+        }
+        return filledPatientPrescriptions;
     }
 
-    public Medication getMedicationsByPrescription() {
-        return null;
+    public List<Medication> getMedicationsByPrescription(Prescription prescription) {
+        return filledPrescriptions.get(prescription);
     }
 }

@@ -137,8 +137,10 @@ public class Main {
 
         // Pharmacists action
         Pharmacist pharmacist = DataProvider.predefinedPharmacist()[0];
-        Consumer<Pharmacy> runPharmacistFillAllRxReq = (Pharmacy p) -> pharmacist.fulfillAllPrescriptionLogRequests(
-            p.getPrescriptionRequestLog(), p.getInventory(), p.getPrescriptionRegistry());
+        Consumer<Pharmacy> runPharmacistFillAllRxReq = (Pharmacy p) ->
+            pharmacist.fulfillAllPrescriptionLogRequests(
+                p.getFilledPrescriptions(), p.getPrescriptionRequestLog(), p.getInventory(),
+                p.getPrescriptionRegistry());
 
         runPharmacistFillAllRxReq.accept(pharmacy);
 
