@@ -57,7 +57,8 @@ public class Register implements IRegister {
     public PaymentType getPaymentType() {
         return paymentType;
     }
-    public Boolean getTransactionCompleted(){
+
+    public Boolean getTransactionCompleted() {
         return this.transactionCompleted;
     }
 
@@ -181,8 +182,11 @@ public class Register implements IRegister {
             for (Prescription p : patientPrescriptions) {
                 List<Medication> patientPrescribedMedications = filledPrescriptions.getMedicationsByPrescription(
                     p);
+                // TODO {BUG} Medication is added to cart with 0 quantity when refills are not allowed
                 cart.addProduct(patientPrescribedMedications.get(0),
                     patientPrescribedMedications.size());
+                //TODO: removeFilledPrescription assumes that every patient will complete transaction. This can be handled
+                // in a new method that handles unprocessed filledPrescriptions
                 filledPrescriptions.removeFilledPrescription(p);
             }
         } catch (InvalidPrescriptionException e) {
@@ -205,20 +209,20 @@ public class Register implements IRegister {
     @Override
     public void processTransaction() {
         if (abstractCustomerNullChecker.isNull(abstractCustomer)) {
-            LOG.warn("AbstractCustomer is not set");
-        }
-        if (abstractCustomer.getCreditBalance() < this.getTotal()) {
-            LOG.warn("Payment Declined: Insufficient funds available");
-            LOG.debug(
-                "AbstractCustomer has " + abstractCustomer.getCreditBalance() + ". Total is "
-                    + this.getTotal());
+            LOG.warn("There is no customer for the transaction");
             return;
         }
-        double newCustomerBalance = abstractCustomer.getCreditBalance() - this.getTotal();
+        double customerBalance = abstractCustomer.getCreditBalance();
+        double transactionTotal = this.getTotal();
+        if (customerBalance < transactionTotal) {
+            LOG.warn("Payment Declined: Insufficient funds available");
+            LOG.debug("AbstractCustomer has " + customerBalance + ". Total is " + transactionTotal);
+            return;
+        }
+        double newCustomerBalance = customerBalance - transactionTotal;
         abstractCustomer.setCreditBalance(newCustomerBalance);
         this.transactionCompleted = true;
         transactionId += 1;
-
     }
 
     public String generateReceiptString() {
@@ -263,7 +267,6 @@ public class Register implements IRegister {
                     p.setPrescriptionStatus(PrescriptionStatus.REFILL_UPON_REQUEST);
                 }
             }
-
         }
         this.reset();
         return receipt;
