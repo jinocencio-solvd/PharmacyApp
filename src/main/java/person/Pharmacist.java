@@ -93,18 +93,6 @@ public class Pharmacist extends Employee {
         } catch (NoMoreRefillsException e) {
             LOG.error((e.getMessage()));
         }
-
-        // TODO: refactor this block for when patient pickup logic is complete
-        //  status Completed or refill should be after patient pick up
-//        if (prescription.getNumRefills() == 0) {
-//            prescription.setPrescriptionStatus(PrescriptionStatus.COMPLETED);
-//        } else {
-//            prescription.setPrescriptionStatus(PrescriptionStatus.REFILL_UPON_REQUEST);
-//        }
-        // TODO: set Prescription status to FILLED(ready for patient pickup)
-        // TODO: refactor updatePrescriptionRegistry upon completion of transaction
-//            prescriptionRegistry.updatePrescriptionRegistry(prescription);
-
         LOG.info("Prescription: " + prescription.getPrescriptionId() + " for patient: "
             + prescription.getPatient().getName() + " is filled.");
     }
