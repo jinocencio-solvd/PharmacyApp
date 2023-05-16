@@ -3,7 +3,8 @@ package pharmacy;
 import exceptions.DuplicatePersonException;
 import exceptions.InvalidPrescriptionException;
 import exceptions.PersonDoesNotExistException;
-import genericLinkedList.PrescriptionRequestLog;
+import prescriptionRegistry.PrescriptionFilledLog;
+import prescriptionRegistry.PrescriptionRequestLog;
 import inventory.Inventory;
 import java.time.DayOfWeek;
 import java.util.LinkedHashSet;
@@ -35,6 +36,7 @@ public class Pharmacy implements IPharmacy {
     private LinkedHashSet<Employee> employees;
     private PrescriptionRegistry prescriptionRegistry;
     private PrescriptionRequestLog prescriptionRequestLog;
+    private PrescriptionFilledLog prescriptionFilledLog;
 
     /**
      * Constructs a new Pharmacy object.
@@ -52,6 +54,11 @@ public class Pharmacy implements IPharmacy {
         this.employees = new LinkedHashSet<>();
         this.prescriptionRegistry = new PrescriptionRegistry();
         this.prescriptionRequestLog = new PrescriptionRequestLog();
+        this.prescriptionFilledLog = new PrescriptionFilledLog();
+    }
+
+    public PrescriptionFilledLog getFilledPrescriptions() {
+        return prescriptionFilledLog;
     }
 
     public PrescriptionRegistry getPrescriptionRegistry() {
@@ -134,6 +141,8 @@ public class Pharmacy implements IPharmacy {
         }
         try {
             this.getPrescriptionRegistry().addPrescription(patient, prescription);
+            //TODO: modify quick fix to handle refills logic. Added 1 b/c register decrements numRefill upon the first fill.
+            prescription.setNumRefills(prescription.getNumRefills() + 1);
             prescriptionRequestLog.addPrescriptionRequest(prescription);
 
         } catch (PersonDoesNotExistException e) {

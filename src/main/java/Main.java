@@ -137,22 +137,28 @@ public class Main {
 
         // Pharmacists action
         Pharmacist pharmacist = DataProvider.predefinedPharmacist()[0];
-        Consumer<Pharmacy> runPharmacistFillAllRxReq = (Pharmacy p) -> pharmacist.fulfillAllPrescriptionLogRequests(
-            p.getPrescriptionRequestLog(), p.getInventory(), p.getPrescriptionRegistry());
+        Consumer<Pharmacy> runPharmacistFillAllRxReq = (Pharmacy p) ->
+            pharmacist.fulfillAllPrescriptionLogRequests(
+                p.getFilledPrescriptions(), p.getPrescriptionRequestLog(), p.getInventory(),
+                p.getPrescriptionRegistry());
 
         runPharmacistFillAllRxReq.accept(pharmacy);
 
         // Demo for Patient transaction
         Register register = new Register(TECHNICIANS[0]);
         Cart cart = new Cart();
-        cart.addProduct(prescriptionForPatient.getMedication(),
-            prescriptionForPatient.getPrescribedQuantity());
-        register.setCustomer(patient);
-        register.setCart(cart);
-        register.scanAllProductsInCart();
-        register.processTransaction(); // InsufficientFunds
-        // TODO: Transaction should not be processed if customer has insufficient funds, subtracts to negative balance
-        // TODO: receipt should not be printed if transaction is not completed
+
+        Consumer<Register> registerOperations = (Register r) -> {
+            register.setCustomer(patient);
+            register.setCart(cart);
+            register.processPrescriptionAndAddMedicationsToCart(pharmacy.getFilledPrescriptions());
+            register.scanAllProductsInCart();
+            register.processTransaction();
+            if(register.getTransactionCompleted()){
+                Receipt receipt = register.printReceipt();
+                System.out.println(receipt.getContent());
+            }
+        };
 
         IRepeater<Patient> patientRepeater = ((numRepeats, operation) -> {
             for (int i = 0; i < numRepeats; i++) {
@@ -160,22 +166,20 @@ public class Main {
             }
         });
 
+        registerOperations.accept(register); // InsufficientFunds
         // Patient withdraws more funds
         LOG.info("Patient balance for " + patient.getName() + " is " + patient.getCreditBalance());
         patientRepeater.repeat(10, AbstractCustomer::increaseCreditBalanceByOneHundred);
         LOG.info("Patient balance for " + patient.getName()
             + " after being supplied with more credit is " + patient.getCreditBalance());
-
-        // Try transaction again
-        register.processTransaction();
-
-        // Print receipt to reset register
-        Receipt receipt = register.printReceipt();
+        registerOperations.accept(register);
 
         // Demo for refill requests and denial
         patientRepeater.repeat(3, (p) -> {
             p.requestPrescriptionRefill(pharmacy, prescriptionForPatient);
             runPharmacistFillAllRxReq.accept(pharmacy);
+            registerOperations.accept(register);
+            // TODO: Handle logic for customer presenting with an empty cart. Currently processes empty cart as a transaction
         });
     }
 

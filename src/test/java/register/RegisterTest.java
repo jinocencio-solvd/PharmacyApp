@@ -49,7 +49,7 @@ class RegisterTest {
     @Test
     void processTransaction() {
         assertFalse(register.isTransactionCompleted());
-        abstractCustomer.setCreditBalance(15.0);
+        abstractCustomer.setCreditBalance(1000.0);
         register.scanAllProductsInCart();
         register.processTransaction();
         assertTrue(register.isTransactionCompleted());

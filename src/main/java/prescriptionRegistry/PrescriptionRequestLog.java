@@ -1,8 +1,8 @@
-package genericLinkedList;
+package prescriptionRegistry;
 
+import genericLinkedList.GenericQueue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import prescriptionRegistry.Prescription;
 
 public class PrescriptionRequestLog extends GenericQueue<Prescription> {
 
