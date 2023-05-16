@@ -25,7 +25,6 @@ public class ReflectionPharmacy {
             System.out.println("Type: " + field.getType());
             // getModifiers return ints that represent a modifier
             System.out.println("Modifiers: " + Modifier.toString(field.getModifiers()));
-            ;
             System.out.println("Modifier is public: " + Modifier.isPublic(field.getModifiers()));
             System.out.println();
         }
@@ -41,19 +40,20 @@ public class ReflectionPharmacy {
             }
             System.out.println();
         }
-            // Extract method information
-            Method[] methods = classRPharmacy.getDeclaredMethods();
-            for (Method method : methods) {
-                System.out.println("Method: " + method.getName());
-                System.out.println("Return Type: " + method.getReturnType().getName());
 
-                Parameter[] parameters = method.getParameters();
-                for (Parameter parameter : parameters) {
-                    System.out.println("Parameter: " + parameter.getName());
-                    System.out.println("Type: " + parameter.getType().getName());
-                }
-                System.out.println();
+        // Extract method information
+        Method[] methods = classRPharmacy.getDeclaredMethods();
+        for (Method method : methods) {
+            System.out.println("Method: " + method.getName());
+            System.out.println("Return Type: " + method.getReturnType().getName());
+
+            Parameter[] parameters = method.getParameters();
+            for (Parameter parameter : parameters) {
+                System.out.println("Parameter: " + parameter.getName());
+                System.out.println("Type: " + parameter.getType().getName());
             }
+            System.out.println();
+        }
 
         // Create an instance of Pharmacy using reflection
         Constructor<?> constructor = classRPharmacy.getConstructor(String.class, Address.class,
