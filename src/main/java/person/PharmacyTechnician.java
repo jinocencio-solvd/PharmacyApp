@@ -6,7 +6,7 @@ import java.util.Objects;
 import misc.Address;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import prescriptionRegistry.FilledPrescriptions;
+import prescriptionRegistry.PrescriptionFilledLog;
 import prescriptionRegistry.Prescription;
 
 /**
@@ -46,8 +46,8 @@ public class PharmacyTechnician extends Employee {
     }
 
     public List<Prescription> getFilledPrescriptionsByPatient(Patient patient,
-        FilledPrescriptions filledPrescriptions) throws InvalidPrescriptionException {
-        return filledPrescriptions.getFilledPrescriptionsByPatient(patient);
+        PrescriptionFilledLog prescriptionFilledLog) throws InvalidPrescriptionException {
+        return prescriptionFilledLog.getFilledPrescriptionsByPatient(patient);
     }
 
     /**

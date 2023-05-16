@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import misc.Address;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import prescriptionRegistry.FilledPrescriptions;
+import prescriptionRegistry.PrescriptionFilledLog;
 import prescriptionRegistry.Prescription;
 import prescriptionRegistry.PrescriptionRegistry;
 import prescriptionRegistry.PrescriptionRequestLog;
@@ -74,7 +74,7 @@ public class Pharmacist extends Employee {
      *                     quantity
      * @param prescription the prescription to be filled
      */
-    public void fillPrescription(FilledPrescriptions filledPrescriptions, Inventory inventory,
+    public void fillPrescription(PrescriptionFilledLog prescriptionFilledLog, Inventory inventory,
         Prescription prescription, PrescriptionRegistry prescriptionRegistry) {
         try {
             switch (prescription.getPrescriptionStatus()) {
@@ -86,7 +86,7 @@ public class Pharmacist extends Employee {
                     List<Medication> medsFromRx = getMedicationsFromInventory(inventory,
                         prescription);
                     prescription.setPrescriptionStatus(PrescriptionStatus.FILLED);
-                    filledPrescriptions.addFilledPrescription(prescription, medsFromRx);
+                    prescriptionFilledLog.addFilledPrescription(prescription, medsFromRx);
 
 
             }
@@ -97,13 +97,13 @@ public class Pharmacist extends Employee {
             + prescription.getPatient().getName() + " is filled.");
     }
 
-    public void fulfillAllPrescriptionLogRequests(FilledPrescriptions filledPrescriptions,
+    public void fulfillAllPrescriptionLogRequests(PrescriptionFilledLog prescriptionFilledLog,
         PrescriptionRequestLog prescriptionRequestLog, Inventory inventory,
         PrescriptionRegistry prescriptionRegistry) {
 
         while (!prescriptionRequestLog.isEmpty()) {
             Prescription prescriptionToFulfill = prescriptionRequestLog.getNextPrescriptionRequest();
-            fillPrescription(filledPrescriptions, inventory, prescriptionToFulfill,
+            fillPrescription(prescriptionFilledLog, inventory, prescriptionToFulfill,
                 prescriptionRegistry);
         }
     }

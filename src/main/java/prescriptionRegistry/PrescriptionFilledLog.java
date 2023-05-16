@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import person.Patient;
 import product.Medication;
 
-public class FilledPrescriptions {
+public class PrescriptionFilledLog {
 
     Map<Prescription, List<Medication>> filledPrescriptions = new HashMap<>();
 

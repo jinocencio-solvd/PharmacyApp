@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 import person.AbstractCustomer;
 import person.Employee;
 import person.Patient;
-import prescriptionRegistry.FilledPrescriptions;
+import prescriptionRegistry.PrescriptionFilledLog;
 import prescriptionRegistry.Prescription;
 import product.Medication;
 import product.Product;
@@ -141,9 +141,9 @@ public class Register implements IRegister {
         productsToScan.forEach(this::scanProduct);
     }
 
-    private boolean isPrescriptionFilledForPatient(FilledPrescriptions filledPrescriptions) {
+    private boolean isPrescriptionFilledForPatient(PrescriptionFilledLog prescriptionFilledLog) {
         try {
-            List<Prescription> filledPrescriptionsByPatient = filledPrescriptions.getFilledPrescriptionsByPatient(
+            List<Prescription> filledPrescriptionsByPatient = prescriptionFilledLog.getFilledPrescriptionsByPatient(
                 (Patient) abstractCustomer);
             return !filledPrescriptionsByPatient.isEmpty();
         } catch (InvalidPrescriptionException e) {
@@ -153,9 +153,9 @@ public class Register implements IRegister {
     }
 
     public void processPrescriptionAndAddMedicationsToCart(
-        FilledPrescriptions filledPrescriptions) {
-        if (abstractCustomer.isPatient() && isPrescriptionFilledForPatient(filledPrescriptions)) {
-            addRequestedMedicationsToCart(filledPrescriptions);
+        PrescriptionFilledLog prescriptionFilledLog) {
+        if (abstractCustomer.isPatient() && isPrescriptionFilledForPatient(prescriptionFilledLog)) {
+            addRequestedMedicationsToCart(prescriptionFilledLog);
             txnProcessesPrescription = true;
         }
     }
@@ -163,24 +163,24 @@ public class Register implements IRegister {
     // TODO: Better solution would be to implement a notification system using the observer pattern
     //  where the register notifies the employee that the Rx is filled. Then the employee action
     //  to retrieve the medication would be separated to the employee class
-    public void addRequestedMedicationsToCart(FilledPrescriptions filledPrescriptions) {
+    public void addRequestedMedicationsToCart(PrescriptionFilledLog prescriptionFilledLog) {
         if (!abstractCustomer.isPatient()) {
             LOG.error("Customer is not a patient.");
         }
         try {
             LOG.trace("Employee: " + employee.getEmployeeID() + " added medications to cart");
-            List<Prescription> patientPrescriptions = filledPrescriptions.getFilledPrescriptionsByPatient(
+            List<Prescription> patientPrescriptions = prescriptionFilledLog.getFilledPrescriptionsByPatient(
                 (Patient) abstractCustomer);
             setPatientPrescriptions(patientPrescriptions);
             for (Prescription p : patientPrescriptions) {
-                List<Medication> patientPrescribedMedications = filledPrescriptions.getMedicationsByPrescription(
+                List<Medication> patientPrescribedMedications = prescriptionFilledLog.getMedicationsByPrescription(
                     p);
                 // TODO {BUG} Medication is added to cart with 0 quantity when refills are not allowed
                 cart.addProduct(patientPrescribedMedications.get(0),
                     patientPrescribedMedications.size());
                 //TODO: removeFilledPrescription assumes that every patient will complete transaction. This can be handled
-                // in a new method that handles unprocessed filledPrescriptions
-                filledPrescriptions.removeFilledPrescription(p);
+                // in a new method that handles unprocessed prescriptionFilledLog
+                prescriptionFilledLog.removeFilledPrescription(p);
             }
         } catch (InvalidPrescriptionException e) {
             LOG.error(e.getMessage());
