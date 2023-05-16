@@ -10,10 +10,6 @@ import product.Product;
  */
 public interface ICustomer {
 
-    //TODO: For now, we consider this method to belong to the customer where the pharmacy is
-    // forced to accept the customer's prescription. Other considerations include a pharmacy-patient
-    // object or interface implementation since a patient can only offer their prescription and its
-    // on the pharmacy side to accept the prescription and register to their database
     /**
      * Provides a prescription for the given prescription, which can be used to purchase
      * medication.

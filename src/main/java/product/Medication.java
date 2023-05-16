@@ -1,5 +1,6 @@
 package product;
 
+import enums.ProductType;
 import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +16,7 @@ public class Medication extends Product {
     public Medication(String name, String dosage, double price) {
         super(name, price);
         this.dosage = dosage;
+        this.productType = ProductType.PRESCRIBED_MEDICINE;
 
         LOG.trace("Medication created: " + this.name);
     }

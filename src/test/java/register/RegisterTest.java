@@ -6,26 +6,26 @@ import inventory.Cart;
 import misc.DataProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import person.Customer;
+import person.AbstractCustomer;
 import person.PharmacyTechnician;
 
 class RegisterTest {
 
     PharmacyTechnician[] technicians = DataProvider.predefinedPharmacyTechnicians();
-    Customer[] customers = DataProvider.predefinedConsumers();
+    AbstractCustomer[] abstractCustomers = DataProvider.predefinedConsumers();
 
     PharmacyTechnician tech1 = technicians[0];
-    Customer customer = customers[0];
+    AbstractCustomer abstractCustomer = abstractCustomers[0];
     Cart itemsCart;
     Register register;
 
     @BeforeEach
     void setUp() {
         register = new Register(tech1);
-        register.setCustomer(customer);
+        register.setCustomer(abstractCustomer);
         itemsCart = DataProvider.predefinedCarts()[0];
 
-        register.setCustomer(customer);
+        register.setCustomer(abstractCustomer);
         register.setCart(itemsCart);
     }
 
@@ -49,7 +49,7 @@ class RegisterTest {
     @Test
     void processTransaction() {
         assertFalse(register.isTransactionCompleted());
-        customer.setCreditBalance(15.0);
+        abstractCustomer.setCreditBalance(1000.0);
         register.scanAllProductsInCart();
         register.processTransaction();
         assertTrue(register.isTransactionCompleted());

@@ -1,5 +1,6 @@
 package product;
 
+import enums.ProductType;
 import java.util.Objects;
 
 /**
@@ -11,6 +12,11 @@ public class Item extends Product {
 
     public Item(String name, double price, String skuId) {
         super(name, price);
+        this.skuId = skuId;
+    }
+
+    public Item(String name, double price, ProductType productType, String skuId) {
+        super(name, price, productType);
         this.skuId = skuId;
     }
 

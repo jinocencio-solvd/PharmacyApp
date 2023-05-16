@@ -1,5 +1,6 @@
 package prescriptionRegistry;
 
+import enums.PrescriptionStatus;
 import person.Patient;
 import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
@@ -17,11 +18,11 @@ public class Prescription {
 
     private String prescriptionId;
     private int numRefills;
-    private boolean isFilled;
     private Medication medication;
     private Patient patient;
     private int prescribedQuantity;
     private static int countId = 0;
+    private PrescriptionStatus prescriptionStatus;
 
     /**
      * Constructs a new Prescription object with the given prescription ID, number of refills,
@@ -39,10 +40,10 @@ public class Prescription {
         countId++;
         this.prescriptionId = "rxID-" + countId;
         this.numRefills = numRefills;
-        this.isFilled = isFilled;
         this.medication = medication;
         this.patient = patient;
         this.prescribedQuantity = prescribedQuantity;
+        this.prescriptionStatus = PrescriptionStatus.NEW;
 
         LOG.trace("Prescription created with Id: " + this.prescriptionId);
     }
@@ -61,14 +62,6 @@ public class Prescription {
 
     public void setNumRefills(int numRefills) {
         this.numRefills = numRefills;
-    }
-
-    public boolean isFilled() {
-        return isFilled;
-    }
-
-    public void setFilled(boolean filled) {
-        isFilled = filled;
     }
 
     public Medication getMedication() {
@@ -95,17 +88,25 @@ public class Prescription {
         this.prescribedQuantity = prescribedQuantity;
     }
 
+    public PrescriptionStatus getPrescriptionStatus() {
+        return prescriptionStatus;
+    }
+
+    public void setPrescriptionStatus(PrescriptionStatus prescriptionStatus) {
+        this.prescriptionStatus = prescriptionStatus;
+    }
+
     @Override
     public String toString() {
         return "Product.Prescription{" +
             "prescriptionId='" + prescriptionId + '\'' +
             ", numRefills=" + numRefills +
-            ", isFilled=" + isFilled +
             ", medication=" + medication +
             ", patient=" + patient +
             ", prescribedQuantity=" + prescribedQuantity +
             '}';
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -116,14 +117,16 @@ public class Prescription {
             return false;
         }
         Prescription that = (Prescription) o;
-        return getNumRefills() == that.getNumRefills() && isFilled() == that.isFilled()
-            && getPrescriptionId().equals(that.getPrescriptionId()) && getMedication().equals(
-            that.getMedication()) && getPatient().equals(that.getPatient());
+        return getNumRefills() == that.getNumRefills()
+            && getPrescribedQuantity() == that.getPrescribedQuantity() && Objects.equals(
+            getPrescriptionId(), that.getPrescriptionId()) && Objects.equals(getMedication(),
+            that.getMedication()) && Objects.equals(getPatient(), that.getPatient())
+            && getPrescriptionStatus() == that.getPrescriptionStatus();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPrescriptionId(), getNumRefills(), isFilled(), getMedication(),
-            getPatient());
+        return Objects.hash(getPrescriptionId(), getNumRefills(), getMedication(), getPatient(),
+            getPrescribedQuantity(), getPrescriptionStatus());
     }
 }

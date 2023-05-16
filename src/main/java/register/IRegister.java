@@ -1,6 +1,5 @@
 package register;
 
-import person.Customer;
 import product.Product;
 
 public interface IRegister {

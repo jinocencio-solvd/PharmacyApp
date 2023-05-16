@@ -1,5 +1,6 @@
 package prescriptionRegistry;
 
+import enums.PrescriptionStatus;
 import exceptions.DuplicatePersonException;
 import exceptions.PersonDoesNotExistException;
 import person.Patient;
@@ -9,7 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-public final class PrescriptionRegistry implements IPrescriptionRegistry {
+public class PrescriptionRegistry implements IPrescriptionRegistry {
 
     private static final Logger LOG = LogManager.getLogger(PrescriptionRegistry.class);
 
@@ -20,7 +21,7 @@ public final class PrescriptionRegistry implements IPrescriptionRegistry {
     }
 
     public ArrayList<Prescription> getPrescriptionList(Patient patient) {
-        return prescriptionRegistry.get(patient);
+        return prescriptionRegistry.getOrDefault(patient, new ArrayList<>());
     }
 
     public void addPatientToRegistry(Patient patient) {
@@ -44,8 +45,19 @@ public final class PrescriptionRegistry implements IPrescriptionRegistry {
             LOG.warn("PersonDoesNotExistException was thrown");
             throw new PersonDoesNotExistException("The person is not registered in database");
         }
-
+        prescription.setPrescriptionStatus(PrescriptionStatus.PENDING);
         prescriptionRegistry.get(patient).add(prescription);
+    }
+
+    public void updatePrescriptionRegistry(Prescription prescription) {
+        Patient patient = prescription.getPatient();
+        ArrayList<Prescription> prescriptionList = prescriptionRegistry.get(patient);
+        for (Prescription p : prescriptionList) {
+            if (p.getPrescriptionId().equals(prescription.getPrescriptionId())) {
+                prescriptionList.remove(p);
+                prescriptionList.add(prescription);
+            }
+        }
     }
 
 }
