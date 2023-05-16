@@ -141,13 +141,6 @@ public class Register implements IRegister {
         productsToScan.forEach(this::scanProduct);
     }
 
-    private boolean isCustomerPatient() {
-        if (abstractCustomerNullChecker.isNull(abstractCustomer)) {
-            LOG.warn("AbstractCustomer is not set");
-        }
-        return abstractCustomer instanceof Patient;
-    }
-
     private boolean isPrescriptionFilledForPatient(FilledPrescriptions filledPrescriptions) {
         try {
             List<Prescription> filledPrescriptionsByPatient = filledPrescriptions.getFilledPrescriptionsByPatient(
@@ -161,7 +154,7 @@ public class Register implements IRegister {
 
     public void processPrescriptionAndAddMedicationsToCart(
         FilledPrescriptions filledPrescriptions) {
-        if (isCustomerPatient() && isPrescriptionFilledForPatient(filledPrescriptions)) {
+        if (abstractCustomer.isPatient() && isPrescriptionFilledForPatient(filledPrescriptions)) {
             addRequestedMedicationsToCart(filledPrescriptions);
             txnProcessesPrescription = true;
         }
@@ -171,7 +164,7 @@ public class Register implements IRegister {
     //  where the register notifies the employee that the Rx is filled. Then the employee action
     //  to retrieve the medication would be separated to the employee class
     public void addRequestedMedicationsToCart(FilledPrescriptions filledPrescriptions) {
-        if (!isCustomerPatient()) {
+        if (!abstractCustomer.isPatient()) {
             LOG.error("Customer is not a patient.");
         }
         try {
