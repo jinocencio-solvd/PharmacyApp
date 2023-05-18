@@ -1,5 +1,6 @@
 import customLambdaFunctions.IPerformOperation;
 import customLambdaFunctions.IRepeater;
+import enums.BusinessDay;
 import fileReadWriter.FileReadWriter;
 import genericLinkedList.CustomerLine;
 import inventory.Cart;
@@ -7,7 +8,6 @@ import inventory.ProductInventory;
 import java.time.DayOfWeek;
 import java.util.Scanner;
 import java.util.function.Consumer;
-import enums.BusinessDay;
 import misc.DataProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,6 +36,10 @@ public class Main {
         operation.perform(pharmacy);
     }
 
+    public static void setPharmacy(Pharmacy pharmacy) {
+        Main.pharmacy = pharmacy;
+    }
+
     private static final IPerformOperation<Pharmacy> hirePharmacyEmployees = (Pharmacy pharmacy) -> {
         LOG.info("Start hiring employees");
         pharmacy.hireEmployee(PHARMACISTS[0]);
@@ -59,34 +63,27 @@ public class Main {
         pharmacy.setInventory(productInventory);
     };
 
-    private static void userCreatePatient(Pharmacy pharmacy) {
+    private static Pharmacy userCreatePharmacy() {
         LOG.trace("In userCreatePatient");
-        System.out.println("Welcome to " + pharmacy.getName());
-        Scanner s = new Scanner(System.in);
-        String name = "";
-        try {
-            System.out.println("Enter patient name:");
+        Pharmacy pharmacy = DataProvider.predefinedPharmacy();
+        try (Scanner s = new Scanner(System.in)) {
+            String name = "";
+            System.out.println("Enter pharmacy name:");
             name = s.nextLine();
             if (name.isBlank()) {
                 throw new IllegalArgumentException("Name cannot be empty");
             }
-            Patient userPatient = new Patient(name, "phoneNumber",
-                DataProvider.predefinedAddresses()[0],
-                null);
-
-            LOG.info("Patient " + userPatient.getName() + " created with patientId: "
-                + userPatient.getPatientID());
-            System.out.println("Thank you see you later.");
+            pharmacy.setName(name);
+            LOG.info("Pharmacy " + pharmacy.getName() + " created.");
+            return pharmacy;
         } catch (IllegalArgumentException e) {
             LOG.warn("Name cannot be empty");
-            userCreatePatient(pharmacy);
-        } finally {
-            s.close();
+            userCreatePharmacy();
         }
+        return pharmacy;
     }
 
-    private static void pharmacyOperations() {
-        pharmacy = DataProvider.predefinedPharmacy();
+    private static void pharmacyOperations(Pharmacy pharmacy) {
         performPharmacyOperation(hirePharmacyEmployees);
         performPharmacyOperation(populateInventory);
         pharmacy.releaseEmployee(TECHNICIANS[1]);
@@ -151,10 +148,11 @@ public class Main {
         Consumer<Register> registerOperations = (Register r) -> {
             register.setCustomer(patient);
             register.setCart(cart);
-            register.processPrescriptionAndAddMedicationsToCart(pharmacy.getFilledPrescriptions());
+            register.processPrescriptionAndAddMedicationsToCart(
+                pharmacy.getFilledPrescriptions());
             register.scanAllProductsInCart();
             register.processTransaction();
-            if(register.getTransactionCompleted()){
+            if (register.getTransactionCompleted()) {
                 Receipt receipt = register.printReceipt();
                 System.out.println(receipt.getContent());
             }
@@ -168,7 +166,8 @@ public class Main {
 
         registerOperations.accept(register); // InsufficientFunds
         // Patient withdraws more funds
-        LOG.info("Patient balance for " + patient.getName() + " is " + patient.getCreditBalance());
+        LOG.info(
+            "Patient balance for " + patient.getName() + " is " + patient.getCreditBalance());
         patientRepeater.repeat(10, AbstractCustomer::increaseCreditBalanceByOneHundred);
         LOG.info("Patient balance for " + patient.getName()
             + " after being supplied with more credit is " + patient.getCreditBalance());
@@ -184,7 +183,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        pharmacyOperations();
+        boolean userCreateMode = false;
+        Pharmacy pharmacy =
+            userCreateMode ? userCreatePharmacy() : DataProvider.predefinedPharmacy();
+        setPharmacy(pharmacy);
+        pharmacyOperations(pharmacy);
         customerLineOperations();
         pharmacyOperationDays();
         prescriptionOperations();
