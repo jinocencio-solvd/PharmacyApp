@@ -1,9 +1,9 @@
 import customLambdaFunctions.IRepeater;
 import fileReadWriter.FileReadWriter;
-import genericLinkedList.CustomerLine;
 import inventory.Cart;
 import java.util.Scanner;
 import java.util.function.Consumer;
+import misc.ConcurrentCustomerLine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import person.AbstractCustomer;
@@ -21,7 +21,6 @@ import setup.PharmacySetup;
 public class Main {
 
     private static final Logger LOG = LogManager.getLogger(Main.class);
-    private static final Pharmacist[] PHARMACISTS = DataProvider.predefinedPharmacist();
     private static final PharmacyTechnician[] TECHNICIANS = DataProvider.predefinedPharmacyTechnicians();
     private static final Patient[] PATIENTS = DataProvider.PATIENTS;
 
@@ -106,11 +105,13 @@ public class Main {
         });
     }
 
-    public static void main(String[] args) {
-        boolean userCreateMode = false;
-        int numCustomers = 10;
+    public static void appSetup(boolean userCreateMode, int numCustomersInLine ){
         Pharmacy pharmacy =
             userCreateMode ? PharmacySetup.setup(userCreatePharmacy()) : PharmacySetup.setup();
-        CustomerLine customerLine = new CustomerLineSetup(pharmacy, numCustomers).setup();
+        ConcurrentCustomerLine customerLine = new CustomerLineSetup(pharmacy, numCustomersInLine).setup();
+    }
+
+    public static void main(String[] args) {
+        appSetup(false, 10);
     }
 }
