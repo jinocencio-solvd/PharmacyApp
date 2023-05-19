@@ -3,7 +3,7 @@ package register;
 import static org.junit.jupiter.api.Assertions.*;
 
 import inventory.Cart;
-import misc.DataProvider;
+import setup.DataProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import person.AbstractCustomer;

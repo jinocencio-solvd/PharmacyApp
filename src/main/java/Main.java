@@ -1,14 +1,9 @@
-import customLambdaFunctions.IPerformOperation;
 import customLambdaFunctions.IRepeater;
-import enums.BusinessDay;
 import fileReadWriter.FileReadWriter;
 import genericLinkedList.CustomerLine;
 import inventory.Cart;
-import inventory.ProductInventory;
-import java.time.DayOfWeek;
 import java.util.Scanner;
 import java.util.function.Consumer;
-import misc.DataProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import person.AbstractCustomer;
@@ -18,10 +13,10 @@ import person.Pharmacist;
 import person.PharmacyTechnician;
 import pharmacy.Pharmacy;
 import prescriptionRegistry.Prescription;
-import product.Item;
-import product.Medication;
 import register.Receipt;
 import register.Register;
+import setup.DataProvider;
+import setup.PharmacySetup;
 
 public class Main {
 
@@ -30,44 +25,12 @@ public class Main {
     private static final PharmacyTechnician[] TECHNICIANS = DataProvider.predefinedPharmacyTechnicians();
     private static final Patient[] PATIENTS = DataProvider.PATIENTS;
     private static final Customer[] CUSTOMERS = DataProvider.predefinedConsumers();
-    private static Pharmacy pharmacy;
-
-    private static void performPharmacyOperation(IPerformOperation<Pharmacy> operation) {
-        operation.perform(pharmacy);
-    }
-
-    public static void setPharmacy(Pharmacy pharmacy) {
-        Main.pharmacy = pharmacy;
-    }
-
-    private static final IPerformOperation<Pharmacy> hirePharmacyEmployees = (Pharmacy pharmacy) -> {
-        LOG.info("Start hiring employees");
-        pharmacy.hireEmployee(PHARMACISTS[0]);
-        pharmacy.hireEmployee(PHARMACISTS[1]);
-        pharmacy.hireEmployee((TECHNICIANS[0]));
-        pharmacy.hireEmployee((TECHNICIANS[0])); // hire duplicate
-        pharmacy.hireEmployee((TECHNICIANS[1]));
-        LOG.info("Completed hiring employees");
-    };
-
-    private static final IPerformOperation<Pharmacy> populateInventory = (Pharmacy pharmacy) -> {
-        LOG.info("Start populating product inventory");
-        ProductInventory productInventory = new ProductInventory();
-        for (Item item : DataProvider.predefinedItems()) {
-            productInventory.addProduct(item, 50);
-        }
-        for (Medication medication : DataProvider.predefinedMedications()) {
-            productInventory.addProduct(medication, 150);
-        }
-        LOG.info("Completed populating product inventory");
-        pharmacy.setInventory(productInventory);
-    };
 
     private static Pharmacy userCreatePharmacy() {
         LOG.trace("In userCreatePatient");
         Pharmacy pharmacy = DataProvider.predefinedPharmacy();
         try (Scanner s = new Scanner(System.in)) {
-            String name = "";
+            String name;
             System.out.println("Enter pharmacy name:");
             name = s.nextLine();
             if (name.isBlank()) {
@@ -81,26 +44,6 @@ public class Main {
             userCreatePharmacy();
         }
         return pharmacy;
-    }
-
-    private static void pharmacyOperations(Pharmacy pharmacy) {
-        performPharmacyOperation(hirePharmacyEmployees);
-        performPharmacyOperation(populateInventory);
-        pharmacy.releaseEmployee(TECHNICIANS[1]);
-        pharmacy.releaseEmployee(TECHNICIANS[1]); // not found
-    }
-
-    private static void pharmacyOperationDays() {
-        for (DayOfWeek day : DayOfWeek.values()) {
-            String dayStr = day.name();
-            BusinessDay businessDay = BusinessDay.getBusinessDay(dayStr);
-            LOG.info(businessDay.getDescription());
-            if (pharmacy.isOpen(day)) {
-                LOG.info("Come on in!");
-            } else {
-                LOG.info("Come back later!");
-            }
-        }
     }
 
     private static void customerLineOperations() {
@@ -126,7 +69,7 @@ public class Main {
         FileReadWriter.runFileWriteWithUtils(filePath);
     }
 
-    private static void prescriptionOperations() {
+    private static void prescriptionOperations(Pharmacy pharmacy) {
         // Patient actions
         Patient patient = PATIENTS[0];
         Prescription prescriptionForPatient = DataProvider.predefinedPrescriptions()[0];
@@ -136,7 +79,7 @@ public class Main {
         Pharmacist pharmacist = DataProvider.predefinedPharmacist()[0];
         Consumer<Pharmacy> runPharmacistFillAllRxReq = (Pharmacy p) ->
             pharmacist.fulfillAllPrescriptionLogRequests(
-                p.getFilledPrescriptions(), p.getPrescriptionRequestLog(), p.getInventory(),
+                p.getFilledPrescriptions(), p.getPrescriptionRequestLog(), p.getProductInventory(),
                 p.getPrescriptionRegistry());
 
         runPharmacistFillAllRxReq.accept(pharmacy);
@@ -185,11 +128,9 @@ public class Main {
     public static void main(String[] args) {
         boolean userCreateMode = false;
         Pharmacy pharmacy =
-            userCreateMode ? userCreatePharmacy() : DataProvider.predefinedPharmacy();
-        setPharmacy(pharmacy);
-        pharmacyOperations(pharmacy);
+            userCreateMode ? PharmacySetup.setup(userCreatePharmacy()) : PharmacySetup.setup();
+
         customerLineOperations();
-        pharmacyOperationDays();
-        prescriptionOperations();
+        prescriptionOperations(pharmacy);
     }
 }

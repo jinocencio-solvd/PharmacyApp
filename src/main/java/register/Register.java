@@ -62,7 +62,7 @@ public class Register implements IRegister {
         return this.transactionCompleted;
     }
 
-    // TODO: Customer or Cashier can select payment type
+    // TODO: Customer or ICashier can select payment type
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
     }
@@ -224,7 +224,7 @@ public class Register implements IRegister {
         }
         StringBuilder sb = new StringBuilder();
         String txnIdLine = "TransactionId: " + "txn-" + transactionId + System.lineSeparator();
-        String cashierInfo = "Cashier: " + employee.getName() + System.lineSeparator() + "Id: "
+        String cashierInfo = "ICashier: " + employee.getName() + System.lineSeparator() + "Id: "
             + employee.getEmployeeID() + System.lineSeparator();
         sb.append(txnIdLine);
         sb.append(cashierInfo);
@@ -261,6 +261,7 @@ public class Register implements IRegister {
                 }
             }
         }
+        LOG.trace("Receipt printed for customer: "+ abstractCustomer.getName());
         this.reset();
         return receipt;
     }

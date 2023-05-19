@@ -4,6 +4,7 @@ import exceptions.InsufficientQuantityException;
 import exceptions.ProductDoesNotExistException;
 import exceptions.ProductOutOfStockException;
 import inventory.Cart;
+import inventory.ProductInventory;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 import misc.Address;
@@ -15,16 +16,26 @@ public abstract class AbstractCustomer extends Person implements ICustomer {
 
     private static final Logger LOG = LogManager.getLogger(AbstractCustomer.class);
     private double creditBalance;
+    private Cart cart;
 
     public AbstractCustomer(String name, String phoneNumber, Address address) {
         super(name, phoneNumber, address);
         this.creditBalance = 0;
+        this.cart = new Cart();
     }
 
     public AbstractCustomer(String name, String phoneNumber, Address address,
         double creditBalance) {
         super(name, phoneNumber, address);
         this.creditBalance = creditBalance;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public double getCreditBalance() {
@@ -43,6 +54,16 @@ public abstract class AbstractCustomer extends Person implements ICustomer {
     public boolean isPatient() {
         BooleanSupplier isPatient = () -> this instanceof Patient;
         return isPatient.getAsBoolean();
+    }
+
+    public Product getProductFromInventory(Product product, ProductInventory productInventory) {
+        try {
+            productInventory.removeProduct(product, 1);
+            return product;
+        } catch (InsufficientQuantityException | ProductDoesNotExistException | ProductOutOfStockException e) {
+            LOG.trace(e.getMessage());
+        }
+        return null;
     }
 
     /**

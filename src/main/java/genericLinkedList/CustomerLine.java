@@ -20,6 +20,10 @@ public class CustomerLine extends GenericQueue<AbstractCustomer> {
         customerLine.enqueue(abstractCustomer);
     }
 
+    public boolean hasNext(){
+        return !customerLine.isEmpty();
+    }
+
     public AbstractCustomer getNextCustomer() {
         if (customerLine.isEmpty()) {
             LOG.warn("The line is empty");

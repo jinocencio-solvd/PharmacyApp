@@ -1,24 +1,24 @@
 package pharmacy;
 
+import enums.BusinessDay;
+import enums.PrescriptionStatus;
 import exceptions.DuplicatePersonException;
 import exceptions.InvalidPrescriptionException;
 import exceptions.PersonDoesNotExistException;
-import prescriptionRegistry.PrescriptionFilledLog;
-import prescriptionRegistry.PrescriptionRequestLog;
-import inventory.Inventory;
+import inventory.ProductInventory;
 import java.time.DayOfWeek;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.function.Predicate;
 import misc.Address;
-import enums.BusinessDay;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import person.Employee;
 import person.Patient;
 import prescriptionRegistry.Prescription;
+import prescriptionRegistry.PrescriptionFilledLog;
 import prescriptionRegistry.PrescriptionRegistry;
-import enums.PrescriptionStatus;
+import prescriptionRegistry.PrescriptionRequestLog;
 
 /**
  * Represents a pharmacy with HR capabilities. This class represents a pharmacy, which has a name,
@@ -32,7 +32,7 @@ public class Pharmacy implements IPharmacy {
     private Address address;
     private String phoneNumber;
     private String emailAddress;
-    private Inventory inventory;
+    private ProductInventory productInventory;
     private LinkedHashSet<Employee> employees;
     private PrescriptionRegistry prescriptionRegistry;
     private PrescriptionRequestLog prescriptionRequestLog;
@@ -109,12 +109,12 @@ public class Pharmacy implements IPharmacy {
         this.emailAddress = emailAddress;
     }
 
-    public Inventory getInventory() {
-        return inventory;
+    public ProductInventory getProductInventory() {
+        return productInventory;
     }
 
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
+    public void setProductInventory(ProductInventory productInventory) {
+        this.productInventory = productInventory;
     }
 
     public LinkedHashSet<Employee> getEmployees() {
@@ -242,7 +242,7 @@ public class Pharmacy implements IPharmacy {
             ", address=" + address +
             ", phoneNumber='" + phoneNumber + '\'' +
             ", emailAddress='" + emailAddress + '\'' +
-            ", inventory=" + inventory +
+            ", inventory=" + productInventory +
             ", employees=" + employees +
             '}';
     }
@@ -259,14 +259,14 @@ public class Pharmacy implements IPharmacy {
         return Objects.equals(getName(), pharmacy.getName()) && Objects.equals(
             getAddress(), pharmacy.getAddress()) && Objects.equals(getPhoneNumber(),
             pharmacy.getPhoneNumber()) && Objects.equals(getEmailAddress(),
-            pharmacy.getEmailAddress()) && Objects.equals(getInventory(),
-            pharmacy.getInventory()) && Objects.equals(getEmployees(), pharmacy.getEmployees());
+            pharmacy.getEmailAddress()) && Objects.equals(getProductInventory(),
+            pharmacy.getProductInventory()) && Objects.equals(getEmployees(), pharmacy.getEmployees());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getName(), getAddress(), getPhoneNumber(), getEmailAddress(),
-            getInventory(),
+            getProductInventory(),
             getEmployees());
     }
 }

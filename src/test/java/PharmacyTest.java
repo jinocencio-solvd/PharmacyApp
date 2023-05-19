@@ -1,19 +1,16 @@
-import exceptions.DuplicatePersonException;
-import inventory.Inventory;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import inventory.ProductInventory;
 import java.util.LinkedHashSet;
 import misc.Address;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import person.Employee;
 import person.Pharmacist;
 import person.PharmacyTechnician;
 import pharmacy.Pharmacy;
 import product.Item;
 import product.Medication;
-import java.util.ArrayList;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 class PharmacyTest {
@@ -42,7 +39,7 @@ class PharmacyTest {
     Pharmacy pharmacyCopy;
 
     @BeforeEach
-    void setUp() throws DuplicatePersonException {
+    void setUp() {
         pharmacist1 = new Pharmacist("John Doe", "555-1234", address1, "CA-12345");
         pharmacist2 = new Pharmacist("Jane Smith", "555-5678", address2, "NY-67890");
         tech1 = new PharmacyTechnician("John Tech", "555-1234", address3, "CA123456");
@@ -64,8 +61,9 @@ class PharmacyTest {
         inventory.addProduct(medication3, 200);
         inventory.addProduct(medication4, 75);
 
-        pharmacy = new Pharmacy("Joffrey's Pharmacy.Pharmacy", address0, "123" + "-321-4567", "pharmEmail@email.com");
-        pharmacy.setInventory(inventory);
+        pharmacy = new Pharmacy("Joffrey's Pharmacy.Pharmacy", address0, "123" + "-321-4567",
+            "pharmEmail@email.com");
+        pharmacy.setProductInventory(inventory);
         pharmacy.setEmployees(employees);
         // Copy created using overloaded constructor
         pharmacyCopy = new Pharmacy("Joffrey's Pharmacy.Pharmacy", address0, "123" + "-321-4567",
@@ -74,7 +72,7 @@ class PharmacyTest {
         pharmacyCopy.hireEmployee(pharmacist2);
         pharmacyCopy.hireEmployee(tech1);
         pharmacyCopy.hireEmployee(tech2);
-        pharmacyCopy.setInventory(inventory);
+        pharmacyCopy.setProductInventory(inventory);
     }
 
     @Test
