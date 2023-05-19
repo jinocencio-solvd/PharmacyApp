@@ -19,6 +19,8 @@ public class PharmacySetup {
     private static final Pharmacy pharmacy = DataProvider.predefinedPharmacy();
     private static final PharmacyTechnician[] TECHNICIANS = DataProvider.predefinedPharmacyTechnicians();
     private static final Pharmacist[] PHARMACISTS = DataProvider.predefinedPharmacist();
+    private static final int MAX_NUM_PER_ITEMS = 500;
+    private static final int MAX_NUM_PER_MEDICATION = 500;
 
     private static final IPerformOperation<Pharmacy> hirePharmacyEmployees = (Pharmacy pharmacy) -> {
         LOG.info("Start hiring employees");
@@ -34,10 +36,10 @@ public class PharmacySetup {
         LOG.info("Start populating product inventory");
         ProductInventory productInventory = new ProductInventory();
         for (Item item : DataProvider.predefinedItems()) {
-            productInventory.addProduct(item, 50);
+            productInventory.addProduct(item, MAX_NUM_PER_ITEMS);
         }
         for (Medication medication : DataProvider.predefinedMedications()) {
-            productInventory.addProduct(medication, 150);
+            productInventory.addProduct(medication, MAX_NUM_PER_MEDICATION);
         }
         LOG.info("Completed populating product inventory");
         pharmacy.setProductInventory(productInventory);

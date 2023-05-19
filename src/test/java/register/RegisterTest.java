@@ -12,7 +12,7 @@ import person.PharmacyTechnician;
 class RegisterTest {
 
     PharmacyTechnician[] technicians = DataProvider.predefinedPharmacyTechnicians();
-    AbstractCustomer[] abstractCustomers = DataProvider.predefinedConsumers();
+    AbstractCustomer[] abstractCustomers = DataProvider.predefinedCustomers();
 
     PharmacyTechnician tech1 = technicians[0];
     AbstractCustomer abstractCustomer = abstractCustomers[0];

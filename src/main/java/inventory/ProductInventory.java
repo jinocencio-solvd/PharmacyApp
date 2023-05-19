@@ -6,7 +6,6 @@ import exceptions.ProductOutOfStockException;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
-import product.Item;
 import product.Product;
 
 public class ProductInventory extends Inventory {
@@ -15,16 +14,16 @@ public class ProductInventory extends Inventory {
         super();
     }
 
-    public Product getRandomProduct() {
+    public Product getRandomProduct(Class<?> clazz) {
         List<Product> productList = this.getProducts().keySet().stream()
-            .filter(product -> product instanceof Item).collect(
+            .filter(clazz::isInstance).collect(
                 Collectors.toList());
         int randomIdx = new Random().nextInt(productList.size());
         Product randomProduct = productList.get(randomIdx);
         try {
             removeProduct(randomProduct, 1);
         } catch (InsufficientQuantityException | ProductDoesNotExistException | ProductOutOfStockException e) {
-            getRandomProduct();
+            getRandomProduct(clazz);
         }
         return randomProduct;
     }

@@ -52,11 +52,23 @@ public class DataProvider {
         };
     }
 
-    public static Customer[] predefinedConsumers() {
+    public static Customer[] predefinedCustomers() {
         return new Customer[]{
             new Customer("Todd Daver", "555-7890", addresses[5]),
             new Customer("Saul Johnson", "555-2345", addresses[6]),
-            new Customer("Saul II Johnson", "555-2345", addresses[6])
+            new Customer("Saul II Johnson", "555-2345", addresses[6]),
+            new Customer("John Smith", "555-1234", addresses[0]),
+            new Customer("Jane Doe", "555-5678", addresses[1]),
+            new Customer("Michael Brown", "555-1111", addresses[2]),
+            new Customer("Emily Davis", "555-2222", addresses[3]),
+            new Customer("Daniel Johnson", "555-3333", addresses[4]),
+            new Customer("Olivia Wilson", "555-4444", addresses[5]),
+            new Customer("William Lee", "555-5555", addresses[6]),
+            new Customer("Sophia Moore", "555-6666", addresses[0]),
+            new Customer("James Anderson", "555-7777", addresses[1]),
+            new Customer("Isabella Thompson", "555-8888", addresses[2]),
+            new Customer("Benjamin Martinez", "555-9999", addresses[3]),
+            new Customer("Mia Garcia", "555-0000", addresses[4])
         };
     }
 

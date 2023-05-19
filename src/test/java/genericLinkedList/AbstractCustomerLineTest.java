@@ -11,7 +11,7 @@ import person.Patient;
 class AbstractCustomerLineTest {
     private CustomerLine customerLine;
     private final Patient[] PATIENTS = DataProvider.predefinedPatients();
-    private final Customer[] Customers = DataProvider.predefinedConsumers();
+    private final Customer[] Customers = DataProvider.predefinedCustomers();
     @BeforeEach
     void setUp() {
         customerLine = new CustomerLine();

@@ -7,7 +7,6 @@ import java.util.function.Consumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import person.AbstractCustomer;
-import person.Customer;
 import person.Patient;
 import person.Pharmacist;
 import person.PharmacyTechnician;
@@ -15,6 +14,7 @@ import pharmacy.Pharmacy;
 import prescriptionRegistry.Prescription;
 import register.Receipt;
 import register.Register;
+import setup.CustomerLineSetup;
 import setup.DataProvider;
 import setup.PharmacySetup;
 
@@ -24,7 +24,6 @@ public class Main {
     private static final Pharmacist[] PHARMACISTS = DataProvider.predefinedPharmacist();
     private static final PharmacyTechnician[] TECHNICIANS = DataProvider.predefinedPharmacyTechnicians();
     private static final Patient[] PATIENTS = DataProvider.PATIENTS;
-    private static final Customer[] CUSTOMERS = DataProvider.predefinedConsumers();
 
     private static Pharmacy userCreatePharmacy() {
         LOG.trace("In userCreatePatient");
@@ -44,24 +43,6 @@ public class Main {
             userCreatePharmacy();
         }
         return pharmacy;
-    }
-
-    private static void customerLineOperations() {
-        CustomerLine customerLine = new CustomerLine();
-        for (Patient p : PATIENTS) {
-            customerLine.addCustomer(p);
-        }
-        for (Customer c : CUSTOMERS) {
-            customerLine.addCustomer(c);
-        }
-        customerLine.getLineLength();
-        customerLine.getNextCustomer();
-
-        customerLine.getLineLength();
-        customerLine.getNextCustomer();
-        for (int i = 0; i < 10; i++) {
-            customerLine.getNextCustomer();
-        }
     }
 
     public static void runCountWords() {
@@ -129,8 +110,8 @@ public class Main {
         boolean userCreateMode = false;
         Pharmacy pharmacy =
             userCreateMode ? PharmacySetup.setup(userCreatePharmacy()) : PharmacySetup.setup();
+        CustomerLine customerLine = new CustomerLineSetup(pharmacy, 10).setup();
 
-        customerLineOperations();
-        prescriptionOperations(pharmacy);
+//        prescriptionOperations(pharmacy);
     }
 }

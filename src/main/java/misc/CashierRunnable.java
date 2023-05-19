@@ -17,15 +17,13 @@ public class CashierRunnable implements Runnable {
     private Employee cashier;
     private CustomerLine customerLine;
     private Register register;
-    private Cart cart;
     private Pharmacy pharmacy;
 
     public CashierRunnable(Pharmacy pharmacy, Register register, Employee cashier,
-        CustomerLine customerline, Cart cart) {
+        CustomerLine customerline) {
         this.cashier = cashier;
         this.customerLine = customerline;
         this.register = register;
-        this.cart = cart;
         this.pharmacy = pharmacy;
     }
 
@@ -34,7 +32,7 @@ public class CashierRunnable implements Runnable {
         register.setEmployee(cashier);
 
         while (customerLine.hasNext()) {
-            AbstractCustomer nextCustomer = customerLine.getNextCustomer();
+            AbstractCustomer nextCustomer = customerLine.getNextCustomer(); //dequeue
             Cart customerCart = nextCustomer.getCart();
             register.setCustomer(nextCustomer);
             register.setCart(customerCart);
@@ -52,8 +50,6 @@ public class CashierRunnable implements Runnable {
             } else {
                 LOG.error("Unable to complete customer transaction for " + nextCustomer.getName());
             }
-
-            customerLine.getNextCustomer();
         }
     }
 }
