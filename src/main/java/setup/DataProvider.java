@@ -40,15 +40,38 @@ public class DataProvider {
     public static Insurance[] predefinedInsurance() {
         return new Insurance[]{
             new Insurance("MediCare", 80.0),
-            new Insurance("Blue Cross", 70.0)
+            new Insurance("Blue Cross", 70.0),
+            new Insurance("Aetna", 75.0),
+            new Insurance("Cigna", 65.0),
+            new Insurance("UnitedHealthcare", 85.0),
+            new Insurance("Anthem", 60.0),
+            new Insurance("Humana", 75.0),
+            new Insurance("Kaiser Permanente", 90.0),
+            new Insurance("Molina Healthcare", 70.0)
         };
     }
 
     public static Patient[] predefinedPatients() {
         return new Patient[]{
-            new Patient("Tom Davis", "555-7890", addresses[5], insurances[0]),
+            new Patient("Tom Davis", "555-7890", addresses[5], insurances[7]),
             new Patient("Sara Johnson", "555-2345", addresses[6], insurances[1]),
-            new Patient("Sara II Johnson", "555-2345", addresses[6])
+            new Patient("Sara II Johnson", "555-2345", addresses[6], insurances[1]),
+            new Patient("John Smith", "555-1234", addresses[0], insurances[2]),
+            new Patient("Jane Doe", "555-5678", addresses[1], insurances[3]),
+            new Patient("Emily Davis", "555-2222", addresses[3], insurances[5]),
+            new Patient("Daniel Johnson", "555-3333", addresses[4], insurances[6]),
+            new Patient("Olivia Wilson", "555-4444", addresses[5], insurances[7]),
+            new Patient("William Lee", "555-5555", addresses[6], insurances[8]),
+            new Patient("Sophia Moore", "555-6666", addresses[0], insurances[1]),
+            new Patient("James Anderson", "555-7777", addresses[1], insurances[0]),
+            new Patient("Isabella Thompson", "555-8888", addresses[2], insurances[1]),
+            new Patient("Benjamin Martinez", "555-9999", addresses[3], insurances[2]),
+            new Patient("Mia Garcia", "555-0000", addresses[4], insurances[3]),
+            new Patient("Liam Johnson", "555-1111", addresses[5], insurances[4]),
+            new Patient("Emma Wilson", "555-2222", addresses[6], insurances[5]),
+            new Patient("Alexander Brown", "555-3333", addresses[0], insurances[6]),
+            new Patient("Ava Davis", "555-4444", addresses[1], insurances[7]),
+            new Patient("Lucas Smith", "555-5555", addresses[2], insurances[8])
         };
     }
 

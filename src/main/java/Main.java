@@ -108,10 +108,9 @@ public class Main {
 
     public static void main(String[] args) {
         boolean userCreateMode = false;
+        int numCustomers = 10;
         Pharmacy pharmacy =
             userCreateMode ? PharmacySetup.setup(userCreatePharmacy()) : PharmacySetup.setup();
-        CustomerLine customerLine = new CustomerLineSetup(pharmacy, 10).setup();
-
-//        prescriptionOperations(pharmacy);
+        CustomerLine customerLine = new CustomerLineSetup(pharmacy, numCustomers).setup();
     }
 }
