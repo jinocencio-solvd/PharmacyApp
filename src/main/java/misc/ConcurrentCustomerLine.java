@@ -10,12 +10,6 @@ public class ConcurrentCustomerLine extends ConcurrentLinkedQueue<AbstractCustom
 
     private static final Logger LOG = LogManager.getLogger(ConcurrentCustomerLine.class);
 
-//    private ConcurrentLinkedQueue<AbstractCustomer> customerLine;
-//
-//    public ConcurrentCustomerLine() {
-//        this.customerLine = new ConcurrentLinkedQueue<>();
-//    }
-
     public void addCustomer(AbstractCustomer abstractCustomer) {
         LOG.info(abstractCustomer.getName() + " is now in line");
         offer(abstractCustomer);

@@ -207,6 +207,8 @@ public class Register implements IRegister {
         }
         double customerBalance = abstractCustomer.getCreditBalance();
         double transactionTotal = this.getTotal();
+        LOG.info(
+            abstractCustomer.getName() + " purchased $" + transactionTotal + " worth of products.");
         if (customerBalance < transactionTotal) {
             LOG.warn("Payment Declined: Insufficient funds available");
             LOG.debug("AbstractCustomer has " + customerBalance + ". Total is " + transactionTotal);
@@ -261,7 +263,7 @@ public class Register implements IRegister {
                 }
             }
         }
-        LOG.trace("Receipt printed for customer: "+ abstractCustomer.getName());
+        LOG.trace("Receipt printed for customer: " + abstractCustomer.getName());
         this.reset();
         return receipt;
     }

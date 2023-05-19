@@ -17,8 +17,7 @@ import prescriptionRegistry.Prescription;
 public class CustomerLineSetup {
 
     private static final Logger LOG = LogManager.getLogger(CustomerLineSetup.class);
-    private static final Patient[] PATIENTS = DataProvider.PATIENTS;
-    private static final Customer[] CUSTOMERS = DataProvider.predefinedCustomers();
+
     private static final List<AbstractCustomer> removedCustomers = new ArrayList<>();
     private static final int MAX_NUMBER_ITEMS = 15;
 

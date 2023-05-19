@@ -3,6 +3,7 @@ import fileReadWriter.FileReadWriter;
 import inventory.Cart;
 import java.util.Scanner;
 import java.util.function.Consumer;
+import misc.CashierRunnable;
 import misc.ConcurrentCustomerLine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -105,11 +106,32 @@ public class Main {
         });
     }
 
-    public static void appSetup(boolean userCreateMode, int numCustomersInLine ){
+    private static void pharmacistFillAllPrescriptions(Pharmacy pharmacy) {
+        Pharmacist pharmacist = DataProvider.predefinedPharmacist()[0];
+        Consumer<Pharmacy> runPharmacistFillAllRxReq = (Pharmacy p) ->
+            pharmacist.fulfillAllPrescriptionLogRequests(
+                p.getFilledPrescriptions(), p.getPrescriptionRequestLog(), p.getProductInventory(),
+                p.getPrescriptionRegistry());
+
+        runPharmacistFillAllRxReq.accept(pharmacy);
+    }
+
+    public static void appSetup(boolean userCreateMode, int numCustomersInLine) {
         Pharmacy pharmacy =
             userCreateMode ? PharmacySetup.setup(userCreatePharmacy()) : PharmacySetup.setup();
-        ConcurrentCustomerLine customerLine = new CustomerLineSetup(pharmacy, numCustomersInLine).setup();
+        ConcurrentCustomerLine customerLine = new CustomerLineSetup(pharmacy,
+            numCustomersInLine).setup();
+        pharmacistFillAllPrescriptions(pharmacy);
+
+        Thread t1 = new Thread(
+            new CashierRunnable(pharmacy, new Register(TECHNICIANS[0]), customerLine));
+        Thread t2 = new Thread(
+            new CashierRunnable(pharmacy, new Register(TECHNICIANS[1]), customerLine));
+        t1.start();
+        t2.start();
+
     }
+
 
     public static void main(String[] args) {
         appSetup(false, 10);
