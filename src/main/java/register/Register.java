@@ -175,9 +175,13 @@ public class Register implements IRegister {
             for (Prescription p : patientPrescriptions) {
                 List<Medication> patientPrescribedMedications = prescriptionFilledLog.getMedicationsByPrescription(
                     p);
-                // TODO {BUG} Medication is added to cart with 0 quantity when refills are not allowed
-                cart.addProduct(patientPrescribedMedications.get(0),
-                    patientPrescribedMedications.size());
+                if (p.getPrescriptionStatus() == PrescriptionStatus.COMPLETED) {
+                    return;
+                } else {
+                    // TODO: idxOutOfBounds sometimes occur
+                    cart.addProduct(patientPrescribedMedications.get(0),
+                        patientPrescribedMedications.size());
+                }
                 //TODO: removeFilledPrescription assumes that every patient will complete transaction. This can be handled
                 // in a new method that handles unprocessed prescriptionFilledLog
                 prescriptionFilledLog.removeFilledPrescription(p);

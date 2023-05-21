@@ -7,9 +7,11 @@ import java.util.function.Supplier;
 import person.Customer;
 
 public class CustomerSupplier implements Supplier<Customer> {
+
     private static final int CUSTOMER_MAX_BALANCE = 1000;
 
-    private static List<Customer> customerList = new ArrayList<>(List.of(DataProvider.predefinedCustomers()));
+    private static List<Customer> customerList = new ArrayList<>(
+        List.of(DataProvider.predefinedCustomers()));
 
 
     @Override
@@ -17,7 +19,6 @@ public class CustomerSupplier implements Supplier<Customer> {
         int randomInt = new Random().nextInt(customerList.size());
         Customer randomCustomer = customerList.get(randomInt);
         randomCustomer.setCreditBalance(CUSTOMER_MAX_BALANCE);
-        customerList.remove(randomInt);
         return randomCustomer;
     }
 }

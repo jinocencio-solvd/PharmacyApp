@@ -2,6 +2,8 @@ import customLambdaFunctions.IRepeater;
 import fileReadWriter.FileReadWriter;
 import inventory.Cart;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import misc.CashierRunnable;
 import misc.ConcurrentCustomerLine;
@@ -15,6 +17,7 @@ import pharmacy.Pharmacy;
 import prescriptionRegistry.Prescription;
 import register.Receipt;
 import register.Register;
+import setup.CashierRunnablePool;
 import setup.CustomerLineSetup;
 import setup.DataProvider;
 import setup.PharmacySetup;
@@ -116,24 +119,33 @@ public class Main {
         runPharmacistFillAllRxReq.accept(pharmacy);
     }
 
-    public static void appSetup(boolean userCreateMode, int numCustomersInLine) {
+    public static void appSetup(boolean userCreateMode, int numCustomersInLine, int poolSize,
+        int totalThreads) throws InterruptedException {
         Pharmacy pharmacy =
             userCreateMode ? PharmacySetup.setup(userCreatePharmacy()) : PharmacySetup.setup();
         ConcurrentCustomerLine customerLine = new CustomerLineSetup(pharmacy,
             numCustomersInLine).setup();
         pharmacistFillAllPrescriptions(pharmacy);
 
-        Thread t1 = new Thread(
-            new CashierRunnable(pharmacy, new Register(TECHNICIANS[0]), customerLine));
-        Thread t2 = new Thread(
-            new CashierRunnable(pharmacy, new Register(TECHNICIANS[1]), customerLine));
-        t1.start();
-        t2.start();
+        CashierRunnablePool cashierRunnablePool = new CashierRunnablePool(pharmacy, customerLine,
+            poolSize);
+        ExecutorService executorService = Executors.newFixedThreadPool(totalThreads);
 
+        for (int i = 0; i < totalThreads; i++) {
+            executorService.execute(() -> {
+                try {
+                    CashierRunnable cashierRunnable = cashierRunnablePool.getCashierRunnable();
+                    cashierRunnable.run();
+                    cashierRunnablePool.completeCashierRunnable(cashierRunnable);
+                } catch (InterruptedException e) {
+                    LOG.error(e.getMessage());
+                }
+            });
+        }
+        executorService.shutdown();
     }
 
-
-    public static void main(String[] args) {
-        appSetup(false, 10);
+    public static void main(String[] args) throws InterruptedException {
+        appSetup(false, 15, 5, 7);
     }
 }

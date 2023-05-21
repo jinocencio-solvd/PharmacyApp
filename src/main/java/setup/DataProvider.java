@@ -112,10 +112,16 @@ public class DataProvider {
 
     public static PharmacyTechnician[] predefinedPharmacyTechnicians() {
         return new PharmacyTechnician[]{
-            new PharmacyTechnician("John Tech", "555-1234", addresses[3],
-                "CA123456"),
-            new PharmacyTechnician("Jane Tech", "555-5678", addresses[4],
-                "CA654321")
+            new PharmacyTechnician("John Tech", "555-1234", addresses[3], "CA123456"),
+            new PharmacyTechnician("Jane Tech", "555-5678", addresses[4], "CA654321"),
+            new PharmacyTechnician("Mike Tech", "555-1111", addresses[0], "CA987654"),
+            new PharmacyTechnician("Emily Tech", "555-2222", addresses[1], "CA789012"),
+            new PharmacyTechnician("David Tech", "555-3333", addresses[2], "CA345678"),
+            new PharmacyTechnician("Sarah Tech", "555-4444", addresses[5], "CA901234"),
+            new PharmacyTechnician("Alex Tech", "555-5555", addresses[6], "CA567890"),
+            new PharmacyTechnician("Olivia Tech", "555-6666", addresses[0], "CA432109"),
+            new PharmacyTechnician("Ryan Tech", "555-7777", addresses[3], "CA890123"),
+            new PharmacyTechnician("Emma Tech", "555-8888", addresses[2], "CA210987")
         };
     }
 
