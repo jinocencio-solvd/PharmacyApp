@@ -18,15 +18,25 @@ public class CashierRunnable implements Runnable {
     private Register register;
     private Pharmacy pharmacy;
     private int numCustomersServed;
-    private final int CUSTOMERS_SERVED_LIMIT = 1;
+    private int customersServedLimit;
 
-    public CashierRunnable(Pharmacy pharmacy,
-        ConcurrentCustomerLine customerLine) {
+    public CashierRunnable(Pharmacy pharmacy, ConcurrentCustomerLine customerLine,
+        int customersServedLimit) {
         this.customerLine = customerLine;
         this.pharmacy = pharmacy;
         this.cashier = pharmacyTechnicianSupplier.get();
         this.register = new Register(this.cashier);
         this.numCustomersServed = 0;
+        this.customersServedLimit = customersServedLimit;
+    }
+
+    public CashierRunnable(Pharmacy pharmacy, ConcurrentCustomerLine customerLine) {
+        this.customerLine = customerLine;
+        this.pharmacy = pharmacy;
+        this.cashier = pharmacyTechnicianSupplier.get();
+        this.register = new Register(this.cashier);
+        this.numCustomersServed = 0;
+        this.customersServedLimit = 1;
     }
 
     public Employee getCashier() {
@@ -37,7 +47,7 @@ public class CashierRunnable implements Runnable {
     //  Currently, cashier's will process CUSTOMERS_SERVED_LIMIT at a time
     //  rather than concurrently. Need for greater scope of synchronization?
     public boolean isCustomerLimitReached() {
-        return numCustomersServed == CUSTOMERS_SERVED_LIMIT;
+        return numCustomersServed == customersServedLimit;
     }
 
     @Override

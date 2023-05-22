@@ -50,17 +50,18 @@ public class Main {
         runPharmacistFillAllRxReq.accept(pharmacy);
     }
 
-    public static Pharmacy appSetup(boolean userCreateMode) throws InterruptedException {
+    public static Pharmacy appSetup(boolean userCreateMode) {
         return userCreateMode ? PharmacySetup.setup(userCreatePharmacy()) : PharmacySetup.setup();
     }
 
     public static void threadOperations(Pharmacy pharmacy, int numCustomersInLine, int poolSize,
         int numWaitingThreads) {
-        ConcurrentCustomerLine customerLine = new CustomerLineSetup(pharmacy,
-            numCustomersInLine).setup();
+
         pharmacistFillAllPrescriptions(pharmacy);
 
         Runnable twoThreadsOperation = () -> {
+            ConcurrentCustomerLine customerLine = new CustomerLineSetup(pharmacy,
+                numCustomersInLine).setup();
             int numCustomerToAdd = 5;
             Thread addMoreCustomersToLine = new Thread(() -> {
                 LOG.trace("Adding " + numCustomerToAdd + " customers from " + Thread.currentThread()
@@ -69,21 +70,23 @@ public class Main {
                     customerLine.addCustomer();
                 }
             });
-            CashierRunnable processCustomers = new CashierRunnable(pharmacy, customerLine);
+            CashierRunnable processCustomers = new CashierRunnable(pharmacy, customerLine, 5);
+            CashierRunnable processCustomers2 = new CashierRunnable(pharmacy, customerLine, 5);
+
             addMoreCustomersToLine.start(); // Start the first thread
             processCustomers.run(); // Start the second thread
+            processCustomers2.run();
         };
 
         Runnable cashierPoolOperation = () -> {
+            ConcurrentCustomerLine customerLine = new CustomerLineSetup(pharmacy,
+                numCustomersInLine).setup();
             int totalThreads = poolSize + numWaitingThreads;
-            CashierRunnablePool cashierRunnablePool = new CashierRunnablePool(poolSize);
-
-            // Overpopulate cashier pool
-            for (int i = 0; i < totalThreads; i++) {
-                CashierRunnable cashierRunnable = new CashierRunnable(pharmacy, customerLine);
-                cashierRunnablePool.addCashierRunnable(cashierRunnable);
+            CashierRunnablePool cashierRunnablePool = new CashierRunnablePool(poolSize, pharmacy,
+                customerLine);
+            for (int i = 0; i < numWaitingThreads; i++) {
+                cashierRunnablePool.addCashierRunnable();
             }
-
             // Execute total amount of threads
             ExecutorService executorService = Executors.newFixedThreadPool(totalThreads);
             for (int i = 0; i < totalThreads; i++) {
@@ -101,8 +104,9 @@ public class Main {
             CompletionStage<Void> cashierPoolOp = CompletableFuture.runAsync(cashierPoolOperation);
             CompletionStage<Void> twoThreadsOp = CompletableFuture.runAsync(twoThreadsOperation);
             CompletionStage<Void> combinedOp = cashierPoolOp.thenCompose(result -> twoThreadsOp);
+            CompletableFuture<Void> cf = combinedOp.toCompletableFuture();
             try {
-                combinedOp.toCompletableFuture().get();
+                cf.get();
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
@@ -115,7 +119,7 @@ public class Main {
         completableFuturesOperation.run();
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Pharmacy pharmacy = appSetup(false);
         threadOperations(pharmacy, 7, 5, 2);
     }

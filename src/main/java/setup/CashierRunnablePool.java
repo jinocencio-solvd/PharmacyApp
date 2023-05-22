@@ -4,8 +4,10 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import misc.CashierRunnable;
+import misc.ConcurrentCustomerLine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pharmacy.Pharmacy;
 
 public class CashierRunnablePool {
 
@@ -14,11 +16,31 @@ public class CashierRunnablePool {
     private int poolSize;
     private BlockingQueue<CashierRunnable> pool;
     private ConcurrentLinkedQueue<CashierRunnable> waitingPool;
+    private Pharmacy pharmacy;
+    private ConcurrentCustomerLine customerLine;
 
-    public CashierRunnablePool(int poolSize) {
+    public CashierRunnablePool(int poolSize, Pharmacy pharmacy,
+        ConcurrentCustomerLine customerLine) {
         this.poolSize = poolSize;
+        this.pharmacy = pharmacy;
+        this.customerLine = customerLine;
         pool = new LinkedBlockingDeque<>(poolSize);
         waitingPool = new ConcurrentLinkedQueue<>();
+        initializePool();
+    }
+
+    private void initializePool() {
+        for (int i = 0; i < poolSize; i++) {
+            addCashierRunnable(createCashierRunnable());
+        }
+    }
+
+    private CashierRunnable createCashierRunnable() {
+        return new CashierRunnable(pharmacy, customerLine);
+    }
+
+    public void addCashierRunnable() {
+        addCashierRunnable(createCashierRunnable());
     }
 
     public CashierRunnable getCashierRunnable() throws InterruptedException {
