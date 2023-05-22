@@ -1,5 +1,8 @@
 package misc;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +17,7 @@ public class ConcurrentCustomerLine extends ConcurrentLinkedQueue<AbstractCustom
     private static final Logger LOG = LogManager.getLogger(ConcurrentCustomerLine.class);
 
     public void addCustomer(AbstractCustomer abstractCustomer) {
-        LOG.info(abstractCustomer.getName() + " is now in line");
+        LOG.trace(abstractCustomer.getName() + " is now in line");
         offer(abstractCustomer);
     }
 
@@ -22,7 +25,7 @@ public class ConcurrentCustomerLine extends ConcurrentLinkedQueue<AbstractCustom
         int randomNumber = new Random().nextInt(2);
         AbstractCustomer abstractCustomer =
             randomNumber == 0 ? new CustomerSupplier().get() : new PatientSupplier().get();
-        LOG.info(abstractCustomer.getName() + " is now in line");
+        LOG.trace(abstractCustomer.getName() + " is now in line");
         offer(abstractCustomer);
     }
 
@@ -36,15 +39,26 @@ public class ConcurrentCustomerLine extends ConcurrentLinkedQueue<AbstractCustom
             LOG.warn("The line is empty" + " from thread "
                 + Thread.currentThread().getName());
         } else {
-            LOG.info("The next customer is: " + customer.getName());
+            LOG.trace("The next customer is: " + customer.getName());
         }
         return customer;
     }
 
     public int getLineLength() {
         int length = size();
-        LOG.debug("There are " + length + " people in line");
+        LOG.trace("There are " + length + " people in line");
         return length;
+    }
+
+    public void getCustomerLineInformation() {
+        Iterator<AbstractCustomer> iterator = this.iterator();
+        List<String> names = new ArrayList<>();
+
+        while (iterator.hasNext()) {
+            AbstractCustomer person = iterator.next();
+            names.add(person.getName());
+        }
+        LOG.info("Line: " + names);
     }
 
     public boolean isCustomerPatient(AbstractCustomer customer) {

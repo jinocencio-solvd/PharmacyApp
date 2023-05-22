@@ -10,11 +10,11 @@ public class CustomerLine extends GenericQueue<AbstractCustomer> {
     private static final Logger LOG = LogManager.getLogger(CustomerLine.class);
 
     public void addCustomer(AbstractCustomer abstractCustomer) {
-        LOG.info(abstractCustomer.getName() + " is now in line");
+        LOG.trace(abstractCustomer.getName() + " is now in line");
         enqueue(abstractCustomer);
     }
 
-    public boolean hasNext(){
+    public boolean hasNext() {
         return !isEmpty();
     }
 
@@ -23,7 +23,7 @@ public class CustomerLine extends GenericQueue<AbstractCustomer> {
             LOG.warn("The line is empty");
             return null;
         }
-        LOG.info("The next customer is: " + peek().getName());
+        LOG.trace("The next customer is: " + peek().getName());
         return dequeue();
     }
 

@@ -16,9 +16,14 @@ public class CustomerSupplier implements Supplier<Customer> {
 
     @Override
     public Customer get() {
+        if (customerList.size() == 0) {
+            customerList = new ArrayList<>(
+                List.of(DataProvider.predefinedCustomers()));
+        }
         int randomInt = new Random().nextInt(customerList.size());
         Customer randomCustomer = customerList.get(randomInt);
         randomCustomer.setCreditBalance(CUSTOMER_MAX_BALANCE);
+        customerList.remove(randomCustomer);
         return randomCustomer;
     }
 }

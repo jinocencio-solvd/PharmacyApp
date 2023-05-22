@@ -14,6 +14,10 @@ public class PatientSupplier implements Supplier<Patient> {
 
     @Override
     public Patient get() {
+        if (patientList.size() == 0) {
+            patientList = new ArrayList<>(
+                List.of(DataProvider.predefinedPatients()));
+        }
         int randomInt = new Random().nextInt(patientList.size());
         Patient randomPatient = patientList.get(randomInt);
         randomPatient.setCreditBalance(PATIENT_MAX_BALANCE);

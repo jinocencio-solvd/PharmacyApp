@@ -62,11 +62,12 @@ public class CustomerLineSetup {
         while (customerLine.getLineLength() < numCustomers) {
             int randomNumber = new Random().nextInt(2);
             if (randomNumber == 0) {
-                populateLineWithCustomer();
-            } else {
                 populateLineWithPatient();
+            } else {
+                populateLineWithCustomer();
             }
         }
+        customerLine.getCustomerLineInformation();
         return customerLine;
     }
 }

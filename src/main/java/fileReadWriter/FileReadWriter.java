@@ -39,7 +39,7 @@ public class FileReadWriter {
             FileWriter writer = new FileWriter(filePath, true);
             writer.write(msg);
             writer.close();
-            LOG.info("Text written to file successfully.");
+            LOG.trace("Text written to file successfully.");
         } catch (IOException e) {
             LOG.error("An error occurred while writing to the file: " + e.getMessage());
         }
@@ -66,7 +66,7 @@ public class FileReadWriter {
             System.lineSeparator() + "There are " + numUniqueWords + " unique words in this file.";
         try {
             FileUtils.writeStringToFile(file, msg, "UTF-8", true);
-            LOG.info("Text written to file successfully.");
+            LOG.trace("Text written to file successfully.");
         } catch (IOException e) {
             LOG.error("Error reading file", e);
         }

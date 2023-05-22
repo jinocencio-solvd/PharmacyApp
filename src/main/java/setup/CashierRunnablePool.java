@@ -1,60 +1,50 @@
 package setup;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import misc.CashierRunnable;
-import misc.ConcurrentCustomerLine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import person.Employee;
-import person.PharmacyTechnician;
-import pharmacy.Pharmacy;
 
 public class CashierRunnablePool {
 
     private static final Logger LOG = LogManager.getLogger(CashierRunnablePool.class);
 
     private int poolSize;
-    private Employee cashier;
-    private ConcurrentCustomerLine customerLine;
-    private Pharmacy pharmacy;
     private BlockingQueue<CashierRunnable> pool;
+    private ConcurrentLinkedQueue<CashierRunnable> waitingPool;
 
-    public CashierRunnablePool(Pharmacy pharmacy,
-        ConcurrentCustomerLine customerLine, int poolSize) {
-        this.customerLine = customerLine;
-        this.pharmacy = pharmacy;
+    public CashierRunnablePool(int poolSize) {
         this.poolSize = poolSize;
         pool = new LinkedBlockingDeque<>(poolSize);
-        for (int i = 0; i < poolSize; i++) {
-            pool.add(createCashierRunnable());
-        }
+        waitingPool = new ConcurrentLinkedQueue<>();
     }
 
     public CashierRunnable getCashierRunnable() throws InterruptedException {
-        return pool.take();
-    }
-
-    public void completeCashierRunnable(CashierRunnable cashierRunnable) {
-        boolean cashierRunnableReturned = pool.offer(cashierRunnable);
-        if (cashierRunnableReturned) {
-            Employee cashier = cashierRunnable.getCashier();
-            PharmacyTechnicianSupplier.returnTechnician((PharmacyTechnician) cashier);
-            LOG.info("CashierRunnable returned. " + cashier.getName() + " went on break.");
+        CashierRunnable cashierRunnable = pool.take();
+        LOG.info(cashierRunnable.getCashier().getName() + " taken from the cashierPool");
+        if (!waitingPool.isEmpty()) {
+            String cashierOnBoard = waitingPool.peek().getCashier().getName();
+            pool.put(waitingPool.poll());
+            LOG.info("Moved " + cashierOnBoard + " from waitingPool to cashierPool");
         }
+        return cashierRunnable;
     }
 
     public void addCashierRunnable(CashierRunnable cashierRunnable) {
-        pool.add(cashierRunnable);
+        String cashierName = cashierRunnable.getCashier().getName();
+        if (pool.size() == poolSize) {
+            LOG.warn("CashierPool is full");
+            waitingPool.offer(cashierRunnable);
+            LOG.info("Cashier " + cashierName + " added to waiting pool");
+        } else {
+            try {
+                pool.put(cashierRunnable);
+                LOG.info("Cashier " + cashierName + " added to cashierPool");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
-
-    public void addCashierRunnable() {
-        pool.add(createCashierRunnable());
-    }
-
-    private CashierRunnable createCashierRunnable() {
-        return new CashierRunnable(pharmacy, customerLine);
-    }
-
-
 }

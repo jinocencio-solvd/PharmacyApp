@@ -23,17 +23,17 @@ public class PharmacySetup {
     private static final int MAX_NUM_PER_MEDICATION = 500;
 
     private static final IPerformOperation<Pharmacy> hirePharmacyEmployees = (Pharmacy pharmacy) -> {
-        LOG.info("Start hiring employees");
+        LOG.trace("Start hiring employees");
         pharmacy.hireEmployee(PHARMACISTS[0]);
         pharmacy.hireEmployee(PHARMACISTS[1]);
         pharmacy.hireEmployee((TECHNICIANS[0]));
         pharmacy.hireEmployee((TECHNICIANS[0])); // hire duplicate
         pharmacy.hireEmployee((TECHNICIANS[1]));
-        LOG.info("Completed hiring employees");
+        LOG.trace("Completed hiring employees");
     };
 
     private static final IPerformOperation<Pharmacy> populateInventory = (Pharmacy pharmacy) -> {
-        LOG.info("Start populating product inventory");
+        LOG.trace("Start populating product inventory");
         ProductInventory productInventory = new ProductInventory();
         for (Item item : DataProvider.predefinedItems()) {
             productInventory.addProduct(item, MAX_NUM_PER_ITEMS);
@@ -41,7 +41,7 @@ public class PharmacySetup {
         for (Medication medication : DataProvider.predefinedMedications()) {
             productInventory.addProduct(medication, MAX_NUM_PER_MEDICATION);
         }
-        LOG.info("Completed populating product inventory");
+        LOG.trace("Completed populating product inventory");
         pharmacy.setProductInventory(productInventory);
     };
 
@@ -67,11 +67,11 @@ public class PharmacySetup {
         for (DayOfWeek day : DayOfWeek.values()) {
             String dayStr = day.name();
             BusinessDay businessDay = BusinessDay.getBusinessDay(dayStr);
-            LOG.info(businessDay.getDescription());
+            LOG.trace(businessDay.getDescription());
             if (pharmacy.isOpen(day)) {
-                LOG.info("Come on in!");
+                LOG.trace("Come on in!");
             } else {
-                LOG.info("Come back later!");
+                LOG.trace("Come back later!");
             }
         }
     }

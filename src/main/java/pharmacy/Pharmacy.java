@@ -146,7 +146,7 @@ public class Pharmacy implements IPharmacy {
             prescriptionRequestLog.addPrescriptionRequest(prescription);
 
         } catch (PersonDoesNotExistException e) {
-            LOG.info("New Patient added into registry");
+            LOG.trace("New Patient added into registry");
             this.getPrescriptionRegistry().addPatientToRegistry(patient);
             receivePrescription(patient, prescription);
 
@@ -162,7 +162,7 @@ public class Pharmacy implements IPharmacy {
         if (isPatientPrescriptionRefillable(prescription)) {
             prescriptionRequestLog.addPrescriptionRequest(prescription);
             int numRefillsAfterFilled = prescription.getNumRefills() - 1;
-            LOG.info("Refill request accepted. Refills remaining: " + numRefillsAfterFilled);
+            LOG.trace("Refill request accepted. Refills remaining: " + numRefillsAfterFilled);
         } else {
             LOG.error("Refill request denied");
         }
@@ -179,7 +179,7 @@ public class Pharmacy implements IPharmacy {
         if (!isRefillable) {
             LOG.error("Unable to refill. There are no more refills available.");
         } else {
-            LOG.info("Current request is refillable");
+            LOG.trace("Current request is refillable");
         }
         return isRefillable;
     }
@@ -199,7 +199,7 @@ public class Pharmacy implements IPharmacy {
                     "The employee is already hired in the employee system.");
             }
             this.employees.add(newEmployee);
-            LOG.info("Employee" + newEmployee.getEmployeeID()
+            LOG.trace("Employee" + newEmployee.getEmployeeID()
                 + " was successfully registered in employee database");
         } catch (DuplicatePersonException e) {
             LOG.warn("Employee is already registered in employee database");
@@ -217,7 +217,7 @@ public class Pharmacy implements IPharmacy {
         try {
             if (this.employees.contains((employee))) {
                 this.employees.remove(employee);
-                LOG.info("Employee " + employee.getEmployeeID() + " was released");
+                LOG.trace("Employee " + employee.getEmployeeID() + " was released");
                 return;
             }
             throw new PersonDoesNotExistException("Employee not found in employee database");
@@ -260,7 +260,8 @@ public class Pharmacy implements IPharmacy {
             getAddress(), pharmacy.getAddress()) && Objects.equals(getPhoneNumber(),
             pharmacy.getPhoneNumber()) && Objects.equals(getEmailAddress(),
             pharmacy.getEmailAddress()) && Objects.equals(getProductInventory(),
-            pharmacy.getProductInventory()) && Objects.equals(getEmployees(), pharmacy.getEmployees());
+            pharmacy.getProductInventory()) && Objects.equals(getEmployees(),
+            pharmacy.getEmployees());
     }
 
     @Override

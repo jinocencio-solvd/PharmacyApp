@@ -1,7 +1,7 @@
-import customLambdaFunctions.IRepeater;
-import fileReadWriter.FileReadWriter;
-import inventory.Cart;
 import java.util.Scanner;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -9,14 +9,8 @@ import misc.CashierRunnable;
 import misc.ConcurrentCustomerLine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import person.AbstractCustomer;
-import person.Patient;
 import person.Pharmacist;
-import person.PharmacyTechnician;
 import pharmacy.Pharmacy;
-import prescriptionRegistry.Prescription;
-import register.Receipt;
-import register.Register;
 import setup.CashierRunnablePool;
 import setup.CustomerLineSetup;
 import setup.DataProvider;
@@ -25,8 +19,6 @@ import setup.PharmacySetup;
 public class Main {
 
     private static final Logger LOG = LogManager.getLogger(Main.class);
-    private static final PharmacyTechnician[] TECHNICIANS = DataProvider.predefinedPharmacyTechnicians();
-    private static final Patient[] PATIENTS = DataProvider.PATIENTS;
 
     private static Pharmacy userCreatePharmacy() {
         LOG.trace("In userCreatePatient");
@@ -39,74 +31,13 @@ public class Main {
                 throw new IllegalArgumentException("Name cannot be empty");
             }
             pharmacy.setName(name);
-            LOG.info("Pharmacy " + pharmacy.getName() + " created.");
+            LOG.trace("Pharmacy " + pharmacy.getName() + " created.");
             return pharmacy;
         } catch (IllegalArgumentException e) {
             LOG.warn("Name cannot be empty");
             userCreatePharmacy();
         }
         return pharmacy;
-    }
-
-    public static void runCountWords() {
-        String filePath = "src/main/resources/PharmacyRxDescription.txt";
-        FileReadWriter.runFileWriteWithUtils(filePath);
-    }
-
-    private static void prescriptionOperations(Pharmacy pharmacy) {
-        // Patient actions
-        Patient patient = PATIENTS[0];
-        Prescription prescriptionForPatient = DataProvider.predefinedPrescriptions()[0];
-        patient.providePrescription(pharmacy, prescriptionForPatient);
-
-        // Pharmacists action
-        Pharmacist pharmacist = DataProvider.predefinedPharmacist()[0];
-        Consumer<Pharmacy> runPharmacistFillAllRxReq = (Pharmacy p) ->
-            pharmacist.fulfillAllPrescriptionLogRequests(
-                p.getFilledPrescriptions(), p.getPrescriptionRequestLog(), p.getProductInventory(),
-                p.getPrescriptionRegistry());
-
-        runPharmacistFillAllRxReq.accept(pharmacy);
-
-        // Demo for Patient transaction
-        Register register = new Register(TECHNICIANS[0]);
-        Cart cart = new Cart();
-
-        Consumer<Register> registerOperations = (Register r) -> {
-            register.setCustomer(patient);
-            register.setCart(cart);
-            register.processPrescriptionAndAddMedicationsToCart(
-                pharmacy.getFilledPrescriptions());
-            register.scanAllProductsInCart();
-            register.processTransaction();
-            if (register.getTransactionCompleted()) {
-                Receipt receipt = register.printReceipt();
-                System.out.println(receipt.getContent());
-            }
-        };
-
-        IRepeater<Patient> patientRepeater = ((numRepeats, operation) -> {
-            for (int i = 0; i < numRepeats; i++) {
-                operation.perform(patient);
-            }
-        });
-
-        registerOperations.accept(register); // InsufficientFunds
-        // Patient withdraws more funds
-        LOG.info(
-            "Patient balance for " + patient.getName() + " is " + patient.getCreditBalance());
-        patientRepeater.repeat(10, AbstractCustomer::increaseCreditBalanceByOneHundred);
-        LOG.info("Patient balance for " + patient.getName()
-            + " after being supplied with more credit is " + patient.getCreditBalance());
-        registerOperations.accept(register);
-
-        // Demo for refill requests and denial
-        patientRepeater.repeat(3, (p) -> {
-            p.requestPrescriptionRefill(pharmacy, prescriptionForPatient);
-            runPharmacistFillAllRxReq.accept(pharmacy);
-            registerOperations.accept(register);
-            // TODO: Handle logic for customer presenting with an empty cart. Currently processes empty cart as a transaction
-        });
     }
 
     private static void pharmacistFillAllPrescriptions(Pharmacy pharmacy) {
@@ -119,33 +50,73 @@ public class Main {
         runPharmacistFillAllRxReq.accept(pharmacy);
     }
 
-    public static void appSetup(boolean userCreateMode, int numCustomersInLine, int poolSize,
-        int totalThreads) throws InterruptedException {
-        Pharmacy pharmacy =
-            userCreateMode ? PharmacySetup.setup(userCreatePharmacy()) : PharmacySetup.setup();
+    public static Pharmacy appSetup(boolean userCreateMode) throws InterruptedException {
+        return userCreateMode ? PharmacySetup.setup(userCreatePharmacy()) : PharmacySetup.setup();
+    }
+
+    public static void threadOperations(Pharmacy pharmacy, int numCustomersInLine, int poolSize,
+        int numWaitingThreads) {
         ConcurrentCustomerLine customerLine = new CustomerLineSetup(pharmacy,
             numCustomersInLine).setup();
         pharmacistFillAllPrescriptions(pharmacy);
 
-        CashierRunnablePool cashierRunnablePool = new CashierRunnablePool(pharmacy, customerLine,
-            poolSize);
-        ExecutorService executorService = Executors.newFixedThreadPool(totalThreads);
-
-        for (int i = 0; i < totalThreads; i++) {
-            executorService.execute(() -> {
-                try {
-                    CashierRunnable cashierRunnable = cashierRunnablePool.getCashierRunnable();
-                    cashierRunnable.run();
-                    cashierRunnablePool.completeCashierRunnable(cashierRunnable);
-                } catch (InterruptedException e) {
-                    LOG.error(e.getMessage());
+        Runnable twoThreadsOperation = () -> {
+            int numCustomerToAdd = 5;
+            Thread addMoreCustomersToLine = new Thread(() -> {
+                LOG.trace("Adding " + numCustomerToAdd + " customers from " + Thread.currentThread()
+                    .getName());
+                for (int i = 0; i < numCustomerToAdd; i++) {
+                    customerLine.addCustomer();
                 }
             });
-        }
-        executorService.shutdown();
+            CashierRunnable processCustomers = new CashierRunnable(pharmacy, customerLine);
+            addMoreCustomersToLine.start(); // Start the first thread
+            processCustomers.run(); // Start the second thread
+        };
+
+        Runnable cashierPoolOperation = () -> {
+            int totalThreads = poolSize + numWaitingThreads;
+            CashierRunnablePool cashierRunnablePool = new CashierRunnablePool(poolSize);
+
+            // Overpopulate cashier pool
+            for (int i = 0; i < totalThreads; i++) {
+                CashierRunnable cashierRunnable = new CashierRunnable(pharmacy, customerLine);
+                cashierRunnablePool.addCashierRunnable(cashierRunnable);
+            }
+
+            // Execute total amount of threads
+            ExecutorService executorService = Executors.newFixedThreadPool(totalThreads);
+            for (int i = 0; i < totalThreads; i++) {
+                try {
+                    CashierRunnable fromPool = cashierRunnablePool.getCashierRunnable();
+                    executorService.execute(fromPool);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            executorService.shutdown();
+        };
+
+        Runnable completableFuturesOperation = () -> {
+            CompletionStage<Void> cashierPoolOp = CompletableFuture.runAsync(cashierPoolOperation);
+            CompletionStage<Void> twoThreadsOp = CompletableFuture.runAsync(twoThreadsOperation);
+            CompletionStage<Void> combinedOp = cashierPoolOp.thenCompose(result -> twoThreadsOp);
+            try {
+                combinedOp.toCompletableFuture().get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        };
+        LOG.warn("Starting twoThreadsOperation");
+        twoThreadsOperation.run();
+        LOG.warn("Starting cashierPoolOperation");
+        cashierPoolOperation.run();
+        LOG.warn("Starting CompletableFuturesOperation");
+        completableFuturesOperation.run();
     }
 
     public static void main(String[] args) throws InterruptedException {
-        appSetup(false, 15, 5, 7);
+        Pharmacy pharmacy = appSetup(false);
+        threadOperations(pharmacy, 7, 5, 2);
     }
 }

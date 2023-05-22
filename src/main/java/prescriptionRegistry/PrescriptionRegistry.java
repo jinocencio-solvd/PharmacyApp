@@ -30,9 +30,9 @@ public class PrescriptionRegistry implements IPrescriptionRegistry {
                 throw new DuplicatePersonException("Patient already exists in system");
             }
             prescriptionRegistry.put(patient, new ArrayList<>());
-            LOG.info("Added patient " + patient.getPatientID() + " to prescriptionRegistry");
+            LOG.trace("Added patient " + patient.getPatientID() + " to prescriptionRegistry");
         } catch (DuplicatePersonException e) {
-            LOG.info("Patient already exists in system");
+            LOG.trace("Patient already exists in system");
         }
     }
 

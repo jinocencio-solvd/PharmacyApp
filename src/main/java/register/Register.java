@@ -147,7 +147,7 @@ public class Register implements IRegister {
                 (Patient) abstractCustomer);
             return !filledPrescriptionsByPatient.isEmpty();
         } catch (InvalidPrescriptionException e) {
-            LOG.info(e.getMessage());
+            LOG.trace(e.getMessage());
             return false;
         }
     }
@@ -179,8 +179,13 @@ public class Register implements IRegister {
                     return;
                 } else {
                     // TODO: idxOutOfBounds sometimes occur
-                    cart.addProduct(patientPrescribedMedications.get(0),
-                        patientPrescribedMedications.size());
+                    try {
+                        cart.addProduct(patientPrescribedMedications.get(0),
+                            patientPrescribedMedications.size());
+                    } catch (IndexOutOfBoundsException e) {
+                        LOG.error(patientPrescribedMedications.toString());
+                    }
+
                 }
                 //TODO: removeFilledPrescription assumes that every patient will complete transaction. This can be handled
                 // in a new method that handles unprocessed prescriptionFilledLog
@@ -194,9 +199,14 @@ public class Register implements IRegister {
     @Override
     public void scanProduct(Product product) {
         try {
-            cart.removeProduct(product, 1);
+            if (cart.getQuantity(product) == 0) {
+                cart.remove(product);
+            } else {
+                cart.removeProduct(product, 1);
+            }
         } catch (InsufficientQuantityException | ProductDoesNotExistException | ProductOutOfStockException e) {
-            LOG.warn(e.getMessage());
+            LOG.debug(product.getName());
+            LOG.warn(e.getMessage() + e.getClass());
         }
         scannedProducts.add(product);
         LOG.trace(
@@ -211,7 +221,7 @@ public class Register implements IRegister {
         }
         double customerBalance = abstractCustomer.getCreditBalance();
         double transactionTotal = this.getTotal();
-        LOG.info(
+        LOG.trace(
             abstractCustomer.getName() + " purchased $" + transactionTotal + " worth of products.");
         if (customerBalance < transactionTotal) {
             LOG.warn("Payment Declined: Insufficient funds available");
@@ -252,7 +262,7 @@ public class Register implements IRegister {
 
     @Override
     public void logReceipt() {
-        LOG.info(this.generateReceiptString());
+        LOG.trace(this.generateReceiptString());
     }
 
     public Receipt printReceipt() {

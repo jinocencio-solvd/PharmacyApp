@@ -18,7 +18,7 @@ public class CashierRunnable implements Runnable {
     private Register register;
     private Pharmacy pharmacy;
     private int numCustomersServed;
-    private final int CUSTOMERS_SERVED_LIMIT = 3;
+    private final int CUSTOMERS_SERVED_LIMIT = 1;
 
     public CashierRunnable(Pharmacy pharmacy,
         ConcurrentCustomerLine customerLine) {
@@ -29,39 +29,48 @@ public class CashierRunnable implements Runnable {
         this.numCustomersServed = 0;
     }
 
-    public boolean isCustomerLimitReached() {
-        return numCustomersServed == CUSTOMERS_SERVED_LIMIT;
-    }
-
     public Employee getCashier() {
         return cashier;
     }
 
+    // TODO: Implement isCustomerLimitReached() to allow for concurrent processing.
+    //  Currently, cashier's will process CUSTOMERS_SERVED_LIMIT at a time
+    //  rather than concurrently. Need for greater scope of synchronization?
+    public boolean isCustomerLimitReached() {
+        return numCustomersServed == CUSTOMERS_SERVED_LIMIT;
+    }
+
     @Override
     public void run() {
-        LOG.info(this.cashier.getName() + " is on cashier duties");
-        while (customerLine.hasNext() && !isCustomerLimitReached()) {
-            AbstractCustomer nextCustomer = customerLine.getNextCustomer(); //dequeue
-            register.setCustomer(nextCustomer);
-            register.setCart(nextCustomer.getCart());
+        LOG.trace(this.cashier.getName() + " is on cashier duties");
+        synchronized (customerLine) {
+            while (customerLine.hasNext() && !isCustomerLimitReached()) {
+                AbstractCustomer nextCustomer = customerLine.getNextCustomer(); //dequeue
+                LOG.info("Cashier " + cashier.getName() + " got next customer "
+                    + nextCustomer.getName());
+                register.setCustomer(nextCustomer);
+                register.setCart(nextCustomer.getCart());
 
-            if (nextCustomer.isPatient()) {
-                LOG.info(nextCustomer.getName() + " is a patient.");
-                register.processPrescriptionAndAddMedicationsToCart(
-                    pharmacy.getFilledPrescriptions());
-            }
+                if (nextCustomer.isPatient()) {
+                    LOG.trace(nextCustomer.getName() + " is a patient.");
+                    register.processPrescriptionAndAddMedicationsToCart(
+                        pharmacy.getFilledPrescriptions());
+                }
 
-            LOG.trace("From " + Thread.currentThread().getName());
-            LOG.info("Cashier " + register.getEmployee().getName() + " is scanning cart items for "
-                + nextCustomer.getName());
-            register.scanAllProductsInCart();
-            register.processTransaction();
-            if (register.getTransactionCompleted()) {
-                register.printReceipt();
-            } else {
-                LOG.error("Unable to complete customer transaction for " + nextCustomer.getName());
+                LOG.trace("From " + Thread.currentThread().getName());
+                LOG.trace(
+                    "Cashier " + register.getEmployee().getName() + " is scanning cart items for "
+                        + nextCustomer.getName());
+                register.scanAllProductsInCart();
+                register.processTransaction();
+                if (register.getTransactionCompleted()) {
+                    register.printReceipt();
+                } else {
+                    LOG.error(
+                        "Unable to complete customer transaction for " + nextCustomer.getName());
+                }
+                numCustomersServed++;
             }
-            numCustomersServed++;
         }
         LOG.info(numCustomersServed + " total customers served by Cashier: " + cashier.getName());
     }
