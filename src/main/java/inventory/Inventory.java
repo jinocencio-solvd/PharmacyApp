@@ -3,12 +3,12 @@ package inventory;
 import exceptions.InsufficientQuantityException;
 import exceptions.ProductDoesNotExistException;
 import exceptions.ProductOutOfStockException;
-import java.util.HashMap;
-import product.*;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import product.Product;
 
 /**
  * Represents an inventory of products with their quantities.
@@ -19,7 +19,7 @@ public abstract class Inventory implements IInventory {
     protected Map<Product, Integer> products;
 
     public Inventory() {
-        products = new HashMap<>();
+        products = new ConcurrentHashMap<>();
     }
 
     public Map<Product, Integer> getProducts() {
@@ -73,6 +73,10 @@ public abstract class Inventory implements IInventory {
      */
     public int getQuantity(Product product) {
         return products.getOrDefault(product, 0);
+    }
+
+    public void remove(Product product) {
+        products.remove(product);
     }
 
     @Override

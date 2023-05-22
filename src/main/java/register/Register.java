@@ -62,7 +62,7 @@ public class Register implements IRegister {
         return this.transactionCompleted;
     }
 
-    // TODO: Customer or Cashier can select payment type
+    // TODO: Customer or ICashier can select payment type
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
     }
@@ -147,7 +147,7 @@ public class Register implements IRegister {
                 (Patient) abstractCustomer);
             return !filledPrescriptionsByPatient.isEmpty();
         } catch (InvalidPrescriptionException e) {
-            LOG.info(e.getMessage());
+            LOG.trace(e.getMessage());
             return false;
         }
     }
@@ -175,9 +175,18 @@ public class Register implements IRegister {
             for (Prescription p : patientPrescriptions) {
                 List<Medication> patientPrescribedMedications = prescriptionFilledLog.getMedicationsByPrescription(
                     p);
-                // TODO {BUG} Medication is added to cart with 0 quantity when refills are not allowed
-                cart.addProduct(patientPrescribedMedications.get(0),
-                    patientPrescribedMedications.size());
+                if (p.getPrescriptionStatus() == PrescriptionStatus.COMPLETED) {
+                    return;
+                } else {
+                    // TODO: idxOutOfBounds sometimes occur
+                    try {
+                        cart.addProduct(patientPrescribedMedications.get(0),
+                            patientPrescribedMedications.size());
+                    } catch (IndexOutOfBoundsException e) {
+                        LOG.error(patientPrescribedMedications.toString());
+                    }
+
+                }
                 //TODO: removeFilledPrescription assumes that every patient will complete transaction. This can be handled
                 // in a new method that handles unprocessed prescriptionFilledLog
                 prescriptionFilledLog.removeFilledPrescription(p);
@@ -190,9 +199,14 @@ public class Register implements IRegister {
     @Override
     public void scanProduct(Product product) {
         try {
-            cart.removeProduct(product, 1);
+            if (cart.getQuantity(product) == 0) {
+                cart.remove(product);
+            } else {
+                cart.removeProduct(product, 1);
+            }
         } catch (InsufficientQuantityException | ProductDoesNotExistException | ProductOutOfStockException e) {
-            LOG.warn(e.getMessage());
+            LOG.debug(product.getName());
+            LOG.warn(e.getMessage() + e.getClass());
         }
         scannedProducts.add(product);
         LOG.trace(
@@ -207,6 +221,8 @@ public class Register implements IRegister {
         }
         double customerBalance = abstractCustomer.getCreditBalance();
         double transactionTotal = this.getTotal();
+        LOG.trace(
+            abstractCustomer.getName() + " purchased $" + transactionTotal + " worth of products.");
         if (customerBalance < transactionTotal) {
             LOG.warn("Payment Declined: Insufficient funds available");
             LOG.debug("AbstractCustomer has " + customerBalance + ". Total is " + transactionTotal);
@@ -224,7 +240,7 @@ public class Register implements IRegister {
         }
         StringBuilder sb = new StringBuilder();
         String txnIdLine = "TransactionId: " + "txn-" + transactionId + System.lineSeparator();
-        String cashierInfo = "Cashier: " + employee.getName() + System.lineSeparator() + "Id: "
+        String cashierInfo = "ICashier: " + employee.getName() + System.lineSeparator() + "Id: "
             + employee.getEmployeeID() + System.lineSeparator();
         sb.append(txnIdLine);
         sb.append(cashierInfo);
@@ -246,7 +262,7 @@ public class Register implements IRegister {
 
     @Override
     public void logReceipt() {
-        LOG.info(this.generateReceiptString());
+        LOG.trace(this.generateReceiptString());
     }
 
     public Receipt printReceipt() {
@@ -261,6 +277,7 @@ public class Register implements IRegister {
                 }
             }
         }
+        LOG.trace("Receipt printed for customer: " + abstractCustomer.getName());
         this.reset();
         return receipt;
     }

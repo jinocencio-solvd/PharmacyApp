@@ -10,11 +10,12 @@
         disableAnsi="false"/>
     </Console>
     <File name="file" fileName="PharmacyAppLogs.log" append="false">
-      <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %logger{36}.%M - %msg%n" disableAnsi="false"/>
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %logger{36}.%M - %msg%n"
+        disableAnsi="false"/>
     </File>
   </Appenders>
   <Loggers>
-    <Root level="info" additivity="false">
+    <Root level="debug" additivity="false">
       <AppenderRef ref="console"/>
       <AppenderRef ref="file"/>
     </Root>

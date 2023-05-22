@@ -13,7 +13,7 @@ import prescriptionRegistry.Prescription;
  * The Person.PharmacyTechnician class represents an employee who is a pharmacy technician, with a
  * state license ID and cashier training.
  */
-public class PharmacyTechnician extends Employee {
+public class PharmacyTechnician extends Employee implements ICashier{
 
     private static final Logger LOG = LogManager.getLogger(PharmacyTechnician.class);
 
@@ -59,7 +59,7 @@ public class PharmacyTechnician extends Employee {
         System.out.println("Position: Pharmacy.Pharmacy Technician");
         System.out.println("EmployeeId: " + super.employeeId);
         System.out.println("LicenseId: " + this.stateLicenseId);
-        System.out.println("Cashier Trained: " + this.isCashierTrained);
+        System.out.println("ICashier Trained: " + this.isCashierTrained);
 
     }
 

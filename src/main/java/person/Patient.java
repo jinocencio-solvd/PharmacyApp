@@ -70,8 +70,9 @@ public class Patient extends AbstractCustomer {
 
     public void requestPrescriptionRefill(Pharmacy pharmacy, Prescription prescription) {
         try {
-            LOG.info(
-                "Patient " + this.getName() + " requests Rx refill for: " + prescription.getMedication()
+            LOG.trace(
+                "Patient " + this.getName() + " requests Rx refill for: "
+                    + prescription.getMedication()
                     .getName());
             pharmacy.receivePrescriptionRefillRequest(this, prescription);
         } catch (InvalidPrescriptionException e) {
@@ -83,7 +84,7 @@ public class Patient extends AbstractCustomer {
     public void providePrescription(Pharmacy pharmacy, Prescription prescription) {
         try {
             pharmacy.receivePrescription(this, prescription);
-            LOG.info(
+            LOG.trace(
                 "Patient " + this.getName() + " provided Rx for: " + prescription.getMedication()
                     .getName());
         } catch (InvalidPrescriptionException e) {

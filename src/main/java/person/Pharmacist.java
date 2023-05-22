@@ -93,7 +93,7 @@ public class Pharmacist extends Employee {
         } catch (NoMoreRefillsException e) {
             LOG.error((e.getMessage()));
         }
-        LOG.info("Prescription: " + prescription.getPrescriptionId() + " for patient: "
+        LOG.trace("Prescription: " + prescription.getPrescriptionId() + " for patient: "
             + prescription.getPatient().getName() + " is filled.");
     }
 

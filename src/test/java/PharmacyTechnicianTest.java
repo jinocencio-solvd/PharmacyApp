@@ -1,4 +1,4 @@
-import misc.DataProvider;
+import setup.DataProvider;
 import person.PharmacyTechnician;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

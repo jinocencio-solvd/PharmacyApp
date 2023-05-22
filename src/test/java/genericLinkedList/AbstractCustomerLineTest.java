@@ -2,7 +2,7 @@ package genericLinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import misc.DataProvider;
+import setup.DataProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import person.Customer;
@@ -11,7 +11,7 @@ import person.Patient;
 class AbstractCustomerLineTest {
     private CustomerLine customerLine;
     private final Patient[] PATIENTS = DataProvider.predefinedPatients();
-    private final Customer[] Customers = DataProvider.predefinedConsumers();
+    private final Customer[] Customers = DataProvider.predefinedCustomers();
     @BeforeEach
     void setUp() {
         customerLine = new CustomerLine();

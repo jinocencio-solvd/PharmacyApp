@@ -9,29 +9,27 @@ public class CustomerLine extends GenericQueue<AbstractCustomer> {
 
     private static final Logger LOG = LogManager.getLogger(CustomerLine.class);
 
-    public GenericQueue<AbstractCustomer> customerLine;
-
-    public CustomerLine() {
-        this.customerLine = new GenericQueue<>();
+    public void addCustomer(AbstractCustomer abstractCustomer) {
+        LOG.trace(abstractCustomer.getName() + " is now in line");
+        enqueue(abstractCustomer);
     }
 
-    public void addCustomer(AbstractCustomer abstractCustomer) {
-        LOG.info(abstractCustomer.getName() + " is now in line");
-        customerLine.enqueue(abstractCustomer);
+    public boolean hasNext() {
+        return !isEmpty();
     }
 
     public AbstractCustomer getNextCustomer() {
-        if (customerLine.isEmpty()) {
+        if (isEmpty()) {
             LOG.warn("The line is empty");
             return null;
         }
-        LOG.info("The next customer is: " + customerLine.peek().getName());
-        return customerLine.dequeue();
+        LOG.trace("The next customer is: " + peek().getName());
+        return dequeue();
     }
 
     public int getLineLength() {
-        LOG.debug("There are " + customerLine.size() + " people in line");
-        return customerLine.size();
+        LOG.debug("There are " + size() + " people in line");
+        return size();
     }
 
     public boolean isCustomerPatient(AbstractCustomer abstractCustomer) {

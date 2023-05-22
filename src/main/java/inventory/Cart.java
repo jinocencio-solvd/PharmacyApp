@@ -8,6 +8,10 @@ public class Cart extends Inventory {
         this.products = new LinkedHashMap<>();
     }
 
+    public int getNumberOfItemsInCart() {
+        return this.products.values().stream().mapToInt(Integer::intValue).sum();
+    }
+
     @Override
     public String toString() {
         return "Inventory.Cart{" +

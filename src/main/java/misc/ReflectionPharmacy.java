@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
+import setup.DataProvider;
 
 /**
  * Using reflection extract information(modifiers, return types, parameters, etc) about fields,

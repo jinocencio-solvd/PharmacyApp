@@ -1,10 +1,10 @@
 package prescriptionRegistry;
 
 import enums.PrescriptionStatus;
-import person.Patient;
 import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import person.Patient;
 import product.Medication;
 
 
@@ -15,7 +15,6 @@ import product.Medication;
 public class Prescription {
 
     private static final Logger LOG = LogManager.getLogger(Prescription.class);
-
     private String prescriptionId;
     private int numRefills;
     private Medication medication;
@@ -42,6 +41,17 @@ public class Prescription {
         this.numRefills = numRefills;
         this.medication = medication;
         this.patient = patient;
+        this.prescribedQuantity = prescribedQuantity;
+        this.prescriptionStatus = PrescriptionStatus.NEW;
+
+        LOG.trace("Prescription created with Id: " + this.prescriptionId);
+    }
+
+    public Prescription(Medication medication, int prescribedQuantity, int numRefills) {
+        countId++;
+        this.prescriptionId = "rxID-" + countId;
+        this.numRefills = numRefills;
+        this.medication = medication;
         this.prescribedQuantity = prescribedQuantity;
         this.prescriptionStatus = PrescriptionStatus.NEW;
 

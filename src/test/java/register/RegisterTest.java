@@ -3,7 +3,7 @@ package register;
 import static org.junit.jupiter.api.Assertions.*;
 
 import inventory.Cart;
-import misc.DataProvider;
+import setup.DataProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import person.AbstractCustomer;
@@ -12,7 +12,7 @@ import person.PharmacyTechnician;
 class RegisterTest {
 
     PharmacyTechnician[] technicians = DataProvider.predefinedPharmacyTechnicians();
-    AbstractCustomer[] abstractCustomers = DataProvider.predefinedConsumers();
+    AbstractCustomer[] abstractCustomers = DataProvider.predefinedCustomers();
 
     PharmacyTechnician tech1 = technicians[0];
     AbstractCustomer abstractCustomer = abstractCustomers[0];
