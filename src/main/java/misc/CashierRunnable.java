@@ -1,11 +1,14 @@
 package misc;
 
+import static setup.AppConfig.SHOW_RECEIPT;
+
 import java.util.concurrent.Semaphore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import person.AbstractCustomer;
 import person.Employee;
 import pharmacy.Pharmacy;
+import register.Receipt;
 import register.Register;
 import setup.AppConfig;
 import utils.PharmacyTechnicianSupplier;
@@ -87,7 +90,8 @@ public class CashierRunnable implements Runnable {
                     register.scanAllProductsInCart();
                     register.processTransaction();
                     if (register.getTransactionCompleted()) {
-                        register.printReceipt();
+                        Receipt receipt = register.printReceipt();
+                        if(SHOW_RECEIPT)System.out.println(receipt);
                     } else {
                         LOG.error(
                             "Unable to complete customer transaction for "
