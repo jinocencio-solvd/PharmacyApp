@@ -2,7 +2,7 @@ package genericLinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import setup.DataProvider;
+import utils.DataProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import person.Customer;

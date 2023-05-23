@@ -19,6 +19,7 @@ import prescriptionRegistry.Prescription;
 import prescriptionRegistry.PrescriptionFilledLog;
 import prescriptionRegistry.PrescriptionRegistry;
 import prescriptionRegistry.PrescriptionRequestLog;
+import setup.AppConfig;
 
 /**
  * Represents a pharmacy with HR capabilities. This class represents a pharmacy, which has a name,
@@ -202,7 +203,9 @@ public class Pharmacy implements IPharmacy {
             LOG.trace("Employee" + newEmployee.getEmployeeID()
                 + " was successfully registered in employee database");
         } catch (DuplicatePersonException e) {
-            LOG.warn("Employee is already registered in employee database");
+            if (AppConfig.SHOW_PHARMACY_SETUP) {
+                LOG.warn("Employee is already registered in employee database");
+            }
         }
     }
 
@@ -222,7 +225,7 @@ public class Pharmacy implements IPharmacy {
             }
             throw new PersonDoesNotExistException("Employee not found in employee database");
         } catch (PersonDoesNotExistException e) {
-            LOG.error("Error occurred. Employee not found in employee database.");
+            if(AppConfig.SHOW_PHARMACY_SETUP)LOG.error("Error occurred. Employee not found in employee database.");
         }
     }
 

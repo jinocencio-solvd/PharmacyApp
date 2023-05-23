@@ -1,4 +1,4 @@
-package setup;
+package utils;
 
 import inventory.ProductInventory;
 import java.util.Random;

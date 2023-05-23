@@ -13,13 +13,17 @@ import person.Customer;
 import person.Patient;
 import pharmacy.Pharmacy;
 import prescriptionRegistry.Prescription;
+import utils.CartSupplier;
+import utils.CustomerSupplier;
+import utils.PatientSupplier;
+import utils.PrescriptionSupplier;
 
 public class CustomerLineSetup {
 
     private static final Logger LOG = LogManager.getLogger(CustomerLineSetup.class);
-
     private static final List<AbstractCustomer> removedCustomers = new ArrayList<>();
-    private static final int MAX_NUMBER_ITEMS = 15;
+    private static final int MAX_NUMBER_ITEMS = AppConfig.MAX_NUMBER_ITEMS_IN_CART;
+    private static int count = 0;
 
     private ConcurrentCustomerLine customerLine;
     private int numCustomers;
@@ -39,6 +43,8 @@ public class CustomerLineSetup {
         Customer c = new CustomerSupplier().get();
         Cart cart = cartSupplier.get();
         c.setCart(cart);
+        c.setName("customer-"+ count++);
+        System.out.println(c.getName());
         customerLine.addCustomer(c);
     }
 
@@ -53,6 +59,7 @@ public class CustomerLineSetup {
         Prescription prescription = prescriptionSupplier.get();
         prescription.setPatient(p);
         p.setCart(cart);
+        p.setName("customer-P"+ count++);
         p.providePrescription(pharmacy, prescription);
 
         customerLine.addCustomer(p);

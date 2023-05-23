@@ -1,4 +1,4 @@
-package setup;
+package utils;
 
 import enums.ProductType;
 import inventory.Cart;
