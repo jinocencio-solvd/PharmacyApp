@@ -1,7 +1,5 @@
 package misc;
 
-import static setup.AppConfig.SHOW_RX_STATUS_FLOW;
-
 import java.util.concurrent.Semaphore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,9 +50,6 @@ public class CashierRunnable implements Runnable {
     //  Currently, cashier's will process CUSTOMERS_SERVED_LIMIT at a time
     //  rather than concurrently. Need for greater scope of synchronization?
     public boolean isCustomerLimitReached() {
-        if (AppConfig.DISABLE_CASHIER_RUNNABLE_CUSTOMER_LIMIT) {
-            return false;
-        }
         return numCustomersServed == customersServedLimit;
     }
 
@@ -62,7 +57,7 @@ public class CashierRunnable implements Runnable {
     public void run() {
         LOG.trace(this.cashier.getName() + " is on cashier duties");
 
-        while (customerLine.hasNext() && !isCustomerLimitReached()) {
+        while (customerLine.hasNext()) {
             AbstractCustomer nextCustomer = null;
             try {
                 semaphore.acquire();
@@ -74,7 +69,6 @@ public class CashierRunnable implements Runnable {
                 Thread.currentThread().interrupt();
             } finally {
                 if (nextCustomer != null) {
-
                     if(AppConfig.SHOW_CASHIER_RECEIVED_CUSTOMER) LOG.info("Cashier " + cashier.getName() + " got next customer "
                         + nextCustomer.getName());
                     register.setCustomer(nextCustomer);
@@ -103,11 +97,9 @@ public class CashierRunnable implements Runnable {
                         + nextCustomer.getName());
                     numCustomersServed++;
                 }
-
             }
             if(AppConfig.SHOW_CASHIER_TOTAL_CUSTOMERS) LOG.info(
                 numCustomersServed + " current total customers served by Cashier: " + cashier.getName());
         }
     }
-
 }

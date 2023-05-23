@@ -11,6 +11,14 @@ import utils.DataProvider;
 public class App {
     private final Pharmacy pharmacy;
     private final ConcurrentCustomerLine customerLine;
+
+    public App() {
+        pharmacy = PharmacySetup.setup();
+        customerLine = new CustomerLineSetup(pharmacy,
+            AppConfig.TOTAL_CUSTOMERS).setup();
+        pharmacistFillAllPrescriptions(pharmacy);
+    }
+
     private static void pharmacistFillAllPrescriptions(Pharmacy pharmacy) {
         Pharmacist pharmacist = DataProvider.predefinedPharmacist()[0];
         Consumer<Pharmacy> runPharmacistFillAllRxReq = (Pharmacy p) ->
@@ -20,12 +28,6 @@ public class App {
 
         runPharmacistFillAllRxReq.accept(pharmacy);
     }
-    public App() {
-        pharmacy = PharmacySetup.setup();
-        customerLine = new CustomerLineSetup(pharmacy,
-            AppConfig.TOTAL_CUSTOMERS).setup();
-        pharmacistFillAllPrescriptions(pharmacy);
-    }
 
     public void run() {
         for (int i = 0; i < AppConfig.NUM_CASHIERS; i++){
@@ -33,4 +35,6 @@ public class App {
             thread.start();
         }
     }
+
+
 }
