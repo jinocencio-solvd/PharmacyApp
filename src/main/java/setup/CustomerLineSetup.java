@@ -1,10 +1,11 @@
 package setup;
 
+import static setup.AppConfig.NUM_PATIENTS;
+
 import inventory.Cart;
 import inventory.ProductInventory;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import misc.ConcurrentCustomerLine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,8 +44,7 @@ public class CustomerLineSetup {
         Customer c = new CustomerSupplier().get();
         Cart cart = cartSupplier.get();
         c.setCart(cart);
-        c.setName("customer-"+ count++);
-        System.out.println(c.getName());
+        c.setName("customer-" + count++);
         customerLine.addCustomer(c);
     }
 
@@ -59,20 +59,18 @@ public class CustomerLineSetup {
         Prescription prescription = prescriptionSupplier.get();
         prescription.setPatient(p);
         p.setCart(cart);
-        p.setName("customer-P"+ count++);
+        p.setName("customer-P" + count++);
         p.providePrescription(pharmacy, prescription);
 
         customerLine.addCustomer(p);
     }
 
     public ConcurrentCustomerLine setup() {
+        for (int i = 0; i < NUM_PATIENTS; i++) {
+            populateLineWithPatient();
+        }
         while (customerLine.getLineLength() < numCustomers) {
-            int randomNumber = new Random().nextInt(2);
-            if (randomNumber == 0) {
-                populateLineWithPatient();
-            } else {
-                populateLineWithCustomer();
-            }
+            populateLineWithCustomer();
         }
         customerLine.getCustomerLineInformation();
         return customerLine;

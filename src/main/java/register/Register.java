@@ -1,5 +1,7 @@
 package register;
 
+import static setup.AppConfig.SHOW_RX_STATUS_FLOW;
+
 import customLambdaFunctions.INullChecker;
 import enums.PaymentType;
 import enums.PrescriptionStatus;
@@ -155,6 +157,10 @@ public class Register implements IRegister {
     public void processPrescriptionAndAddMedicationsToCart(
         PrescriptionFilledLog prescriptionFilledLog) {
         if (abstractCustomer.isPatient() && isPrescriptionFilledForPatient(prescriptionFilledLog)) {
+            if (SHOW_RX_STATUS_FLOW) {
+                LOG.info(abstractCustomer.getName() + " is at register with cashier "
+                    + employee.getName() + " for Rx pickup.");
+            }
             addRequestedMedicationsToCart(prescriptionFilledLog);
             txnProcessesPrescription = true;
         }
@@ -182,6 +188,11 @@ public class Register implements IRegister {
                     try {
                         cart.addProduct(patientPrescribedMedications.get(0),
                             patientPrescribedMedications.size());
+                        if (SHOW_RX_STATUS_FLOW) {
+                            LOG.info("Cashier " + employee.getName() + " added " + p.getMedication()
+                                .getName()
+                                + " to " + p.getPatient().getName() + "'s cart");
+                        }
                     } catch (IndexOutOfBoundsException e) {
                         LOG.error(patientPrescribedMedications.toString());
                     }
@@ -274,6 +285,12 @@ public class Register implements IRegister {
                     p.setPrescriptionStatus(PrescriptionStatus.COMPLETED);
                 } else {
                     p.setPrescriptionStatus(PrescriptionStatus.REFILL_UPON_REQUEST);
+                }
+                if (SHOW_RX_STATUS_FLOW) {
+                    LOG.warn(
+                        "Cashier " + employee.getName() + " changed the rx for " + p.getMedication()
+                            .getName() + " for patient " + p.getPatient().getName() + " status to "
+                            + p.getPrescriptionStatus());
                 }
             }
         }

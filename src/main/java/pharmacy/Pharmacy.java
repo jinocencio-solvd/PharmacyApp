@@ -1,5 +1,7 @@
 package pharmacy;
 
+import static setup.AppConfig.SHOW_RX_STATUS_FLOW;
+
 import enums.BusinessDay;
 import enums.PrescriptionStatus;
 import exceptions.DuplicatePersonException;
@@ -141,6 +143,7 @@ public class Pharmacy implements IPharmacy {
                 "The prescription does not belong to the patient.");
         }
         try {
+            if(SHOW_RX_STATUS_FLOW)LOG.info("Pharmacy received Rx for Patient "+patient.getName());
             this.getPrescriptionRegistry().addPrescription(patient, prescription);
             //TODO: modify quick fix to handle refills logic. Added 1 b/c register decrements numRefill upon the first fill.
             prescription.setNumRefills(prescription.getNumRefills() + 1);
@@ -149,7 +152,9 @@ public class Pharmacy implements IPharmacy {
         } catch (PersonDoesNotExistException e) {
             LOG.trace("New Patient added into registry");
             this.getPrescriptionRegistry().addPatientToRegistry(patient);
+            if(SHOW_RX_STATUS_FLOW)LOG.info("Patient "+patient.getName() + " was not registered. Retrying ReceiveRx after registration.");
             receivePrescription(patient, prescription);
+
 
         }
     }

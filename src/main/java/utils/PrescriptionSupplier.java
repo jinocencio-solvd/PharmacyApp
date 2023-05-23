@@ -8,7 +8,7 @@ import product.Medication;
 
 public class PrescriptionSupplier implements Supplier<Prescription> {
 
-    private static final int MAX_REFILLS = 7;
+    private static final int MAX_REFILLS = 2;
     private static final int MAX_QUANTITY = 30;
 
     private final ProductInventory productInventory;
@@ -19,7 +19,8 @@ public class PrescriptionSupplier implements Supplier<Prescription> {
 
     @Override
     public Prescription get() {
-        Medication randomMedication = (Medication) productInventory.getRandomProduct(Medication.class);
+        Medication randomMedication = (Medication) productInventory.getRandomProduct(
+            Medication.class);
         int numRefills = new Random().nextInt(MAX_REFILLS);
         int numQuantity = new Random().nextInt(MAX_QUANTITY);
         return new Prescription(randomMedication, numQuantity, numRefills);

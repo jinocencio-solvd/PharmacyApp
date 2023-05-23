@@ -1,5 +1,7 @@
 package person;
 
+import static setup.AppConfig.SHOW_RX_STATUS_FLOW;
+
 import enums.PrescriptionStatus;
 import exceptions.InsufficientQuantityException;
 import exceptions.NoMoreRefillsException;
@@ -85,7 +87,18 @@ public class Pharmacist extends Employee {
                 default:
                     List<Medication> medsFromRx = getMedicationsFromInventory(inventory,
                         prescription);
+                    if (SHOW_RX_STATUS_FLOW) {
+                        LOG.info(
+                            "Pharmacist retrieved " + medsFromRx.get(0).getName()
+                                + " from inventory to fill the prescription for " + prescription.getPatient().getName());
+                    }
                     prescription.setPrescriptionStatus(PrescriptionStatus.FILLED);
+                    if (SHOW_RX_STATUS_FLOW) {
+                        LOG.warn(
+                            "Pharmacist changed Rx for: " + prescription.getPatient().getName()
+                                + " to "
+                                + prescription.getPrescriptionStatus());
+                    }
                     prescriptionFilledLog.addFilledPrescription(prescription, medsFromRx);
 
 

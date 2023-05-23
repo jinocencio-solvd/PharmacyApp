@@ -1,5 +1,7 @@
 package misc;
 
+import static setup.AppConfig.SHOW_RX_STATUS_FLOW;
+
 import java.util.concurrent.Semaphore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -79,7 +81,6 @@ public class CashierRunnable implements Runnable {
                     register.setCart(nextCustomer.getCart());
 
                     if (nextCustomer.isPatient()) {
-                        LOG.trace(nextCustomer.getName() + " is a patient.");
                         register.processPrescriptionAndAddMedicationsToCart(
                             pharmacy.getFilledPrescriptions());
                     }

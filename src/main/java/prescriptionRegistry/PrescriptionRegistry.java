@@ -1,5 +1,7 @@
 package prescriptionRegistry;
 
+import static setup.AppConfig.SHOW_RX_STATUS_FLOW;
+
 import enums.PrescriptionStatus;
 import exceptions.DuplicatePersonException;
 import exceptions.PersonDoesNotExistException;
@@ -45,10 +47,16 @@ public class PrescriptionRegistry implements IPrescriptionRegistry {
         }
 
         if (!prescriptionRegistry.containsKey(patient)) {
-            if (AppConfig.SHOW_PRESCRIPTION_REGISTRY_LOGS)LOG.warn("PersonDoesNotExistException was thrown");
+            if (AppConfig.SHOW_PRESCRIPTION_REGISTRY_LOGS) {
+                LOG.warn("PersonDoesNotExistException was thrown");
+            }
             throw new PersonDoesNotExistException("The person is not registered in database");
         }
         prescription.setPrescriptionStatus(PrescriptionStatus.PENDING);
+        if (SHOW_RX_STATUS_FLOW) {
+            LOG.warn("Pharmacy added Rx for " + patient.getName() + " to database and is waiting to be processed. Rx status changed to "
+                + prescription.getPrescriptionStatus());
+        }
         prescriptionRegistry.get(patient).add(prescription);
     }
 

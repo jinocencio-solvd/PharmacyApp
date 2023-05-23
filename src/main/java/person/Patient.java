@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pharmacy.Pharmacy;
 import prescriptionRegistry.Prescription;
+import setup.AppConfig;
 
 /**
  * The Person.Patient class represents a person who is a patient, with a patient ID and insurance
@@ -83,10 +84,13 @@ public class Patient extends AbstractCustomer {
     @Override
     public void providePrescription(Pharmacy pharmacy, Prescription prescription) {
         try {
+            if (AppConfig.SHOW_RX_STATUS_FLOW) {
+                LOG.warn("Patient " + this.getName() + " provided Rx for: "
+                    + prescription.getMedication()
+                    .getName() + " with status " + prescription.getPrescriptionStatus());
+            }
             pharmacy.receivePrescription(this, prescription);
-            LOG.trace(
-                "Patient " + this.getName() + " provided Rx for: " + prescription.getMedication()
-                    .getName());
+
         } catch (InvalidPrescriptionException e) {
             LOG.error(e.toString());
         }
