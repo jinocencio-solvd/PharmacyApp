@@ -1,5 +1,7 @@
 package pharmacy;
 
+import static setup.AppConfig.SHOW_RX_STATUS_FLOW;
+
 import enums.BusinessDay;
 import enums.PrescriptionStatus;
 import exceptions.DuplicatePersonException;
@@ -19,6 +21,7 @@ import prescriptionRegistry.Prescription;
 import prescriptionRegistry.PrescriptionFilledLog;
 import prescriptionRegistry.PrescriptionRegistry;
 import prescriptionRegistry.PrescriptionRequestLog;
+import setup.AppConfig;
 
 /**
  * Represents a pharmacy with HR capabilities. This class represents a pharmacy, which has a name,
@@ -140,6 +143,7 @@ public class Pharmacy implements IPharmacy {
                 "The prescription does not belong to the patient.");
         }
         try {
+            if(SHOW_RX_STATUS_FLOW)LOG.info("Pharmacy received Rx for Patient "+patient.getName());
             this.getPrescriptionRegistry().addPrescription(patient, prescription);
             //TODO: modify quick fix to handle refills logic. Added 1 b/c register decrements numRefill upon the first fill.
             prescription.setNumRefills(prescription.getNumRefills() + 1);
@@ -148,7 +152,9 @@ public class Pharmacy implements IPharmacy {
         } catch (PersonDoesNotExistException e) {
             LOG.trace("New Patient added into registry");
             this.getPrescriptionRegistry().addPatientToRegistry(patient);
+            if(SHOW_RX_STATUS_FLOW)LOG.info("Patient "+patient.getName() + " was not registered. Retrying ReceiveRx after registration.");
             receivePrescription(patient, prescription);
+
 
         }
     }
@@ -202,7 +208,9 @@ public class Pharmacy implements IPharmacy {
             LOG.trace("Employee" + newEmployee.getEmployeeID()
                 + " was successfully registered in employee database");
         } catch (DuplicatePersonException e) {
-            LOG.warn("Employee is already registered in employee database");
+            if (AppConfig.SHOW_PHARMACY_SETUP) {
+                LOG.warn("Employee is already registered in employee database");
+            }
         }
     }
 
@@ -222,7 +230,7 @@ public class Pharmacy implements IPharmacy {
             }
             throw new PersonDoesNotExistException("Employee not found in employee database");
         } catch (PersonDoesNotExistException e) {
-            LOG.error("Error occurred. Employee not found in employee database.");
+            if(AppConfig.SHOW_PHARMACY_SETUP)LOG.error("Error occurred. Employee not found in employee database.");
         }
     }
 

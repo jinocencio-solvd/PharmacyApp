@@ -1,4 +1,4 @@
-package setup;
+package utils;
 
 import inventory.Cart;
 import inventory.ProductInventory;

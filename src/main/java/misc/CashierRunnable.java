@@ -1,17 +1,23 @@
 package misc;
 
+import static setup.AppConfig.SHOW_RECEIPT;
+
+import java.util.concurrent.Semaphore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import person.AbstractCustomer;
 import person.Employee;
 import pharmacy.Pharmacy;
+import register.Receipt;
 import register.Register;
-import setup.PharmacyTechnicianSupplier;
+import setup.AppConfig;
+import utils.PharmacyTechnicianSupplier;
 
 public class CashierRunnable implements Runnable {
 
     private static final Logger LOG = LogManager.getLogger(CashierRunnable.class);
     private static PharmacyTechnicianSupplier pharmacyTechnicianSupplier = new PharmacyTechnicianSupplier();
+    private static Semaphore semaphore = new Semaphore(1);
 
     private Employee cashier;
     private ConcurrentCustomerLine customerLine;
@@ -53,35 +59,51 @@ public class CashierRunnable implements Runnable {
     @Override
     public void run() {
         LOG.trace(this.cashier.getName() + " is on cashier duties");
-        synchronized (customerLine) {
-            while (customerLine.hasNext() && !isCustomerLimitReached()) {
-                AbstractCustomer nextCustomer = customerLine.getNextCustomer(); //dequeue
-                LOG.info("Cashier " + cashier.getName() + " got next customer "
-                    + nextCustomer.getName());
-                register.setCustomer(nextCustomer);
-                register.setCart(nextCustomer.getCart());
 
-                if (nextCustomer.isPatient()) {
-                    LOG.trace(nextCustomer.getName() + " is a patient.");
-                    register.processPrescriptionAndAddMedicationsToCart(
-                        pharmacy.getFilledPrescriptions());
+        while (customerLine.hasNext()) {
+            AbstractCustomer nextCustomer = null;
+            try {
+                semaphore.acquire();
+                if (customerLine.hasNext()) {
+                    nextCustomer = customerLine.getNextCustomer();
                 }
-
-                LOG.trace("From " + Thread.currentThread().getName());
-                LOG.trace(
-                    "Cashier " + register.getEmployee().getName() + " is scanning cart items for "
+                semaphore.release();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                if (nextCustomer != null) {
+                    if(AppConfig.SHOW_CASHIER_RECEIVED_CUSTOMER) LOG.info("Cashier " + cashier.getName() + " got next customer "
                         + nextCustomer.getName());
-                register.scanAllProductsInCart();
-                register.processTransaction();
-                if (register.getTransactionCompleted()) {
-                    register.printReceipt();
-                } else {
-                    LOG.error(
-                        "Unable to complete customer transaction for " + nextCustomer.getName());
+                    register.setCustomer(nextCustomer);
+                    register.setCart(nextCustomer.getCart());
+
+                    if (nextCustomer.isPatient()) {
+                        register.processPrescriptionAndAddMedicationsToCart(
+                            pharmacy.getFilledPrescriptions());
+                    }
+
+                    LOG.trace("From " + Thread.currentThread().getName());
+                    LOG.trace(
+                        "Cashier " + register.getEmployee().getName()
+                            + " is scanning cart items for "
+                            + nextCustomer.getName());
+                    register.scanAllProductsInCart();
+                    register.processTransaction();
+                    if (register.getTransactionCompleted()) {
+                        Receipt receipt = register.printReceipt();
+                        if(SHOW_RECEIPT)System.out.println(receipt);
+                    } else {
+                        LOG.error(
+                            "Unable to complete customer transaction for "
+                                + nextCustomer.getName());
+                    }
+                    if(AppConfig.SHOW_CASHIER_FINISHED_TXN)LOG.info("Cashier " + cashier.getName() + " finished txn with customer "
+                        + nextCustomer.getName());
+                    numCustomersServed++;
                 }
-                numCustomersServed++;
             }
+            if(AppConfig.SHOW_CASHIER_TOTAL_CUSTOMERS) LOG.info(
+                numCustomersServed + " current total customers served by Cashier: " + cashier.getName());
         }
-        LOG.info(numCustomersServed + " total customers served by Cashier: " + cashier.getName());
     }
 }

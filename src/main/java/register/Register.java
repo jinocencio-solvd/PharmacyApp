@@ -1,5 +1,7 @@
 package register;
 
+import static setup.AppConfig.SHOW_RX_STATUS_FLOW;
+
 import customLambdaFunctions.INullChecker;
 import enums.PaymentType;
 import enums.PrescriptionStatus;
@@ -12,7 +14,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import misc.Insurance;
@@ -21,15 +25,15 @@ import org.apache.logging.log4j.Logger;
 import person.AbstractCustomer;
 import person.Employee;
 import person.Patient;
-import prescriptionRegistry.PrescriptionFilledLog;
 import prescriptionRegistry.Prescription;
+import prescriptionRegistry.PrescriptionFilledLog;
 import product.Medication;
 import product.Product;
 
 public class Register implements IRegister {
 
     private static final Logger LOG = LogManager.getLogger(Register.class);
-    private static int transactionId = 0;
+    private static AtomicInteger transactionId = new AtomicInteger(0);
     private Employee employee;
     private AbstractCustomer abstractCustomer;
     private Cart cart;
@@ -155,6 +159,10 @@ public class Register implements IRegister {
     public void processPrescriptionAndAddMedicationsToCart(
         PrescriptionFilledLog prescriptionFilledLog) {
         if (abstractCustomer.isPatient() && isPrescriptionFilledForPatient(prescriptionFilledLog)) {
+            if (SHOW_RX_STATUS_FLOW) {
+                LOG.info(abstractCustomer.getName() + " is at register with cashier "
+                    + employee.getName() + " for Rx pickup.");
+            }
             addRequestedMedicationsToCart(prescriptionFilledLog);
             txnProcessesPrescription = true;
         }
@@ -182,6 +190,11 @@ public class Register implements IRegister {
                     try {
                         cart.addProduct(patientPrescribedMedications.get(0),
                             patientPrescribedMedications.size());
+                        if (SHOW_RX_STATUS_FLOW) {
+                            LOG.info("Cashier " + employee.getName() + " added " + p.getMedication()
+                                .getName()
+                                + " to " + p.getPatient().getName() + "'s cart");
+                        }
                     } catch (IndexOutOfBoundsException e) {
                         LOG.error(patientPrescribedMedications.toString());
                     }
@@ -231,7 +244,6 @@ public class Register implements IRegister {
         double newCustomerBalance = customerBalance - transactionTotal;
         abstractCustomer.setCreditBalance(newCustomerBalance);
         this.transactionCompleted = true;
-        transactionId += 1;
     }
 
     public String generateReceiptString() {
@@ -239,22 +251,18 @@ public class Register implements IRegister {
             LOG.warn("Cannot generate receipt before abstractCustomer payment");
         }
         StringBuilder sb = new StringBuilder();
-        String txnIdLine = "TransactionId: " + "txn-" + transactionId + System.lineSeparator();
+        String txnIdLine = "TransactionId: " + "txn-" + transactionId.incrementAndGet() + System.lineSeparator();
         String cashierInfo = "ICashier: " + employee.getName() + System.lineSeparator() + "Id: "
             + employee.getEmployeeID() + System.lineSeparator();
         sb.append(txnIdLine);
         sb.append(cashierInfo);
-        for (Product p : scannedProducts) {
-            String itemLine = p.getName() + "   " + p.getPrice() + System.lineSeparator();
-            sb.append(itemLine);
-            if (p instanceof Medication && abstractCustomer.isPatient()) {
-                String medicationLine =
-                    "\tDiscounted price: " + calculateDiscountPrice(p.getPrice())
-                        + System.lineSeparator();
-                sb.append(medicationLine);
-            }
-
+        Map<Product, Long> occurrences = scannedProducts.stream()
+            .collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+        for (Map.Entry<Product, Long> entry : occurrences.entrySet()) {
+            sb.append(entry.getKey().getName()).append("    x")
+                .append(entry.getValue().intValue() + System.lineSeparator());
         }
+
         String totalLine = "Total: " + this.getTotal() + System.lineSeparator();
         sb.append(totalLine);
         return sb.toString();
@@ -274,6 +282,12 @@ public class Register implements IRegister {
                     p.setPrescriptionStatus(PrescriptionStatus.COMPLETED);
                 } else {
                     p.setPrescriptionStatus(PrescriptionStatus.REFILL_UPON_REQUEST);
+                }
+                if (SHOW_RX_STATUS_FLOW) {
+                    LOG.warn(
+                        "Cashier " + employee.getName() + " changed the rx for " + p.getMedication()
+                            .getName() + " for patient " + p.getPatient().getName() + " status to "
+                            + p.getPrescriptionStatus());
                 }
             }
         }

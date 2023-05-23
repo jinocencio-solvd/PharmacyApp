@@ -1,4 +1,4 @@
-package setup;
+package utils;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
